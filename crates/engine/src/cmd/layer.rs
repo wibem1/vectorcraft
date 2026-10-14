@@ -223,7 +223,7 @@ pub(crate) fn accepts(d: &Document, parent: Option<NodeId>, n: &Node) -> bool {
         None => n.is_layer(),
         Some(p) => match d.node(p).map(|x| &x.kind) {
             Some(NodeKind::Layer { .. }) => true,
-            Some(NodeKind::Group { .. }) => !n.is_layer(),
+            Some(NodeKind::Group { .. }) | Some(NodeKind::Repeat(_)) => !n.is_layer(),
             _ => false,
         },
     }

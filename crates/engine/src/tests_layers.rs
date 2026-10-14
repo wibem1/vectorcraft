@@ -906,3 +906,43 @@ fn layer_collect_and_flatten_keep_valid_and_omitted_target_behavior() {
     let collected = id(&r);
     assert!(selected.iter().all(|id| parent(&s, *id) == Some(collected)));
 }
+
+
+#[test]
+fn artwork_can_be_added_to_a_live_radial_repeat() {
+    let mut s = session();
+    let seed = rect(&mut s, 20.0);
+    let repeat = id(&run(&mut s, "object.repeat.radial", json!({"ids": [seed.0], "instances": 8, "radius": 100})));
+    assert_eq!(children(&s, repeat), vec![seed]);
+    let new_path = rect(&mut s, 45.0);
+    let before = undos(&s);
+    run(&mut s, "layer.move", json!({"ids": [new_path.0], "target": repeat.0, "place": "inside"}));
+    assert_eq!(parent(&s, new_path), Some(repeat));
+    assert_eq!(children(&s, repeat), vec![seed, new_path]);
+    assert_eq!(undos(&s), before + 1);
+    let NodeKind::Repeat(spec) = node(&s, repeat).kind else { panic!("live repeat was expanded") };
+    assert_eq!(spec.source.len(), 2);
+    assert_eq!(spec.transforms().len(), 8, "all instances must remain live");
+    run(&mut s, "edit.undo", json!({}));
+    assert_ne!(parent(&s, new_path), Some(repeat));
+    assert_eq!(children(&s, repeat), vec![seed]);
+    run(&mut s, "edit.redo", json!({}));
+    assert_eq!(children(&s, repeat), vec![seed, new_path]);
+}
+
+#[test]
+fn a_live_repeat_accepts_copied_art_but_not_sublayers() {
+    let mut s = session();
+    let seed = rect(&mut s, 20.0);
+    let repeat = id(&run(&mut s, "object.repeat.radial", json!({"ids": [seed.0], "instances": 6})));
+    let extra = rect(&mut s, 100.0);
+    let moved = ids(&run(&mut s, "layer.move", json!({
+        "ids": [extra.0], "target": repeat.0, "place": "inside", "copy": true
+    })));
+    assert_eq!(moved.len(), 1);
+    assert_eq!(parent(&s, extra), s.doc().unwrap().doc.current_layer());
+    assert_eq!(parent(&s, moved[0]), Some(repeat));
+    assert_eq!(children(&s, repeat).len(), 2);
+    let sub = id(&run(&mut s, "layer.newSublayer", json!({})));
+    assert!(s.execute("layer.move", &json!({"ids": [sub.0], "target": repeat.0})).is_err());
+}

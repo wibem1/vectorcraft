@@ -894,8 +894,11 @@ impl Node {
             | NodeKind::Group { children, .. }
             | NodeKind::Compound { children, .. }
             | NodeKind::Blend { children, .. }
-            | NodeKind::Envelope { content: children, .. }
-            | NodeKind::Repeat(RepeatSpec { source: children, .. }) => Some(children),
+            | NodeKind::Envelope { content: children, .. } => Some(children),
+            NodeKind::Repeat(spec) => {
+                spec.freeze_geometry();
+                Some(&mut spec.source)
+            }
             _ => None,
         }
     }

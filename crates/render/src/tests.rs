@@ -241,7 +241,8 @@ fn a_repeat_of_an_instance_is_culled_by_the_effects_in_its_art() {
     let grid = vectorcraft_doc::TileType::Grid;
     let kind =
         vectorcraft_doc::RepeatKind::Grid { h_spacing: 0.0, v_spacing: 0.0, rows: 1, cols: 1, grid_type: grid, flip_rows: false, flip_cols: false };
-    let repeat = Node::new(d.alloc_id(), NodeKind::Repeat(vectorcraft_doc::RepeatSpec { kind, source: vec![Arc::new(instance)] }));
+    let repeat =
+        Node::new(d.alloc_id(), NodeKind::Repeat(vectorcraft_doc::RepeatSpec { kind, reference_bounds: None, source: vec![Arc::new(instance)] }));
     let l = d.layers[0].id;
     d.insert(Some(l), 0, repeat).unwrap();
     let img = Renderer::new().render(&d, 100, 100, Affine::IDENTITY, &RenderOptions::default());

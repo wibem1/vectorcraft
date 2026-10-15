@@ -42,6 +42,14 @@ pub fn node_summary_opts(n: &Node, opts: SummaryOpts, symbols: &SymbolBoxes) -> 
         "locked": n.locked,
         "bounds": rect_json(n.geometric_bounds_with(symbols)),
     });
+    if let NodeKind::Repeat(spec) = &n.kind {
+        v["repeat"] = json!({
+            "arrangement": spec.kind,
+            "referenceBounds": rect_json(spec.reference_bounds),
+            "sourceBounds": rect_json(spec.source_bounds()),
+            "transforms": spec.transforms().iter().map(|a| a.as_coeffs()).collect::<Vec<_>>(),
+        });
+    }
     if n.opacity < 1.0 {
         v["opacity"] = json!(n.opacity);
     }

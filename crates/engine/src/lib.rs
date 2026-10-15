@@ -500,13 +500,13 @@ impl DocState {
         // Ids are reused after undo (the id counter is part of the document), so a remembered
         // layer or isolated group must still be one: a pasted group must never land in a path.
         if let Some(i) = self.isolation
-            && self.doc.node(i).is_some_and(|n| matches!(n.kind, NodeKind::Group { .. } | NodeKind::Layer { .. }))
+            && self.doc.node(i).is_some_and(|n| matches!(n.kind, NodeKind::Group { .. } | NodeKind::Layer { .. } | NodeKind::Repeat(_)))
         {
             return Some(i);
         }
         // A single object isolated: new art goes beside it, in its group or layer.
         if let Some(p) = self.isolation.filter(|i| self.doc.node(*i).is_some_and(|n| !n.is_container())).and_then(|i| self.doc.parent_of(i))
-            && self.doc.node(p).is_some_and(|n| matches!(n.kind, NodeKind::Group { .. } | NodeKind::Layer { .. }))
+            && self.doc.node(p).is_some_and(|n| matches!(n.kind, NodeKind::Group { .. } | NodeKind::Layer { .. } | NodeKind::Repeat(_)))
         {
             return Some(p);
         }

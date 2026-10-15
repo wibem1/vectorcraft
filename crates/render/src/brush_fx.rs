@@ -271,7 +271,7 @@ mod tests {
                 flip_rows: false,
                 flip_cols: false,
             };
-            let spec = vectorcraft_doc::RepeatSpec { kind, source: vec![std::sync::Arc::new(source)] };
+            let spec = vectorcraft_doc::RepeatSpec { kind, reference_bounds: None, source: vec![std::sync::Arc::new(source)] };
             let repeat = Node::new(d.alloc_id(), vectorcraft_doc::NodeKind::Repeat(spec));
             let l = d.layers[0].id;
             d.insert(Some(l), 0, repeat).unwrap();

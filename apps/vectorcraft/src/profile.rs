@@ -1,10 +1,26 @@
 //! Native profile paths. Isolated profiles never migrate preferences from a user's old profile.
 
 use std::ffi::OsString;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 pub fn prefs_path(legacy: bool) -> Option<PathBuf> {
-    prefs_path_with(std::env::consts::OS, legacy, |key| std::env::var_os(key))
+    let test_build = env!("CARGO_PKG_VERSION").contains("-live-repeat.");
+    let executable = std::env::current_exe().ok();
+    prefs_path_for_build(std::env::consts::OS, legacy, test_build, executable.as_deref(), |key| std::env::var_os(key))
+}
+
+fn prefs_path_for_build(
+    os: &str,
+    legacy: bool,
+    test_build: bool,
+    executable: Option<&Path>,
+    env: impl Fn(&str) -> Option<OsString>,
+) -> Option<PathBuf> {
+    if test_build && env("VECTORCRAFT_CONFIG_DIR").is_none() {
+        // A direct executable launch must also keep the user's installed profile untouched.
+        return if legacy { None } else { Some(executable?.parent()?.join("profile/ui.json")) };
+    }
+    prefs_path_with(os, legacy, env)
 }
 
 fn prefs_path_with(os: &str, legacy: bool, env: impl Fn(&str) -> Option<OsString>) -> Option<PathBuf> {
@@ -31,6 +47,16 @@ mod tests {
             "APPDATA" => Some("/roaming".into()),
             "XDG_CONFIG_HOME" => Some("/xdg-config".into()),
             _ => None,
+        }
+    }
+
+    #[test]
+    fn portable_test_build_is_isolated_even_without_launcher() {
+        for os in ["macos", "windows", "linux"] {
+            let executable = Path::new("/test-build/VectorCraft-LiveRepeat.exe");
+            assert_eq!(prefs_path_for_build(os, false, true, Some(executable), environment), Some("/test-build/profile/ui.json".into()));
+            assert_eq!(prefs_path_for_build(os, true, true, Some(executable), environment), None);
+            assert_eq!(prefs_path_for_build(os, false, true, None, environment), None);
         }
     }
 

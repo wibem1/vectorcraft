@@ -1,5 +1,8 @@
 # VectorCraft Roadmap
 
+> Branch update 2026-10-15: Live Repeat container editing and stable arrangement references; verification tracked in [live-repeat-editing](docs/live-repeat-editing.md). Upstream scores and estimates unchanged.
+
+
 - UI.5: Shared docking adds tab reordering, docking into other groups, dock splits and resizable floating panel groups. Panel positions and return locations persist with workspaces; the native icon rail and Tools panel remain available.
 
 - UI.4: Dock and floating-panel headers use shared accessible tabs with bounded overflow. Widget-state theme application uses `craft-ui`; all four palettes, font stacks and preferences remain app-owned.

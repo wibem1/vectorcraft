@@ -2294,6 +2294,7 @@ pub fn menu_tree_named(english_names: bool) -> Vec<(&'static str, Vec<Item>)> {
                 sub(
                     "Repeat",
                     vec![
+                        c("Edit Repeat Contents", "object.repeat.edit"),
                         c("Radial", "object.repeat.radial"),
                         c("Grid", "object.repeat.grid"),
                         c("Mirror", "object.repeat.mirror"),

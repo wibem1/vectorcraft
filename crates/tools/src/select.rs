@@ -280,11 +280,14 @@ impl Tool for SelectionTool {
                         return vec![Action::SwitchTool("type".into())];
                     }
                     // A group, a compound path or a single path, image, mesh or placed file, not
-                    // the one already isolated. Blends, envelopes, repeats and symbol instances
+                    // the one already isolated. Blends, envelopes and symbol instances
                     // aren't: they have editing modes of their own.
                     use vectorcraft_doc::NodeKind as K;
                     let isolates = cx.doc.node(top).is_some_and(|n| {
-                        matches!(n.kind, K::Group { .. } | K::Compound { .. } | K::Path { .. } | K::Image(_) | K::Mesh(_) | K::PlacedDocument(_))
+                        matches!(
+                            n.kind,
+                            K::Group { .. } | K::Repeat(_) | K::Compound { .. } | K::Path { .. } | K::Image(_) | K::Mesh(_) | K::PlacedDocument(_)
+                        )
                     });
                     if cx.double_click_isolate && isolates && cx.isolation != Some(top) {
                         return vec![Action::Exec("object.isolate".into(), json!({ "id": top.0 }))];

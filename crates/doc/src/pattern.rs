@@ -430,6 +430,9 @@ impl RepeatKind {
 pub struct RepeatSpec {
     pub kind: RepeatKind,
     pub source: Vec<Arc<Node>>,
+    /// Arrangement reference independent of subsequent source edits.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reference_bounds: Option<Rect>,
 }
 
 /// Reflection across the line through `c` with direction angle `deg`.
@@ -489,11 +492,17 @@ pub fn repeat_transforms(kind: &RepeatKind, source_bounds: Option<Rect>) -> Vec<
 }
 
 impl RepeatSpec {
+    /// Preserve legacy arrangements before changing their source contents.
+    pub fn freeze_geometry(&mut self) {
+        if self.reference_bounds.is_none() {
+            self.reference_bounds = self.source_bounds();
+        }
+    }
     pub fn source_bounds(&self) -> Option<Rect> {
         crate::live::nodes_bounds(&self.source)
     }
     pub fn transforms(&self) -> Vec<Affine> {
-        repeat_transforms(&self.kind, self.source_bounds())
+        repeat_transforms(&self.kind, self.reference_bounds.or_else(|| self.source_bounds()))
     }
     /// Evaluated instances: one group of the (transformed) source per instance (ids 0).
     pub fn expand(&self) -> Vec<Node> {
@@ -526,6 +535,8 @@ impl RepeatSpec {
     /// Apply a document transform (source + arrangement parameters).
     pub fn transform(&mut self, a: Affine, scaling: impl Into<crate::node::Scaling>) {
         let scaling = scaling.into();
+        self.freeze_geometry();
+        self.reference_bounds = self.reference_bounds.map(|b| a.transform_rect_bbox(b));
         for c in self.source.iter_mut() {
             Arc::make_mut(c).transform(a, scaling);
         }
@@ -551,11 +562,16 @@ impl RepeatSpec {
         let b = crate::live::nodes_bounds(&source).unwrap_or(Rect::new(0.0, 0.0, 10.0, 10.0));
         let r = radius.unwrap_or((b.height().max(b.width()) * 1.2).max(10.0));
         let center = b.center() + Vec2::new(0.0, r);
-        Self { kind: RepeatKind::Radial { instances, radius: r, center, reverse_overlap: false, start_angle: 0.0, end_angle: 360.0 }, source }
+        Self {
+            kind: RepeatKind::Radial { instances, radius: r, center, reverse_overlap: false, start_angle: 0.0, end_angle: 360.0 },
+            reference_bounds: Some(b),
+            source,
+        }
     }
     pub fn grid(source: Vec<Arc<Node>>, h_spacing: f64, v_spacing: f64) -> Self {
         Self {
             kind: RepeatKind::Grid { h_spacing, v_spacing, rows: 3, cols: 3, grid_type: TileType::Grid, flip_rows: false, flip_cols: false },
+            reference_bounds: crate::live::nodes_bounds(&source),
             source,
         }
     }
@@ -564,7 +580,7 @@ impl RepeatSpec {
     pub fn mirror(source: Vec<Arc<Node>>, angle: f64, offset: f64) -> Self {
         let b = crate::live::nodes_bounds(&source).unwrap_or(Rect::new(0.0, 0.0, 10.0, 10.0));
         let center = Point::new(b.x1 + offset, b.center().y);
-        Self { kind: RepeatKind::Mirror { angle, center }, source }
+        Self { kind: RepeatKind::Mirror { angle, center }, reference_bounds: Some(b), source }
     }
 }
 
@@ -685,6 +701,22 @@ mod tests {
         assert_eq!(def.preview_offsets().len(), 24);
         def.copies = 3;
         assert_eq!(def.preview_offsets().len(), 8);
+    }
+
+    #[test]
+    fn legacy_repeat_freezes_before_container_mutation_and_survives_json() {
+        let mut spec = RepeatSpec::grid(vec![sq(0.0, 0.0, 10.0)], 5.0, 2.0);
+        spec.reference_bounds = None;
+        let legacy = serde_json::to_value(&spec).unwrap();
+        assert!(legacy.get("reference_bounds").is_none());
+        let spec: RepeatSpec = serde_json::from_value(legacy).unwrap();
+        let before = spec.transforms();
+        let mut node = Node::new(NodeId(20), NodeKind::Repeat(spec));
+        node.children_mut().unwrap().push(sq(-100.0, -100.0, 300.0));
+        let NodeKind::Repeat(spec) = node.kind else { panic!() };
+        assert_eq!(spec.transforms(), before);
+        let back: RepeatSpec = serde_json::from_slice(&serde_json::to_vec(&spec).unwrap()).unwrap();
+        assert_eq!(back.transforms(), before);
     }
 
     #[test]

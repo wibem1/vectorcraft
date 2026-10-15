@@ -967,6 +967,14 @@ impl Renderer {
         if !a.visible || skipped_template || f.opts.hidden.contains(&a.id) {
             return true;
         }
+        // Source art can lie outside generated-instance bounds while editing a repeat.
+        if f.opts.isolated.is_some_and(|id| {
+            f.doc.ancestry(id).is_some_and(|path| {
+                path.contains(&a.id) && path.iter().any(|p| f.doc.node(*p).is_some_and(|n| matches!(n.kind, NodeKind::Repeat(_))))
+            })
+        }) {
+            return false;
+        }
         match self.bounds_of(f.symbols, a) {
             Some(b) => {
                 let pad = f.px * 2.0;
@@ -1066,6 +1074,10 @@ impl Renderer {
             };
             self.draw_text_geom(ctx, f, a, t, &g);
             self.stats.drawn += 1;
+            return;
+        }
+        if matches!(a.kind, NodeKind::Repeat(_)) && f.opts.isolated.is_some_and(|id| f.doc.ancestry(id).is_some_and(|path| path.contains(&a.id))) {
+            self.draw_layer_node(ctx, f, a);
             return;
         }
         if vectorcraft_doc::live::is_live(a) || effects::has_pathfinder(a) {
@@ -1268,6 +1280,10 @@ impl Renderer {
                     self.draw_node(ctx, f, &art, true);
                     self.made_again = outer;
                 }
+            }
+            NodeKind::Repeat(spec) if f.opts.isolated.is_some_and(|id| f.doc.ancestry(id).is_some_and(|path| path.contains(&n.id))) => {
+                self.dimmed(ctx, f, &mut |r, c, fr| r.draw_live_node(c, fr, n));
+                self.draw_children(ctx, f, &spec.source, knockout);
             }
             NodeKind::Blend { .. } | NodeKind::Envelope { .. } | NodeKind::Mesh(_) | NodeKind::Repeat(_) | NodeKind::PlacedDocument(_) => {
                 self.draw_live_node(ctx, f, n)

@@ -91,6 +91,15 @@ pub fn specs() -> Vec<CommandSpec> {
         ),
         // ---------- Repeat ----------
         cmd!(
+            "object.repeat.edit",
+            "Edit Repeat Contents",
+            ["Object", "Repeat"],
+            None,
+            "{id?} edit source paths and groups; newly drawn or pasted art joins the repeat; Esc exits",
+            has_doc,
+            repeat_edit
+        ),
+        cmd!(
             "object.repeat.radial",
             "Radial",
             ["Object", "Repeat"],
@@ -617,6 +626,14 @@ fn pattern_transform(s: &mut Session, p: &Value) -> Result<Value> {
 
 // ---------- Repeat ----------
 
+fn repeat_edit(s: &mut Session, p: &Value) -> Result<Value> {
+    let id = id_param(p, "id").or_else(|| selected_repeats(s).first().copied()).ok_or_else(|| bad("object.repeat.edit", "select a repeat"))?;
+    if !s.doc()?.doc.node(id).is_some_and(pattern::is_repeat) {
+        return Err(bad("object.repeat.edit", "target must be a repeat"));
+    }
+    s.execute("object.isolate", &json!({"id": id.0}))
+}
+
 /// Make a repeat from the selection, or switch the selected repeat's kind.
 fn make_repeat(s: &mut Session, p: &Value, label: &str, make: impl Fn(Vec<Arc<Node>>) -> RepeatSpec) -> Result<Value> {
     let existing = selected_repeats(s);
@@ -627,7 +644,7 @@ fn make_repeat(s: &mut Session, p: &Value, label: &str, make: impl Fn(Vec<Arc<No
         s.edit(label, |d, _| {
             let n = d.node_mut(r).ok_or(EngineError::NoNode(r))?;
             if let NodeKind::Repeat(spec) = &mut n.kind {
-                spec.kind = make(spec.source.clone()).kind;
+                *spec = make(spec.source.clone());
             }
             Ok(())
         })?;

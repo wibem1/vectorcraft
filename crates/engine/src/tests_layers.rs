@@ -907,7 +907,6 @@ fn layer_collect_and_flatten_keep_valid_and_omitted_target_behavior() {
     assert!(selected.iter().all(|id| parent(&s, *id) == Some(collected)));
 }
 
-
 #[test]
 fn artwork_can_be_added_to_a_live_radial_repeat() {
     let mut s = session();
@@ -936,11 +935,15 @@ fn a_live_repeat_accepts_copied_art_but_not_sublayers() {
     let seed = rect(&mut s, 20.0);
     let repeat = id(&run(&mut s, "object.repeat.radial", json!({"ids": [seed.0], "instances": 6})));
     let extra = rect(&mut s, 100.0);
-    let moved = ids(&run(&mut s, "layer.move", json!({
-        "ids": [extra.0], "target": repeat.0, "place": "inside", "copy": true
-    })));
+    let moved = ids(&run(
+        &mut s,
+        "layer.move",
+        json!({
+            "ids": [extra.0], "target": repeat.0, "place": "inside", "copy": true
+        }),
+    ));
     assert_eq!(moved.len(), 1);
-    assert_eq!(parent(&s, extra), s.doc().unwrap().doc.current_layer());
+    assert_eq!(parent(&s, extra), s.doc().unwrap().current_layer());
     assert_eq!(parent(&s, moved[0]), Some(repeat));
     assert_eq!(children(&s, repeat).len(), 2);
     let sub = id(&run(&mut s, "layer.newSublayer", json!({})));

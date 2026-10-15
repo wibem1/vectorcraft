@@ -388,3 +388,32 @@ fn isolation_mode_dims_the_art_around_the_isolated_group() {
     // An object that isn't in the document dims nothing.
     assert_eq!(isolated(NodeId(u64::MAX)).pixels, plain.pixels);
 }
+
+#[test]
+fn repeat_editing_shows_source_and_dimmed_generated_copies() {
+    let mut d = Document::new(100.0, 100.0);
+    let source = rect(&mut d, Rect::new(10.0, 10.0, 20.0, 20.0), [0.0; 3]);
+    let spec = vectorcraft_doc::RepeatSpec::mirror(vec![Arc::new(source)], 90.0, 25.0);
+    let repeat = Node::new(d.alloc_id(), NodeKind::Repeat(spec));
+    let id = repeat.id;
+    d.insert(Some(d.layers[0].id), usize::MAX, repeat).unwrap();
+    let image = render_with(&mut Renderer::new(), &d, &RenderOptions { isolated: Some(id), ..Default::default() });
+    let alpha = |x: usize, y: usize| image.pixels[(y * 100 + x) * 4 + 3];
+    assert_eq!(alpha(15, 15), 255);
+    assert!((120..=135).contains(&alpha(75, 15)));
+}
+
+#[test]
+fn repeat_source_editing_is_not_culled_by_generated_bounds() {
+    let mut d = Document::new(100.0, 100.0);
+    let source = rect(&mut d, Rect::new(10.0, 10.0, 20.0, 20.0), [0.0; 3]);
+    let mut spec = vectorcraft_doc::RepeatSpec::radial(vec![Arc::new(source)], 4, Some(50.0));
+    if let vectorcraft_doc::RepeatKind::Radial { center, .. } = &mut spec.kind {
+        *center = vectorcraft_geom::Point::new(1000.0, 1000.0);
+    }
+    let repeat = Node::new(d.alloc_id(), NodeKind::Repeat(spec));
+    let id = repeat.id;
+    d.insert(Some(d.layers[0].id), usize::MAX, repeat).unwrap();
+    let image = render_with(&mut Renderer::new(), &d, &RenderOptions { isolated: Some(id), ..Default::default() });
+    assert_eq!(image.pixels[(15 * 100 + 15) * 4 + 3], 255);
+}

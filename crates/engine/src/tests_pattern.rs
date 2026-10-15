@@ -530,3 +530,84 @@ fn repeat_commands_validate() {
     s.execute("select.none", &json!({})).ok();
     assert!(s.execute("object.pattern.make", &json!({})).is_err());
 }
+
+fn repeat_transforms(s: &Session, id: NodeId) -> Vec<vectorcraft_geom::Affine> {
+    let NodeKind::Repeat(spec) = &doc(s).node(id).unwrap().kind else { panic!("repeat expanded") };
+    spec.transforms()
+}
+
+#[test]
+fn repeat_container_editing_history_and_reopen_preserve_arrangement() {
+    for command in ["object.repeat.radial", "object.repeat.grid", "object.repeat.mirror"] {
+        let mut s = session();
+        let seed = rect(&mut s, 20.0, 20.0, 10.0, 10.0);
+        let repeat = id_of(&s.execute(command, &json!({"ids": [seed.0]})).unwrap());
+        let transforms = repeat_transforms(&s, repeat);
+        s.execute("object.repeat.edit", &json!({"id": repeat.0})).unwrap();
+        assert_eq!(s.doc().unwrap().insertion_parent(), Some(repeat));
+        let added = rect(&mut s, -100.0, -80.0, 250.0, 200.0);
+        assert_eq!(doc(&s).parent_of(added), Some(repeat));
+        assert_eq!(repeat_transforms(&s, repeat), transforms);
+        sel(&mut s, &[added]);
+        s.execute("object.move", &json!({"dx": 37, "dy": -29})).unwrap();
+        assert_eq!(repeat_transforms(&s, repeat), transforms);
+        s.execute("edit.copy", &json!({})).unwrap();
+        s.execute("edit.paste", &json!({})).unwrap();
+        let pasted = s.doc().unwrap().selection.objects[0];
+        assert_eq!(doc(&s).parent_of(pasted), Some(repeat));
+        sel(&mut s, &[added, pasted]);
+        s.execute("object.group", &json!({})).unwrap();
+        let group = s.doc().unwrap().selection.objects[0];
+        assert_eq!(doc(&s).parent_of(group), Some(repeat));
+        s.execute("layer.move", &json!({"ids": [group.0], "target": seed.0, "place": "below"})).unwrap();
+        assert_eq!(doc(&s).node(repeat).unwrap().children().unwrap()[0].id, group);
+        s.execute("edit.clear", &json!({"ids": [group.0]})).unwrap();
+        assert!(doc(&s).node(group).is_none());
+        assert_eq!(repeat_transforms(&s, repeat), transforms);
+        s.execute("edit.undo", &json!({})).unwrap();
+        assert!(doc(&s).node(group).is_some());
+        s.execute("edit.redo", &json!({})).unwrap();
+        assert!(doc(&s).node(group).is_none());
+        s.execute("edit.undo", &json!({})).unwrap();
+        let b64 = s.execute("document.serialize", &json!({"format": "vectorcraft"})).unwrap()["dataBase64"].as_str().unwrap().to_string();
+        s.execute("document.open", &json!({"name": "repeat.vectorcraft", "dataBase64": b64})).unwrap();
+        assert_eq!(repeat_transforms(&s, repeat), transforms);
+        assert_eq!(doc(&s).parent_of(group), Some(repeat));
+        s.execute("object.repeat.edit", &json!({"id": repeat.0})).unwrap();
+        let next = rect(&mut s, 300.0, 300.0, 20.0, 20.0);
+        assert_eq!(doc(&s).parent_of(next), Some(repeat));
+        assert_eq!(repeat_transforms(&s, repeat), transforms);
+        s.execute("object.exitIsolation", &json!({})).unwrap();
+        let outside = rect(&mut s, 350.0, 350.0, 10.0, 10.0);
+        assert_ne!(doc(&s).parent_of(outside), Some(repeat));
+    }
+}
+
+#[test]
+fn repeat_remains_editable_when_all_source_art_is_deleted() {
+    let mut s = session();
+    let seed = rect(&mut s, 20.0, 20.0, 10.0, 10.0);
+    let repeat = id_of(&s.execute("object.repeat.radial", &json!({"ids": [seed.0]})).unwrap());
+    let transforms = repeat_transforms(&s, repeat);
+    s.execute("object.repeat.edit", &json!({"id": repeat.0})).unwrap();
+    s.execute("edit.clear", &json!({"ids": [seed.0]})).unwrap();
+    assert!(doc(&s).node(repeat).is_some());
+    let added = rect(&mut s, 100.0, 100.0, 10.0, 10.0);
+    assert_eq!(doc(&s).parent_of(added), Some(repeat));
+    assert_eq!(repeat_transforms(&s, repeat), transforms);
+}
+
+#[test]
+fn double_click_repeat_enters_source_mode_and_source_hit_testing() {
+    use vectorcraft_tools::{PointerEvent, PointerKind};
+    let mut s = session();
+    let seed = rect(&mut s, 20.0, 20.0, 20.0, 20.0);
+    let repeat = id_of(&s.execute("object.repeat.radial", &json!({"ids": [seed.0]})).unwrap());
+    s.select_tool("selection", ViewInfo::default()).unwrap();
+    s.pointer(&PointerEvent::new(PointerKind::DoubleClick, 30.0, 30.0), ViewInfo::default()).unwrap();
+    assert_eq!(s.doc().unwrap().isolation, Some(repeat));
+    for kind in [PointerKind::Down, PointerKind::Up] {
+        s.pointer(&PointerEvent::new(kind, 30.0, 30.0), ViewInfo::default()).unwrap();
+    }
+    assert_eq!(s.doc().unwrap().selection.objects, vec![seed]);
+}

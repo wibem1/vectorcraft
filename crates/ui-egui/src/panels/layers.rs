@@ -558,7 +558,7 @@ fn resolve_click(ui: &Ui, view: &View, list: &[Row], out: &mut Out) {
 fn takes(n: &Node, drag: &LayersDrag, doc: &Document) -> bool {
     match n.kind {
         NodeKind::Layer { .. } => true,
-        NodeKind::Group { .. } => match drag {
+        NodeKind::Group { .. } | NodeKind::Repeat(_) => match drag {
             LayersDrag::Rows(ids) => !ids.iter().any(|i| doc.node(*i).is_some_and(Node::is_layer)),
             LayersDrag::Art => true,
             LayersDrag::Guides(_) => false,
@@ -1214,6 +1214,7 @@ pub fn menu(app: &mut VectorcraftApp, ui: &mut Ui) {
         [id] => doc.node(*id).is_some_and(|n| matches!(n.kind, NodeKind::Layer { .. } | NodeKind::Group { .. })),
         _ => false,
     };
+    let can_isolate = one_container || matches!(targets.as_slice(), [id] if doc.node(*id).is_some_and(|n| matches!(n.kind, NodeKind::Repeat(_))));
     let layers_in: Vec<&Node> = targets.iter().filter_map(|id| doc.node(*id)).filter(|n| n.is_layer()).collect();
     let template = layers_in.first().is_some_and(|l| l.is_template());
     // The top-level layers holding the rows, and the others.
@@ -1239,7 +1240,7 @@ pub fn menu(app: &mut VectorcraftApp, ui: &mut Ui) {
         Some(("Exit Isolation Mode", "object.exitIsolation", json!({}), true, false))
     } else {
         let id = targets.first().map(|i| i.0);
-        Some(("Enter Isolation Mode", "object.isolate", json!({ "id": id }), one_container, false))
+        Some(("Enter Isolation Mode", "object.isolate", json!({ "id": id }), can_isolate, false))
     });
     items.extend([
         None,
@@ -1326,6 +1327,20 @@ mod tests {
     use vectorcraft_engine::Session;
 
     use super::*;
+
+    #[test]
+    fn repeat_rows_accept_art_but_refuse_sublayers_and_guides() {
+        let mut session = Session::new();
+        session.execute("file.new", &json!({"width": 200, "height": 200})).unwrap();
+        let seed = session.execute("shape.rectangle", &json!({"x": 10, "y": 10, "width": 20, "height": 20})).unwrap()["id"].as_u64().unwrap();
+        let repeat = session.execute("object.repeat.radial", &json!({"ids": [seed]})).unwrap()["id"].as_u64().unwrap();
+        let doc = &session.active().unwrap().doc;
+        let node = doc.node(NodeId(repeat)).unwrap();
+        assert!(takes(node, &LayersDrag::Art, doc));
+        assert!(takes(node, &LayersDrag::Rows(vec![NodeId(seed)]), doc));
+        assert!(!takes(node, &LayersDrag::Rows(vec![doc.layers[0].id]), doc));
+        assert!(!takes(node, &LayersDrag::Guides(vec![0]), doc));
+    }
 
     /// Filled target circles drawn by one headless frame of the panel.
     fn filled_targets(app: &mut VectorcraftApp, ctx: &egui::Context) -> usize {

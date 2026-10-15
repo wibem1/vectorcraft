@@ -23,8 +23,9 @@ bounds before the source changes. Native save retains the reference.
 
 Regression coverage lives in engine pattern/layer tests, doc pattern tests,
 render isolation tests, native profile tests and Layers panel tests.
-The branch Windows workflow runs workspace quality gates, Windows tests, a
-release build, then starts the executable and exercises drawing, copying,
+The branch Windows workflow runs workspace quality gates, Windows tests, an
+optimized native test build (the project's development profile, with debug info
+disabled), then starts the executable and exercises drawing, copying,
 reordering, deleting, undo/redo, save/reopen and screenshots for all three kinds.
 Only successful runs upload a portable app. Failed runs retain diagnostic evidence.
 

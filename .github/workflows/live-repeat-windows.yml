@@ -40,7 +40,9 @@ jobs:
         run: cargo xtask ci
   windows:
     runs-on: windows-latest
-    timeout-minutes: 90
+    timeout-minutes: 180
+    env:
+      CARGO_BUILD_JOBS: 2
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - uses: dtolnay/rust-toolchain@686976e191b89faba57d3206551f0f330d8cb249
@@ -49,25 +51,27 @@ jobs:
       - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
         with:
           key: live-repeat-windows
+          cache-on-failure: true
+          cache-workspace-crates: true
       - name: Set distinct test version
         run: cargo xtask version set "$env:VECTORCRAFT_VERSION"
+      - name: Build portable test app
+        run: |
+          cargo build --locked -p vectorcraft
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          New-Item -ItemType Directory -Path dist/LiveRepeat -Force | Out-Null
+          Copy-Item target/debug/vectorcraft.exe dist/LiveRepeat/VectorCraft-LiveRepeat.exe
+          Copy-Item packaging/windows/live-repeat/* dist/LiveRepeat/
+          Copy-Item LICENSE-MIT, LICENSE-APACHE, NOTICE dist/LiveRepeat/
+          "Version: $env:VECTORCRAFT_VERSION`nProfile: optimized test app (workspace opt-level 1, dependencies opt-level 2, debug info off)`nCommit: $env:GITHUB_SHA`nBuild: $(Get-Date -Format o)" | Set-Content dist/LiveRepeat/BUILD.txt
+      - name: Native startup and repeat smoke test
+        run: ./packaging/windows/live-repeat/Smoke.ps1 -Exe "$PWD/dist/LiveRepeat/VectorCraft-LiveRepeat.exe" -Output "$PWD/dist/smoke"
       - name: Windows engine and native tests
         env:
           RUST_MIN_STACK: 33554432
         run: |
           cargo test --locked -p vectorcraft-engine -p vectorcraft-ui-egui -p vectorcraft
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      - name: Build portable test app
-        run: |
-          cargo build --release --locked -p vectorcraft
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          New-Item -ItemType Directory -Path dist/LiveRepeat -Force | Out-Null
-          Copy-Item target/release/vectorcraft.exe dist/LiveRepeat/VectorCraft-LiveRepeat.exe
-          Copy-Item packaging/windows/live-repeat/* dist/LiveRepeat/
-          Copy-Item LICENSE-MIT, LICENSE-APACHE, NOTICE dist/LiveRepeat/
-          "Version: $env:VECTORCRAFT_VERSION`nCommit: $env:GITHUB_SHA`nBuild: $(Get-Date -Format o)" | Set-Content dist/LiveRepeat/BUILD.txt
-      - name: Native startup and repeat smoke test
-        run: ./packaging/windows/live-repeat/Smoke.ps1 -Exe "$PWD/dist/LiveRepeat/VectorCraft-LiveRepeat.exe" -Output "$PWD/dist/smoke"
       - name: Package verified build
         run: |
           Remove-Item dist/LiveRepeat/Smoke.ps1

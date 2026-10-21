@@ -40,3 +40,12 @@ Application source `1df86ea1`: [Windows and macOS native integration PASS](https
 [Windows/macOS initial App layout PASS](https://github.com/wibem1/vectorcraft/actions/runs/39677833630): unobscured screenshots visually inspected with the production theme; key masked and main controls visible. These separate initial-state snapshots make no engine/provider calls. Combined native-flow captures are partly obscured by the native window. Positive provider completions in native tests are local HTTP fixtures; [live probe](https://github.com/wibem1/vectorcraft/actions/runs/39673176326) reports NOT_CONFIGURED because the repository has no test key. This is not a paid live completion success.
 
 Test hosts: Windows Server 2025 x64 with DX12 software rendering, macOS 15.7.9 Intel with Metal, Linux/Xvfb with OpenGL/Vulkan. Installable Chat packages, positive live completion, general constructions and a provider-enforced EUR cap remain open. The current macOS GUI package ships its CLI separately; install both for source use. See [platform log](docs/PLATFORMS-2026-10-21.md) and [complete evidence](docs/test-results/2026-10-21-native-platforms.json). No release; version remains 0.3.1-dev.
+
+## Standalone candidate builds in progress
+
+The [frozen package workflow](../../.github/workflows/vectorcraft-chat-packages.yml)
+bundles Python/Tk, Chat, the actual native engine and its CLI on Windows x64 and
+macOS Intel. Candidates must pass the real native suite from their own frozen
+process, automatic binary discovery, actual public OpenRouter HTTPS and HTTP 401
+before ZIP upload. No release or general installation approval is implied.
+Current build results and limitations: [package log](docs/PACKAGES-2026-10-21.md).

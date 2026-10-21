@@ -1,0 +1,20 @@
+name: AI cost audit tests
+on:
+  push:
+    branches: [feature/cost-aware-ai-integration]
+  pull_request:
+    paths:
+      - 'Tools/cost_audit.py'
+      - 'Tools/test_cost_audit.py'
+      - 'docs/AI-COST-ARCHITECTURE.md'
+      - '.github/workflows/ai-cost-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test offline diagnostic cost calculations
+        run: python3 -m unittest discover -s Tools -p 'test_cost_audit.py' -v

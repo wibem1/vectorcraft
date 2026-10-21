@@ -39,6 +39,17 @@ def probe(port, timeout=1.0):
         sock = socket.create_connection(('127.0.0.1', port), timeout=timeout)
     except ConnectionRefusedError:
         return None
+    except TimeoutError as exc:
+        # Windows may time out instead of returning ECONNREFUSED on an unused loopback port.
+        # A successful exclusive bind confirms absence; an occupied/filtered port stays an error.
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as check:
+                if hasattr(socket, 'SO_EXCLUSIVEADDRUSE'):
+                    check.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+                check.bind(('127.0.0.1', port))
+        except OSError:
+            raise ConnectionFailure(f'Port {port} ist belegt oder blockiert; keine bestätigte VectorCraft-Verbindung. Kein zweiter Prozess gestartet.') from exc
+        return None
     except OSError as exc:
         if exc.errno in (errno.ECONNREFUSED, 10061):
             return None

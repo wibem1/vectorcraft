@@ -112,3 +112,18 @@ class StartupReadinessTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory,patch.object(conn,'probe',side_effect=[None,None,conn.ConnectionFailure('not ready'),CATALOG]),patch.object(conn,'find_application',return_value=Path('vectorcraft')),patch.object(conn.subprocess,'Popen',return_value=process) as launch,patch.object(conn.time,'sleep'):
             self.assertTrue(conn.ensure_connection(7979,directory)['started'])
             self.assertEqual(launch.call_count,1)
+
+
+class WindowsConnectTimeoutTests(unittest.TestCase):
+    def test_connect_timeout_requires_confirmed_free_port(self):
+        with socket.socket() as sock:
+            sock.bind(('127.0.0.1',0));port=sock.getsockname()[1]
+        with patch.object(conn.socket,'create_connection',side_effect=TimeoutError('Windows loopback timeout')):
+            self.assertIsNone(conn.probe(port))
+    def test_connect_timeout_with_bound_port_never_launches(self):
+        with socket.socket() as listener,tempfile.TemporaryDirectory() as directory:
+            listener.bind(('127.0.0.1',0));listener.listen(1);port=listener.getsockname()[1]
+            with patch.object(conn.socket,'create_connection',side_effect=TimeoutError('filtered')),patch.object(conn.subprocess,'Popen') as launch:
+                with self.assertRaisesRegex(conn.ConnectionFailure,'belegt oder blockiert'):
+                    conn.ensure_connection(port,directory)
+                launch.assert_not_called()

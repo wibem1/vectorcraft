@@ -38,6 +38,18 @@ jobs:
           PYTHONPATH: vectorcraft-chat
           VC_CHAT_REAL_CLI: target/release/vectorcraft-cli
         run: xvfb-run -a python -m unittest discover -s vectorcraft-chat/tests -p test_ui_real_engine.py -v
+      - name: GPU and renderer environment diagnostics
+        if: always()
+        continue-on-error: true
+        run: |
+          echo "DISPLAY=${DISPLAY:-unset}"
+          echo "Available Vulkan drivers:"
+          ls -l /usr/share/vulkan/icd.d/ || true
+          echo "GL library:"
+          ldconfig -p | grep -E 'lib(EGL|GLX|vulkan)\\.so' || true
+          echo "Native executable dependencies:"
+          ldd target/release/vectorcraft || true
+          echo "Native launch diagnostics will retain stderr in uploaded artifacts."
       - name: Native renderer diagnostic (OpenGL via software Mesa)
         if: always()
         continue-on-error: true
@@ -47,6 +59,8 @@ jobs:
           VC_CHAT_NATIVE_APP: target/release/vectorcraft
           LIBGL_ALWAYS_SOFTWARE: '1'
           WGPU_BACKEND: gl
+          RUST_BACKTRACE: '1'
+          RUST_LOG: info
         run: xvfb-run -a python -m unittest discover -s vectorcraft-chat/tests -p test_native_startup.py -v
       - name: Chat starts actual native VectorCraft and edits through real TCP/MCP
         timeout-minutes: 4
@@ -55,6 +69,8 @@ jobs:
           VC_CHAT_NATIVE_APP: target/release/vectorcraft
           LIBGL_ALWAYS_SOFTWARE: '1'
           WGPU_BACKEND: vulkan
+          RUST_BACKTRACE: '1'
+          RUST_LOG: info
         run: xvfb-run -a python -m unittest discover -s vectorcraft-chat/tests -p test_native_startup.py -v
       - name: Preserve real engine evidence
         if: always()

@@ -38,3 +38,7 @@ Die GitHub-Connector-Abfrage lieferte für den Workflow-Einrichtungscommit keine
 - Der direkte Abruf der GitHub-Actions-API war in dieser Ausführungsumgebung nicht erreichbar; eine Workflow-Dispatch-Aktion ist durch die verbundene GitHub-Schnittstelle nicht verfügbar.
 - Der MCP-Smoke-Test wurde deshalb auf ungepufferte Binär-Pipe-Lesevorgänge mit eigenem Zeilenpuffer umgestellt, da `select` mit `TextIOWrapper.readline` ansonsten falsche Timeouts produzieren kann. Commit `e5e1ed7`.
 - **Ergebnis:** Kein echter Engine-Lauf verifiziert. Der Workflow wird durch Änderungen am Testskript erneut für Push-Ereignisse angefordert, aber ein erfolgreicher Lauf ist nicht belegt. Keine neue App-Freigabe.
+
+## Nächste Korrektur (21.10.2026)
+
+Der Smoke-Test startet nun selbst ein frisches Dokument mit `run_command file.new {}` **vor** der ersten Dokumentinspektion (Commit `67fd4f9`). Damit wird nicht länger stillschweigend vorausgesetzt, dass Headless beim Start ein Dokument geöffnet hat. Der Workflow wird durch den Testdatei-Commit erneut für Push-Ereignisse angesprochen. Ein tatsächliches erfolgreiches Actions-Ergebnis wurde weiterhin nicht beobachtet.

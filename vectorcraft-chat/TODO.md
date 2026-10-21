@@ -231,3 +231,11 @@ Archive wird deshalb direkt in Actions ausgeführt. Der Audit prüft gefrorene
 Berichte, echte native Identität/30°, OS-Schlüsseltest, echte öffentliche HTTPS-
 Prüfungen ohne gültigen Key, alle Binary-SHA256, macOS-Ausführungsrechte und
 Lizenzhinweise. Keine neue Version oder Veröffentlichung.
+
+
+Archiv-Audit 39687971880 / 119526766785 tatsächlich SUCCESS: beide Paketarchive
+heruntergeladen, alle drei Binary-Hashes gegen Testmanifest bestätigt; Mac-
+Ausführungsrechte und Lizenzhinweise vorhanden. Gefrorene native Tests,
+Pfaderkennung, 468 echte öffentliche Modelle und HTTP 401 auf beiden Plattformen
+PASS. Audit gibt ergänzend die vollständigen gefrorenen Selbsttest-Logs aus,
+damit diese trotz ausgefallener lokaler Umgebung direkt gelesen werden können.

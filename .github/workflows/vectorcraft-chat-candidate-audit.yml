@@ -49,6 +49,9 @@ jobs:
                           assert (info.external_attr >> 16) & 0o111, name
                   for name in ('LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'CANDIDATE.md'):
                       assert documents+name in package.namelist(), name
+              print('BEGIN_FROZEN_TEST_LOG '+platform)
+              print((evidence/'packaged-check.log').read_text())
+              print('END_FROZEN_TEST_LOG '+platform)
               report['platforms'][platform] = {'status': 'PASS', 'uploaded_binaries_match_test_manifest': True, 'license_notices_present': True, 'executable_modes_checked': mac, 'candidate_inner_zip_sha256': hashlib.sha256(archive.read_bytes()).hexdigest(), 'reports': reports}
           pathlib.Path('candidate-audit.json').write_text(json.dumps(report, indent=2))
           print('BEGIN_VECTORCRAFT_PACKAGE_AUDIT_JSON')

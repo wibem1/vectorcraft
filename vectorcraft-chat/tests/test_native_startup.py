@@ -81,3 +81,7 @@ class NativeStartupTests(unittest.TestCase):
                         process.terminate()
                         try:process.wait(timeout=10)
                         except subprocess.TimeoutExpired:process.kill();process.wait(timeout=5)
+                log=base/'vectorcraft-start.log'
+                if log.exists():
+                    Path('native-startup.log').write_bytes(log.read_bytes())
+                    print('NATIVE STARTUP STDERR:\n'+connection.log_tail(log,12000),flush=True)

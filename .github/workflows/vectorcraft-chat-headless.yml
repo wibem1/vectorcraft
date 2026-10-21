@@ -16,6 +16,8 @@ jobs:
         with:
           toolchain: '1.95.0'
       - uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
       - name: Native GUI dependencies and virtual display
         run: |
           sudo apt-get update
@@ -54,4 +56,5 @@ jobs:
             headless-triangle.png
             native-startup-report.json
             native-chat.png
+            native-startup.log
           if-no-files-found: warn

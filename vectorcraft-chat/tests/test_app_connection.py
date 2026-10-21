@@ -149,3 +149,13 @@ class DocumentReadinessTests(unittest.TestCase):
         with patch.object(app,'control',return_value={}) as control:
             with self.assertRaises(ConnectionError):app.ensure_document(7979)
             self.assertEqual(control.call_count,1)
+
+
+class StartupDiagnosticTests(unittest.TestCase):
+    def test_failed_child_reports_actual_stderr(self):
+        process=Mock(returncode=1);process.poll.return_value=1
+        with tempfile.TemporaryDirectory() as directory:
+            Path(directory,'vectorcraft-start.log').write_text('specific native initialization failure')
+            with patch.object(conn,'probe',return_value=None),patch.object(conn,'find_application',return_value=Path('vectorcraft')),patch.object(conn.subprocess,'Popen',return_value=process):
+                with self.assertRaisesRegex(conn.ConnectionFailure,'specific native initialization failure'):
+                    conn.ensure_connection(7979,directory)

@@ -155,6 +155,16 @@ def startup_lock(path, deadline):
                     fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
 
 
+def log_tail(path, maximum=1800):
+    try:
+        with Path(path).open('rb') as stream:
+            stream.seek(0,os.SEEK_END)
+            stream.seek(max(0,stream.tell()-maximum))
+            return stream.read(maximum).decode('utf8','replace').strip()
+    except OSError:
+        return ''
+
+
 def ensure_connection(port, app_dir, saved_path=None, timeout=40):
     """Reuse a verified native app, or launch once and wait for a verified response."""
     catalog = probe(port)
@@ -189,7 +199,7 @@ def ensure_connection(port, app_dir, saved_path=None, timeout=40):
             if catalog is not None:
                 return {'catalog': catalog, 'started': True, 'path': str(executable), 'process': process}
             if process.poll() is not None:
-                raise ConnectionFailure(f'VectorCraft wurde beim Start beendet (Code {process.returncode}). Details: {log_path}')
+                raise ConnectionFailure(f'VectorCraft wurde beim Start beendet (Code {process.returncode}). {log_tail(log_path)} Details: {log_path}')
             time.sleep(0.2)
         # Do not kill a native app: it may still be opening or holding a document.
         raise ConnectionFailure(f'VectorCraft antwortet nach {timeout:g} Sekunden nicht. Bitte erneut verbinden; Details: {log_path}')

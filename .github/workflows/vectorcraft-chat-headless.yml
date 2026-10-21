@@ -1,0 +1,25 @@
+name: VectorCraft Chat real headless engine
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'vectorcraft-chat/tests/smoke_headless.py'
+      - '.github/workflows/vectorcraft-chat-headless.yml'
+jobs:
+  headless:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: '1.95.0'
+      - uses: Swatinem/rust-cache@v2
+      - name: Compile actual VectorCraft MCP CLI
+        run: cargo build --locked --release -p vectorcraft-cli
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Triangle -> select object -> rotate on real engine
+        timeout-minutes: 3
+        run: python vectorcraft-chat/tests/smoke_headless.py target/release/vectorcraft-cli

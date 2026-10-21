@@ -508,11 +508,13 @@ class App:
             try:
                 event('vectorcraft','document.inspect started')
                 doc=control('document.inspect',{'depth':1,'childLimit':10},port)
+                if not isinstance(doc,dict):raise ValueError('Kein bestätigtes VectorCraft-Dokument')
                 catalog=control('engine.commands',{},port)
                 items=catalog.get('commands',[]) if isinstance(catalog,dict) else catalog
                 if isinstance(items,dict):items=[dict(v,id=k) for k,v in items.items() if isinstance(v,dict)]
                 if not isinstance(items,list):items=[]
                 self.command_ids=self.extract_ids(catalog)
+                if not self.command_ids:raise ValueError('Kein bestätigter VectorCraft-Befehlskatalog')
                 relevant=select_commands(items,prompt)
                 event('catalog',f'total={len(items)},selected={len(relevant)},ids={",".join(str(x.get("id")) for x in relevant[:12])}')
                 target_context=''
@@ -520,12 +522,10 @@ class App:
                     target=control('engine.execute',{'command':'document.node','params':{'id':self.last_triangle_id,'summary':True}},port)
                     target_context='Zuletzt erzeugtes Dreieck (frisch geprüft): '+json.dumps(target,ensure_ascii=False)+'\n'
                 context=target_context+'Dokument (gekürzt): '+json.dumps(doc,ensure_ascii=False)[:2500]+'\nVerfügbare Befehle (exakte IDs/Parameter): '+json.dumps(relevant,ensure_ascii=False)[:11000]
-            except OSError as e:
-                self.command_ids=set()
-                raise ConnectionError('VectorCraft-Verbindung unterbrochen; keine kostenpflichtige Modellanfrage gesendet.') from e
             except Exception as e:
                 self.command_ids=set()
-                event('vectorcraft_error',type(e).__name__+': '+str(e)[:300]);context='KEINE Verbindung zu VectorCraft. Keine ausführbaren Aktionen anbieten. Fehler: '+str(e)[:350]
+                event('vectorcraft_error',type(e).__name__+': '+safe_error(e)[:300])
+                raise ConnectionError('VectorCraft-Dokument oder Befehle nicht bestätigt; keine kostenpflichtige Modellanfrage gesendet. '+safe_error(e)) from e
             history=self.messages[-8:]
             msgs=[{'role':'system','content':SYSTEM+'\n'+context}]+history
             event('api_request',f'model={chosen_model}, messages={len(msgs)}, context_chars={len(context)}')

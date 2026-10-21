@@ -115,3 +115,30 @@ class InputAndLedgerTests(unittest.TestCase):
                 with self.assertRaises((ValueError,KeyError)):app.stored_spend()
             app.COSTS.write_text('{"spent_usd":0.031}')
             self.assertEqual(app.stored_spend(),0.031)
+
+
+class DisconnectedProviderGuardTests(unittest.TestCase):
+    def test_context_failures_abort_before_provider_or_cost_reservation(self):
+        from types import SimpleNamespace
+        from unittest.mock import Mock
+        # Exercise App.send's actual worker without requiring a graphical display.
+        for failure in (RuntimeError('protocol rejected'), ValueError('invalid reply'), OSError('closed'), None, {}):
+            with self.subTest(failure=repr(failure)):
+                gui=app.App.__new__(app.App)
+                variable=lambda value:SimpleNamespace(get=lambda:value)
+                gui.entry=SimpleNamespace(get=lambda *a:'Verschiebe das Objekt etwas',delete=Mock())
+                gui.key=variable('dummy-test-key');gui.port=variable('7979');gui.budget=variable('0.1');gui.model=variable('chosen/model')
+                gui.connected=True;gui.connected_port=7979;gui.busy=False;gui.cost_error=''
+                gui.session_spend_usd=0;gui.settings={};gui.messages=[];gui.last_triangle_id=None
+                gui.command_ids={'object.move'};gui.exec_button=SimpleNamespace(config=Mock())
+                gui.write=Mock();gui.save_settings=Mock()
+                jobs=[];gui.task=jobs.append
+                control=Mock(side_effect=failure) if isinstance(failure,Exception) else Mock(return_value=failure)
+                with patch.object(app,'control',control),patch.object(app,'save_json') as save,patch.object(app,'model_catalog') as catalog,patch.object(app,'api_chat') as http:
+                    gui.send();self.assertEqual(len(jobs),1)
+                    with self.assertRaisesRegex(ConnectionError,'keine kostenpflichtige'):
+                        jobs[0]()
+                    http.assert_not_called();catalog.assert_not_called()
+                    self.assertEqual(gui.session_spend_usd,0)
+                    self.assertEqual(gui.command_ids,set())
+                    self.assertTrue(all(call.args[0]!=app.COSTS for call in save.call_args_list))

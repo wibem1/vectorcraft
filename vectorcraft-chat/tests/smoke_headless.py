@@ -54,6 +54,19 @@ def main(binary):
         points = [[x+1, y+2] for x, y in points]
         check_bounds(actual, points)
         report['steps'].append({'command': 'reselect and move', 'verified_node': actual})
+        # Simulate edits between chat turns and another selected object. Preserve both.
+        other = create_triangle(client, dict(points=[[20,20],[40,20],[30,35]], closed=True))
+        other_before = node(client, other)
+        command(client, 'select.set', {'ids': [target]})
+        command(client, 'object.move', {'dx': 3, 'dy': 7})
+        points = [[x+3,y+7] for x,y in points]
+        command(client, 'select.set', {'ids': [other]})
+        actual = transform_object(client, target, 'object.move', {'dx': -2, 'dy': 4})
+        points = [[x-2,y+4] for x,y in points]
+        check_bounds(actual, points)
+        if node(client, other) != other_before:
+            raise AssertionError('Unrelated object was modified')
+        report['steps'].append({'command':'preserve intervening edit and unrelated selected object','verified_node':actual,'unrelated_id':other})
         doc = decode(client.tool('inspect_document', {'depth': 64}))
         if target not in object_ids(doc):
             raise AssertionError('Object identity lost')

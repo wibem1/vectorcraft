@@ -100,3 +100,18 @@ class LivePublicOpenRouterTests(unittest.TestCase):
     def test_real_unauthorized_response(self):
         with self.assertRaisesRegex(RuntimeError,'HTTP 401'):
             app.api_chat('invalid-vectorcraft-ci-key','nonexistent/model',[{'role':'user','content':'test'}],1)
+
+
+class InputAndLedgerTests(unittest.TestCase):
+    def test_invalid_options(self):
+        for port,budget in [('abc','0.1'),('0','0.1'),('65536','0.1'),('7979','nan'),('7979','inf'),('7979','-1')]:
+            with self.assertRaises(ValueError):app.validated_options(port,budget)
+        self.assertEqual(app.validated_options('7979','0,10'),(7979,0.1))
+    def test_broken_ledger_never_resets_costs(self):
+        with tempfile.TemporaryDirectory() as d,patch.object(app,'COSTS',Path(d)/'costs.json'):
+            self.assertEqual(app.stored_spend(),0)
+            for content in ('broken','{}','{"spent_usd":"nan"}'):
+                app.COSTS.write_text(content)
+                with self.assertRaises((ValueError,KeyError)):app.stored_spend()
+            app.COSTS.write_text('{"spent_usd":0.031}')
+            self.assertEqual(app.stored_spend(),0.031)

@@ -287,11 +287,26 @@ def select_commands(items,request,limit=22):
     scored.sort(key=lambda x:(-x[0],x[1]))
     return [x[2] for x in scored[:limit]]
 
+def validated_options(port, budget):
+    number=int(port)
+    amount=money(str(budget).replace(',','.'))
+    if not 1 <= number <= 65535 or amount<=0:
+        raise ValueError('Port 1–65535 und positives endliches Budget erforderlich')
+    return number,float(amount)
+
+def stored_spend():
+    if not COSTS.exists():return 0.0
+    # A broken ledger must not silently reset the spending counter.
+    value=json.loads(COSTS.read_text(encoding='utf8'))
+    return float(money(value['spent_usd']))
+
 class App:
     def __init__(self,root):
         self.root=root; root.title('VectorCraft Chat '+APP_VERSION); root.geometry('540x490');root.minsize(420,360)
         self.settings=read_json(SETTINGS,{'model':'google/gemini-2.5-flash','port':7979,'max_eur':0.10,'usd_to_eur':0.92});self.messages=read_json(HISTORY,[])
-        self.pending=[];self.last_triangle_id=None;self.command_ids=set();self.busy=False;self.q=queue.Queue();self.session_spend_usd=float(money(read_json(COSTS,{}).get('spent_usd',0)))
+        self.pending=[];self.last_triangle_id=None;self.command_ids=set();self.busy=False;self.q=queue.Queue();self.session_spend_usd=0.0;self.cost_error=''
+        try:self.session_spend_usd=stored_spend()
+        except (OSError,ValueError,TypeError,KeyError):self.cost_error='Kostenprotokoll unlesbar; bezahlte Anfragen sind gesperrt. Diagnose speichern.'
         self.model=tk.StringVar(value=self.settings.get('model',''))
         self.port=tk.StringVar(value=str(self.settings.get('port',7979)))
         self.key=tk.StringVar(value=os.getenv('OPENROUTER_API_KEY') or load_secret())
@@ -371,7 +386,7 @@ class App:
     def export_diagnostic(self):
         path=filedialog.asksaveasfilename(title='Diagnose speichern',defaultextension='.json',filetypes=[('JSON-Diagnose','*.json')],initialfile='VectorCraft-Chat-Diagnose-'+datetime.now().strftime('%Y%m%d-%H%M%S')+'.json')
         if not path:return
-        doc={'app_version':APP_VERSION,'timestamp':datetime.now().astimezone().isoformat(),'platform':sys.platform,'python':sys.version.split()[0], 'settings':{'model':self.model.get(),'port':self.port.get(),'max_eur':self.budget.get(),'key_present':bool(self.key.get().strip()),'key_saved':bool(load_secret())},'connection_command_count':len(self.command_ids),'models_loaded':len(self.models),'last_error':self.last_error,'events':DIAG_EVENTS[-100:],'usage':self.total_usage[-30:],'pending_action_count':len(self.pending),'accounted_cost_usd':self.session_spend_usd,'cost_policy':'conservative estimate; unresolved usage retains reservation; no provider-enforced EUR cap','history_messages':len(self.messages),'notes':'Keine API-Keys, keine Prompt-Texte und keine Dokumentinhalte gespeichert. Keine automatische Übertragung.'}
+        doc={'app_version':APP_VERSION,'timestamp':datetime.now().astimezone().isoformat(),'platform':sys.platform,'python':sys.version.split()[0], 'settings':{'model':self.model.get(),'port':self.port.get(),'max_eur':self.budget.get(),'key_present':bool(self.key.get().strip()),'key_saved':bool(load_secret())},'connection_command_count':len(self.command_ids),'models_loaded':len(self.models),'last_error':self.last_error,'events':DIAG_EVENTS[-100:],'usage':self.total_usage[-30:],'pending_action_count':len(self.pending),'accounted_cost_usd':self.session_spend_usd,'cost_error':self.cost_error,'cost_policy':'conservative estimate; unresolved usage retains reservation; no provider-enforced EUR cap','history_messages':len(self.messages),'notes':'Keine API-Keys, keine Prompt-Texte und keine Dokumentinhalte gespeichert. Keine automatische Übertragung.'}
         Path(path).write_text(json.dumps(doc,ensure_ascii=False,indent=2),encoding='utf8')
         self.status.set('Diagnose gespeichert: '+Path(path).name)
     def inspect(self):
@@ -400,11 +415,12 @@ class App:
         if not key and not (detect_triangle(prompt) or rotate_request_degrees(prompt) is not None):messagebox.showwarning('API-Key','Bitte OpenRouter API-Key eintragen.');return
         if self.busy:return
         try:
-            budget=float(self.budget.get().replace(',','.'))
-            if budget<=0:raise ValueError('positives Budget erforderlich')
+            validated_port,budget=validated_options(self.port.get(),self.budget.get())
         except ValueError:
-            messagebox.showerror('Budget','Bitte ein positives Kostenbudget eingeben.');return
+            messagebox.showerror('Einstellungen','Bitte Port 1–65535 und ein positives endliches Kostenbudget eingeben.');return
         local_request=detect_triangle(prompt) or rotate_request_degrees(prompt) is not None
+        if not local_request and self.cost_error:
+            self.write('system',self.cost_error);return
         if not local_request and self.session_spend_usd*float(self.settings.get('usd_to_eur',0.92)) >= budget:
             messagebox.showwarning('Kosten','Die bisherigen Sitzungskosten erreichen das eingestellte Budget. Für weitere API-Anfragen bitte neues Budget festlegen.');return
         self.pending=[];self.exec_button.config(state='disabled')
@@ -451,6 +467,7 @@ class App:
                     target_context='Zuletzt erzeugtes Dreieck (frisch geprüft): '+json.dumps(target,ensure_ascii=False)+'\n'
                 context=target_context+'Dokument (gekürzt): '+json.dumps(doc,ensure_ascii=False)[:2500]+'\nVerfügbare Befehle (exakte IDs/Parameter): '+json.dumps(relevant,ensure_ascii=False)[:11000]
             except Exception as e:
+                self.command_ids=set()
                 event('vectorcraft_error',type(e).__name__+': '+str(e)[:300]);context='KEINE Verbindung zu VectorCraft. Keine ausführbaren Aktionen anbieten. Fehler: '+str(e)[:350]
             history=self.messages[-8:]
             msgs=[{'role':'system','content':SYSTEM+'\n'+context}]+history
@@ -525,7 +542,7 @@ class App:
         if not messagebox.askyesno('Neuer Chat','Gesprächsverlauf zurücksetzen?'):return
         self.messages=[];self.pending=[];self.last_triangle_id=None;save_json(HISTORY,[]);self.chat.configure(state='normal');self.chat.delete('1.0','end');self.chat.configure(state='disabled')
     def save_settings(self):
-        try:port=int(self.port.get());budget=float(self.budget.get().replace(',','.'))
+        try:port,budget=validated_options(self.port.get(),self.budget.get())
         except ValueError:return
         self.settings.update({'model':self.model.get(),'port':port,'max_eur':budget});save_json(SETTINGS,self.settings)
     def close(self):self.save_settings();self.root.destroy()

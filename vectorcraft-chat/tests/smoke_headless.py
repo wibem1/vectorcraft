@@ -14,26 +14,34 @@ import time
 class MCP:
     def __init__(self, binary):
         self.proc = subprocess.Popen([binary, "mcp", "--headless"], stdin=subprocess.PIPE,
-                                     stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
-                                     text=True, bufsize=1)
+                                     stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                     bufsize=0)
         self.serial = 0
+        self.incoming = bytearray()
     def call(self, method, params, timeout=45):
         self.serial += 1
         ident = self.serial
         payload = {"jsonrpc":"2.0","id":ident,"method":method,"params":params}
-        self.proc.stdin.write(json.dumps(payload)+"\n")
+        self.proc.stdin.write((json.dumps(payload)+"\n").encode("utf-8"))
         self.proc.stdin.flush()
         until = time.monotonic()+timeout
         while True:
             remaining = until-time.monotonic()
             if remaining <= 0:
                 raise RuntimeError("MCP timeout at "+method)
-            ready, _, _ = select.select([self.proc.stdout],[],[],remaining)
-            if not ready:
-                raise RuntimeError("MCP timeout at "+method)
-            line = self.proc.stdout.readline()
-            if not line:
-                raise RuntimeError("MCP process exited unexpectedly")
+            while b"\n" not in self.incoming:
+                ready, _, _ = select.select([self.proc.stdout],[],[],remaining)
+                if not ready:
+                    raise RuntimeError("MCP timeout at "+method)
+                chunk = os.read(self.proc.stdout.fileno(),65536)
+                if not chunk:
+                    raise RuntimeError("MCP process exited unexpectedly")
+                self.incoming.extend(chunk)
+                remaining = until-time.monotonic()
+                if remaining <= 0:
+                    raise RuntimeError("MCP timeout at "+method)
+            line, _, rest = self.incoming.partition(b"\n")
+            self.incoming = bytearray(rest)
             response = json.loads(line)
             if response.get("id") != ident:
                 if "id" not in response:  # notifications
@@ -91,7 +99,7 @@ def main(binary):
     try:
         m.call("initialize",{"protocolVersion":"2025-06-18",
                              "capabilities":{},"clientInfo":{"name":"vc-chat-ci","version":"0.1"}})
-        m.proc.stdin.write(json.dumps({"jsonrpc":"2.0","method":"notifications/initialized"})+"\n")
+        m.proc.stdin.write((json.dumps({"jsonrpc":"2.0","method":"notifications/initialized"})+"\n").encode("utf-8"))
         m.proc.stdin.flush()
         before=m.tool("inspect_document",{"depth":5})
         print("Initial inspection OK",flush=True)

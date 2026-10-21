@@ -1,0 +1,79 @@
+{
+  "tested_commit": "c97651bb02c67c842031e93df04327c089daa36a",
+  "native_run": 39663769616,
+  "native_job": 119443285040,
+  "native_run_conclusion": "success",
+  "tested_renderers": [
+    "OpenGL software Mesa",
+    "Vulkan software Mesa"
+  ],
+  "platform_run": 39663769551,
+  "platform_conclusions": {
+    "linux": "success",
+    "windows": "success",
+    "macos": "success"
+  },
+  "tests_discovered_per_platform": 62,
+  "regression_skips": {
+    "linux": 4,
+    "windows": 4,
+    "macos": 5
+  },
+  "linux_live_provider_tests": 16,
+  "artifact_id": 12377513103,
+  "artifact_sha256": "9dc78829166e84425518a33c26df2506ab62eaa25b40ae5d36032e58da1dce8c",
+  "native_report": {
+    "status": "PASS",
+    "transport": "actual native TCP and CLI MCP --connect",
+    "provider": "local HTTP fixture using actual OpenRouter request/response code; no paid live completion",
+    "native_launches": 1,
+    "port": 58625,
+    "triangle_id": 2,
+    "node": {
+      "anchors": 3,
+      "bounds": {
+        "height": 181.86550109604903,
+        "width": 157.50057608466068,
+        "x": 277.62471195766966,
+        "y": 154.55049945197547
+      },
+      "closed": true,
+      "fill": "#bcdfea",
+      "id": 2,
+      "kind": "Path",
+      "locked": false,
+      "name": "<Path>",
+      "rotation": 29.999999999999996,
+      "stroke": "#263e56",
+      "strokeOptions": {
+        "align": "center",
+        "alignDashes": false,
+        "arrowAlign": "extend",
+        "cap": "butt",
+        "dash": null,
+        "dashOffset": 0.0,
+        "endArrow": null,
+        "gradientMode": "within",
+        "join": "miter",
+        "miterLimit": 10.0,
+        "profile": "uniform",
+        "startArrow": null,
+        "widthPoints": null
+      },
+      "strokeWidth": 2.0,
+      "visible": true
+    },
+    "fixture_accounted_cost_usd": 0.0002,
+    "actual_provider_charge_usd": 0,
+    "provider_http_requests": 3
+  },
+  "limitations": [
+    "Positive OpenRouter completion uses a local HTTP fixture, no valid live API key available",
+    "Native Windows/macOS process integration not performed",
+    "macOS login-Keychain roundtrip explicitly skipped",
+    "No provider-enforced EUR cost cap",
+    "Chat PNG partly occluded; no visual layout success claimed",
+    "Full Rust workspace quality gate not run locally: cargo missing"
+  ],
+  "released": false
+}

@@ -21,7 +21,8 @@ jobs:
       - name: Native GUI dependencies and virtual display
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libegl1 mesa-vulkan-drivers xvfb xauth imagemagick
+          sudo apt-get install -y --no-install-recommends libxkbcommon-dev libxkbcommon-x11-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libegl1 mesa-vulkan-drivers xvfb xauth imagemagick
+          python3 -c 'import ctypes; ctypes.CDLL("libxkbcommon-x11.so"); print("X11 keyboard runtime available")'
       - name: Compile actual native VectorCraft and MCP CLI
         run: cargo build --locked --release -p vectorcraft -p vectorcraft-cli
       - uses: actions/setup-python@v5

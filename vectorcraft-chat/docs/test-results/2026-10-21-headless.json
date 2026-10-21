@@ -1,0 +1,257 @@
+{
+  "engine": "actual vectorcraft-cli mcp --headless",
+  "steps": [
+    {
+      "command": "object.rotate",
+      "params": {
+        "angle": 30,
+        "origin": [
+          0,
+          0
+        ]
+      },
+      "verified_node": {
+        "anchors": 3,
+        "bounds": {
+          "height": 181.86550109604903,
+          "width": 157.50057608466068,
+          "x": 337.30733309300126,
+          "y": -15.766062413411959
+        },
+        "closed": true,
+        "fill": "#bcdfea",
+        "id": 2,
+        "kind": "Path",
+        "locked": false,
+        "name": "<Path>",
+        "rotation": 29.999999999999996,
+        "stroke": "#263e56",
+        "strokeOptions": {
+          "align": "center",
+          "alignDashes": false,
+          "arrowAlign": "extend",
+          "cap": "butt",
+          "dash": null,
+          "dashOffset": 0.0,
+          "endArrow": null,
+          "gradientMode": "within",
+          "join": "miter",
+          "miterLimit": 10.0,
+          "profile": "uniform",
+          "startArrow": null,
+          "widthPoints": null
+        },
+        "strokeWidth": 2.0,
+        "visible": true
+      }
+    },
+    {
+      "command": "object.move",
+      "params": {
+        "dx": 17,
+        "dy": -11
+      },
+      "verified_node": {
+        "anchors": 3,
+        "bounds": {
+          "height": 181.86550109604903,
+          "width": 157.50057608466068,
+          "x": 354.30733309300126,
+          "y": -26.76606241341196
+        },
+        "closed": true,
+        "fill": "#bcdfea",
+        "id": 2,
+        "kind": "Path",
+        "locked": false,
+        "name": "<Path>",
+        "rotation": 29.999999999999996,
+        "stroke": "#263e56",
+        "strokeOptions": {
+          "align": "center",
+          "alignDashes": false,
+          "arrowAlign": "extend",
+          "cap": "butt",
+          "dash": null,
+          "dashOffset": 0.0,
+          "endArrow": null,
+          "gradientMode": "within",
+          "join": "miter",
+          "miterLimit": 10.0,
+          "profile": "uniform",
+          "startArrow": null,
+          "widthPoints": null
+        },
+        "strokeWidth": 2.0,
+        "visible": true
+      }
+    },
+    {
+      "command": "object.scale",
+      "params": {
+        "sx": 125,
+        "sy": 125,
+        "origin": [
+          0,
+          0
+        ]
+      },
+      "verified_node": {
+        "anchors": 3,
+        "bounds": {
+          "height": 227.3318763700613,
+          "width": 196.8757201058258,
+          "x": 442.8841663662516,
+          "y": -33.45757801676495
+        },
+        "closed": true,
+        "fill": "#bcdfea",
+        "id": 2,
+        "kind": "Path",
+        "locked": false,
+        "name": "<Path>",
+        "rotation": 29.999999999999996,
+        "stroke": "#263e56",
+        "strokeOptions": {
+          "align": "center",
+          "alignDashes": false,
+          "arrowAlign": "extend",
+          "cap": "butt",
+          "dash": null,
+          "dashOffset": 0.0,
+          "endArrow": null,
+          "gradientMode": "within",
+          "join": "miter",
+          "miterLimit": 10.0,
+          "profile": "uniform",
+          "startArrow": null,
+          "widthPoints": null
+        },
+        "strokeWidth": 2.0,
+        "visible": true
+      }
+    },
+    {
+      "command": "object.rotate",
+      "params": {
+        "angle": -15,
+        "origin": [
+          0,
+          0
+        ]
+      },
+      "verified_node": {
+        "anchors": 3,
+        "bounds": {
+          "height": 219.58563733604467,
+          "width": 219.5863329048596,
+          "x": 377.61489357794534,
+          "y": 82.30941152701563
+        },
+        "closed": true,
+        "fill": "#bcdfea",
+        "id": 2,
+        "kind": "Path",
+        "locked": false,
+        "name": "<Path>",
+        "rotation": 14.999999999999998,
+        "stroke": "#263e56",
+        "strokeOptions": {
+          "align": "center",
+          "alignDashes": false,
+          "arrowAlign": "extend",
+          "cap": "butt",
+          "dash": null,
+          "dashOffset": 0.0,
+          "endArrow": null,
+          "gradientMode": "within",
+          "join": "miter",
+          "miterLimit": 10.0,
+          "profile": "uniform",
+          "startArrow": null,
+          "widthPoints": null
+        },
+        "strokeWidth": 2.0,
+        "visible": true
+      }
+    },
+    {
+      "command": "reselect and move",
+      "verified_node": {
+        "anchors": 3,
+        "bounds": {
+          "height": 219.58563733604467,
+          "width": 219.5863329048596,
+          "x": 378.61489357794534,
+          "y": 84.30941152701563
+        },
+        "closed": true,
+        "fill": "#bcdfea",
+        "id": 2,
+        "kind": "Path",
+        "locked": false,
+        "name": "<Path>",
+        "rotation": 14.999999999999998,
+        "stroke": "#263e56",
+        "strokeOptions": {
+          "align": "center",
+          "alignDashes": false,
+          "arrowAlign": "extend",
+          "cap": "butt",
+          "dash": null,
+          "dashOffset": 0.0,
+          "endArrow": null,
+          "gradientMode": "within",
+          "join": "miter",
+          "miterLimit": 10.0,
+          "profile": "uniform",
+          "startArrow": null,
+          "widthPoints": null
+        },
+        "strokeWidth": 2.0,
+        "visible": true
+      }
+    },
+    {
+      "command": "preserve intervening edit and unrelated selected object",
+      "verified_node": {
+        "anchors": 3,
+        "bounds": {
+          "height": 219.58563733604467,
+          "width": 219.5863329048596,
+          "x": 379.61489357794534,
+          "y": 95.30941152701563
+        },
+        "closed": true,
+        "fill": "#bcdfea",
+        "id": 2,
+        "kind": "Path",
+        "locked": false,
+        "name": "<Path>",
+        "rotation": 14.999999999999998,
+        "stroke": "#263e56",
+        "strokeOptions": {
+          "align": "center",
+          "alignDashes": false,
+          "arrowAlign": "extend",
+          "cap": "butt",
+          "dash": null,
+          "dashOffset": 0.0,
+          "endArrow": null,
+          "gradientMode": "within",
+          "join": "miter",
+          "miterLimit": 10.0,
+          "profile": "uniform",
+          "startArrow": null,
+          "widthPoints": null
+        },
+        "strokeWidth": 2.0,
+        "visible": true
+      },
+      "unrelated_id": 3
+    }
+  ],
+  "object_id": 2,
+  "render_png_bytes": 21877,
+  "status": "PASS"
+}

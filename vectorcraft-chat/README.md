@@ -27,3 +27,7 @@ See [session log](docs/SESSION-2026-10-21.md) and [real-engine test](docs/HEADLE
 - Tk callbacks + real engine: run `test_ui_real_engine.py` under Xvfb with `VC_CHAT_REAL_CLI` pointing to the compiled binary.
 
 The UI integration test uses the actual engine for edits and controlled HTTP replies for the model. This distinction is intentional and recorded in logs. Source-package historical notes live in `docs/source-package/`.
+
+## Verified checkpoint, 21 October 2026
+
+Application commit `5629006`: [actual engine and Tk interaction PASS](https://github.com/wibem1/vectorcraft/actions/runs/39624046757). [Windows/Linux regressions and public OpenRouter HTTP PASS](https://github.com/wibem1/vectorcraft/actions/runs/39624046765); macOS still queued at documentation time. All 37 unique Linux tests were exercised across the regression, live HTTP and Tk steps. See [TODO](TODO.md) for the remaining release blockers. No release was published.

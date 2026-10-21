@@ -17,3 +17,9 @@ Assertions:
 The workflow runs on pushes affecting `vectorcraft-chat/**`, so app changes cannot silently bypass this gate. Full engine and app test results must be checked for the final commit. A successful build alone does not count as successful interaction.
 
 The repository-wide Rust gate `cargo xtask ci` has not been run locally in this session; no Rust engine source was modified. Headless release compilation is performed in Actions. The separate Chat workflow tests Linux, Windows and macOS and actual public OpenRouter HTTP calls without a paid key.
+
+## Verified final application checkpoint
+
+[Run 39624046757](https://github.com/wibem1/vectorcraft/actions/runs/39624046757), commit `5629006d6d0886a95abc17d0258246c35c92c127`: **all steps passed**, including actual-engine Tk callbacks. The strengthened test also preserved an intervening edit to target ID 2 while leaving a different selected object ID 3 unchanged. Machine report: [2026-10-21-headless.json](test-results/2026-10-21-headless.json). PNG/report artifact: [12355504814](https://github.com/wibem1/vectorcraft/actions/runs/39624046757/artifacts/12355504814).
+
+This establishes the tested interaction sequence, not unrestricted model behavior or a released app. See TODO for outstanding launch, macOS, packaging and billing guarantees.

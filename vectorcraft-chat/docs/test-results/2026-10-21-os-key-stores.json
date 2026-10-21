@@ -1,0 +1,51 @@
+{
+  "key_store_run": 39673786475,
+  "key_store_source": "7af0f8ff3c6297c271b57690923bdfd4386d6453",
+  "application_source": "1df86ea1bea85a70b9933ea8783498d981262698",
+  "logs_read": true,
+  "windows": {
+    "job": 119478227927,
+    "artifact": 12381061909,
+    "report": {
+      "status": "PASS",
+      "platform": "win32",
+      "backend": "DPAPI",
+      "operations": [
+        "store",
+        "read",
+        "update",
+        "delete"
+      ],
+      "login_keychain_used": false
+    }
+  },
+  "macos": {
+    "job": 119478228718,
+    "artifact": 12379944973,
+    "report": {
+      "status": "PASS",
+      "platform": "darwin",
+      "backend": "isolated actual macOS Keychain",
+      "operations": [
+        "store",
+        "read",
+        "update",
+        "delete"
+      ],
+      "login_keychain_used": false
+    }
+  },
+  "live_openrouter": {
+    "run": 39673176326,
+    "job": 119476079289,
+    "artifact": 12379243984,
+    "report": {
+      "status": "NOT_CONFIGURED",
+      "provider": "actual OpenRouter",
+      "requests": 0,
+      "release_authorized": false
+    }
+  },
+  "native_gui_result": "pending; key-store success alone does not verify native GUI startup",
+  "release": false
+}

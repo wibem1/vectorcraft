@@ -133,3 +133,5 @@ TODO vor Implementierung und Build geprüft. Start/Verbindung, Instanzwiederverw
 ## Zusätzliche echte OpenRouter-Prüfung
 
 TODO vor CI-Änderung gelesen. Ein separater Workflow prüft einen gegebenenfalls vorhandenen Repository-Testschlüssel OPENROUTER_API_KEY mit höchstens einer Completion eines aktuell ausdrücklich mit null Preisen ausgewiesenen Textmodells. Kein Retry; tatsächliche gemeldete Abrechnung muss null sein. Ohne Schlüssel lautet der Bericht NOT_CONFIGURED, ausdrücklich kein bestandener Live-Test. Keine Schlüssel oder Antworttexte im Nachweis. Native Builds bleiben davon unabhängig. Ergebnis wird nach dem tatsächlichen Lauf ergänzt.
+
+- TODO erneut geprüft: separate schnelle OS-Schlüsselspeicher-Prüfung ergänzt, damit Speichern/Lesen/Aktualisieren/Löschen mit echtem Windows-DPAPI und isoliertem echtem macOS-Keychain nicht vom Rust-Build oder GPU-Start abhängen. Anwendungscode und native Integrationsassertionen unverändert. Noch kein Erfolg behauptet; Ergebnis nach Logprüfung ergänzen.

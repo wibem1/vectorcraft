@@ -76,3 +76,10 @@ TODO vor Implementierung und Build geprüft. Start/Verbindung, Instanzwiederverw
 - Automatischer Start auf Windows/macOS, gültige Live-Completion, native Pakete und garantierte Kostenobergrenze bleiben offen. Kein Release. Ergebnisse werden nach tatsächlicher Ausführung ergänzt.
 
 - Zusätzliche Verbindungsprüfung: Dokument-/Protokollfehler und leere Kataloge brechen jetzt vor Modellkatalog, bezahltem Request und Kostenreservierung ab. Der bisherige allgemeine Fehlerpfad konnte trotz fehlendem bestätigtem Zustand eine Anfrage senden. Neuer Regressionstest deckt RuntimeError, ValueError, OSError, null-Dokument und leeren Katalog ab. TODO vor Änderung erneut gelesen; erneute CI erforderlich.
+
+## Zweiter nachgewiesener Startfehler: leeres natives Dokumentfenster
+
+- TODO erneut vor Korrektur geprüft. Korrekturlauf 39661233784 / 119434447781 tatsächlich abgeschlossen und vollständige Logs ausgewertet: X11-Abhängigkeit behoben; native Anwendung rendert unter OpenGL und Vulkan, TCP-Kanal erreichbar. Kein vollständiger Integrationserfolg: Chat-Verbindung scheitert danach an `document.inspect` / `no document open`.
+- Rust-Protokollquelle geprüft: `document.inspect` setzt ein aktives Dokument voraus; `ui.inspect` liefert dagegen immer `documents`, `activeDocument`, `opening` und `fileDialog`. Die bisherige Annahme einer null-Antwort war falsch.
+- Chat prüft nun zuerst den nativen UI-Status und erstellt ausschließlich bei bestätigter leerer Dokumentliste ohne laufenden Öffnungsvorgang ein neues Dokument. Bestehende Dokumente bleiben erhalten; Fehler/unbekannte Zustände erzeugen kein Dokument. Regressionen und nativer Wiederverbindungserhalt ergänzt; keine Testvorbereitung durch externes `file.new`.
+- Vollständige native Folge und Provider-Fixture müssen auf diesem Stand erneut unter Actions bestehen. Kein Release.

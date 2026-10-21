@@ -109,12 +109,20 @@ def control(method, params=None, port=7979):
     return resp.get('result')
 
 def ensure_document(port):
-    """Create a blank document only after a verified null inspection, never after an error."""
-    document=control('document.inspect',{'depth':0},port)
-    created=document is None
+    """Inspect native UI state: document.inspect errors when no document is open."""
+    state=control('ui.inspect',{},port)
+    if not isinstance(state,dict) or not isinstance(state.get('documents'),list):
+        raise ConnectionError('VectorCraft hat keinen verwendbaren Dokumentstatus bestätigt.')
+    documents=state['documents'];active=state.get('activeDocument')
+    created=not documents and active is None
     if created:
+        # Never race an asynchronous open or a native file dialog with a new document.
+        if state.get('opening') != [] or state.get('fileDialog') is not None:
+            raise ConnectionError('VectorCraft öffnet noch ein Dokument oder einen Dateidialog; bitte erneut verbinden.')
         control('engine.execute',{'command':'file.new','params':{}},port)
-        document=control('document.inspect',{'depth':0},port)
+    elif type(active) is not int or not 0 <= active < len(documents):
+        raise ConnectionError('VectorCraft hat kein aktives Dokument bestätigt.')
+    document=control('document.inspect',{'depth':0},port)
     if not isinstance(document,dict) or not isinstance(document.get('layers'),list):
         raise ConnectionError('VectorCraft hat kein verwendbares Dokument bestätigt.')
     return created

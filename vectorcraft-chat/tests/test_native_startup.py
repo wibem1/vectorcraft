@@ -70,6 +70,8 @@ class NativeStartupTests(unittest.TestCase):
                 actual=app.control('engine.execute',{'command':'document.node','params':{'id':target,'summary':True}},port)
                 self.assertAlmostEqual(actual['rotation'],30)
                 self.assertEqual(actual['anchors'],3);self.assertTrue(actual['closed'])
+                self.assertFalse(app.ensure_document(port))
+                self.assertEqual(app.control('engine.execute',{'command':'document.node','params':{'id':target,'summary':True}},port),actual)
                 self.assertEqual(gui.session_spend_usd,0)
                 self.assertEqual(app.read_json(app.SETTINGS,{})['vectorcraft_app'],executable)
                 # Exercise the actual provider HTTP/JSON code and the native engine together.
@@ -138,7 +140,7 @@ class NativeStartupTests(unittest.TestCase):
                 # Take the actual chat window for layout inspection; the X display is test-only.
                 root.update()
                 subprocess.run(['import','-window',str(root.winfo_id()),'native-chat.png'],check=False,timeout=10)
-                print('PASS NATIVE: Chat auto-start, protocol readiness, single instance, real remote triangle/30-degree rotation, zero model cost',flush=True)
+                print('PASS NATIVE: Chat auto-start, protocol readiness, single instance, real remote triangle/30-degree rotation/move, provider HTTP fixture, zero external model charge',flush=True)
             finally:
                 root.destroy()
                 for process in processes:

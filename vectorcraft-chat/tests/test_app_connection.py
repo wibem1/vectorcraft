@@ -130,14 +130,18 @@ class WindowsConnectTimeoutTests(unittest.TestCase):
 
 
 class DocumentReadinessTests(unittest.TestCase):
+    empty={'documents':[],'activeDocument':None,'opening':[],'fileDialog':None}
+    existing={'documents':[{'title':'Existing','dirty':True}],'activeDocument':0,'opening':[],'fileDialog':None}
     def test_existing_document_is_preserved(self):
         import vectorcraft_chat as app
-        with patch.object(app,'control',return_value={'layers':[],'title':'Existing'}) as control:
-            self.assertFalse(app.ensure_document(7979));self.assertEqual(control.call_count,1)
-    def test_new_document_only_after_null(self):
+        with patch.object(app,'control',side_effect=[self.existing,{'layers':[],'title':'Existing'}]) as control:
+            self.assertFalse(app.ensure_document(7979));self.assertEqual(control.call_count,2)
+            self.assertEqual([call.args[0] for call in control.call_args_list],['ui.inspect','document.inspect'])
+    def test_new_document_only_after_confirmed_empty_native_ui(self):
         import vectorcraft_chat as app
-        with patch.object(app,'control',side_effect=[None,{}, {'layers':[]}]) as control:
+        with patch.object(app,'control',side_effect=[self.empty,{}, {'layers':[]}]) as control:
             self.assertTrue(app.ensure_document(7979))
+            self.assertEqual(control.call_args_list[0].args[0],'ui.inspect')
             self.assertEqual(control.call_args_list[1].args[1]['command'],'file.new')
     def test_inspection_failure_never_resets_document(self):
         import vectorcraft_chat as app
@@ -146,9 +150,21 @@ class DocumentReadinessTests(unittest.TestCase):
             self.assertEqual(control.call_count,1)
     def test_unrecognized_document_never_resets(self):
         import vectorcraft_chat as app
-        with patch.object(app,'control',return_value={}) as control:
-            with self.assertRaises(ConnectionError):app.ensure_document(7979)
-            self.assertEqual(control.call_count,1)
+        for state in ({},None,dict(self.existing,activeDocument=None),dict(self.empty,activeDocument=0)):
+            with self.subTest(state=state),patch.object(app,'control',return_value=state) as control:
+                with self.assertRaises(ConnectionError):app.ensure_document(7979)
+                self.assertEqual(control.call_count,1)
+    def test_pending_open_or_dialog_never_creates_document(self):
+        import vectorcraft_chat as app
+        for state in (dict(self.empty,opening=['pending.svg']),dict(self.empty,fileDialog='open'),{'documents':[],'activeDocument':None}):
+            with self.subTest(state=state),patch.object(app,'control',return_value=state) as control:
+                with self.assertRaises(ConnectionError):app.ensure_document(7979)
+                self.assertEqual(control.call_count,1)
+    def test_existing_document_inspection_failure_never_creates_document(self):
+        import vectorcraft_chat as app
+        with patch.object(app,'control',side_effect=[self.existing,RuntimeError('no document open')]) as control:
+            with self.assertRaises(RuntimeError):app.ensure_document(7979)
+            self.assertEqual(control.call_count,2)
 
 
 class StartupDiagnosticTests(unittest.TestCase):

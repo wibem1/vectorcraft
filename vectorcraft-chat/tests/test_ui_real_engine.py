@@ -19,6 +19,7 @@ class ActualEngineUITests(unittest.TestCase):
             base=Path(directory)
             prices={'test/model':{'id':'test/model','context_length':200000,'pricing':{'prompt':'0.000001','completion':'0.000002'}}}
             def control(method,params=None,port=7979):
+                if method=='ui.inspect':return {'documents':[{'title':'Test'}],'activeDocument':0,'opening':[],'fileDialog':None}
                 if method=='document.inspect':return decode(client.tool('inspect_document',params or {}))
                 if method=='engine.commands':return {'commands':[{'id':'object.move','params':'{dx,dy}'}]}
                 if method=='engine.execute':return command(client,params['command'],params.get('params',{}))

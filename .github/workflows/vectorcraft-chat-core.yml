@@ -1,0 +1,18 @@
+name: VectorCraft Chat geometry core
+on:
+  push:
+    paths:
+      - 'vectorcraft-chat/geometry_core.py'
+      - 'vectorcraft-chat/tests/**'
+      - 'vectorcraft-chat/__init__.py'
+      - '.github/workflows/vectorcraft-chat-core.yml'
+  workflow_dispatch:
+jobs:
+  geometry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s vectorcraft-chat/tests -v

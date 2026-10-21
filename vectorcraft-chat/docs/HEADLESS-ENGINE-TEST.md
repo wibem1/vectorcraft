@@ -13,7 +13,7 @@ Stand 2026-10-21. **Test eingerichtet, noch kein erfolgreicher GitHub-Actions-La
 - Alle Schritte ohne API-Key und ohne Modellkosten.
 
 ## Grenzen
-- Noch keine automatische geometrische Winkelmessung oder Pixelprüfung der Drehung; nur erfolgreicher Befehl und fortbestehende Objektidentität.
+- Objektmodelländerung wird jetzt verlangt; eine exakte Winkelmessung oder Pixelprüfung steht noch aus.
 - Die echte Engine könnte bei Einzelheiten des Antwortformats von den Annahmen des Smoke-Tests abweichen; solche Fehler sollen in Actions sichtbar werden und **nicht** als App-Erfolg gelten.
 - Das Skript ist unabhängig von der experimentellen Python-Chatoberfläche. Ein erfolgreicher Headless-Test allein gibt die App noch nicht frei.
 - Workflow-Ausführung und Erfolg müssen anhand des tatsächlichen GitHub-Actions-Laufs überprüft werden.
@@ -27,3 +27,7 @@ python3 vectorcraft-chat/tests/smoke_headless.py target/release/vectorcraft-cli
 ```
 
 **Freigabekriterium:** erfolgreicher echter Engine-Test, anschließend Fehlerfälle/Rendering-Prüfung und Integration in den Chat.
+
+## Prüfung am 21.10.2026
+
+Die GitHub-Connector-Abfrage lieferte für den Workflow-Einrichtungscommit keine Commit-Status-Einträge und keine abrufbaren PR-Workflow-Läufe. **Das ist kein Beleg eines bestandenen oder gescheiterten Push-Workflows.** Eine Workflow-Dispatch-Funktion steht über die hier verbundene GitHub-Schnittstelle nicht zur Verfügung. Daher wird kein erfolgreicher Real-Engine-Test behauptet. Der Smoke-Test wurde um einen Vorher/Nachher-Vergleich des tatsächlichen Objektmodells nach `object.rotate` erweitert. Auch dieser erweiterte Test muss erst in GitHub Actions laufen.

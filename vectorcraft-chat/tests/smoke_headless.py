@@ -101,6 +101,7 @@ def main(binary):
                              "capabilities":{},"clientInfo":{"name":"vc-chat-ci","version":"0.1"}})
         m.proc.stdin.write((json.dumps({"jsonrpc":"2.0","method":"notifications/initialized"})+"\n").encode("utf-8"))
         m.proc.stdin.flush()
+        m.tool("run_command",{"command":"file.new","params":{}})
         before=m.tool("inspect_document",{"depth":5})
         print("Initial inspection OK",flush=True)
         drawn=m.tool("draw_path",{"points":[[300,155],[390,310],[210,310]],

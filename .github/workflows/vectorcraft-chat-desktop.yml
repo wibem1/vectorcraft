@@ -1,0 +1,71 @@
+name: VectorCraft Chat actual desktop layout
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/vectorcraft-chat-desktop.yml'
+permissions:
+  contents: read
+jobs:
+  desktop:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-15-intel]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install Pillow
+      - name: Real App widgets, masked key and unobscured capture (no engine actions)
+        run: |
+          python -c "import sys; sys.path.insert(0,'vectorcraft-chat'); exec('''
+          import contextlib, json, tempfile, time
+          from pathlib import Path
+          from unittest.mock import patch
+          from PIL import ImageGrab
+          import vectorcraft_chat as app
+          with tempfile.TemporaryDirectory() as directory, contextlib.ExitStack() as stack:
+              base=Path(directory)
+              for name,value in {'APP_DIR':base,'SETTINGS':base/'settings.json','HISTORY':base/'history.json','COSTS':base/'costs.json','KEY_FILE':base/'secret'}.items():
+                  stack.enter_context(patch.object(app,name,value))
+              stack.enter_context(patch.object(app,'load_secret',return_value=''))
+              root=app.tk.Tk()
+              try:
+                  app.ttk.Style().theme_use('clam')
+                  gui=app.App(root,auto_connect=False)
+                  gui.key.set('dummy-desktop-key')
+                  root.update();root.attributes('-topmost',True);root.lift();root.focus_force();root.update()
+                  time.sleep(0.3);root.update()
+                  x,y=root.winfo_rootx(),root.winfo_rooty()
+                  width,height=root.winfo_width(),root.winfo_height()
+                  controls=[gui.model_box,gui.connect_button,gui.send_button,gui.exec_button,gui.entry,gui.chat]
+                  for control in controls:
+                      assert control.winfo_viewable(), 'Required control is not visible'
+                      assert x <= control.winfo_rootx() and y <= control.winfo_rooty(), 'Control starts outside window'
+                      assert control.winfo_rootx()+control.winfo_width() <= x+width, 'Control clipped horizontally'
+                      assert control.winfo_rooty()+control.winfo_height() <= y+height, 'Control clipped vertically'
+                  def descendants(parent):
+                      for child in parent.winfo_children():
+                          yield child
+                          yield from descendants(child)
+                  fields=[w for w in descendants(root) if isinstance(w,app.ttk.Entry) and str(w.cget('textvariable'))==str(gui.key)]
+                  assert len(fields)==1 and fields[0].cget('show')=='*', 'API-key field must be masked'
+                  ImageGrab.grab(bbox=(x,y,x+width,y+height)).save('chat-desktop.png')
+                  report={'status':'PASS','platform':sys.platform,'app_version':app.APP_VERSION,'logical_size':[width,height],'raised_for_capture':True,'required_controls_visible_and_within_window':True,'key_field_masked':True,'state':'disconnected initial App','engine_actions_executed':False,'provider_requests':0}
+                  Path('chat-desktop-report.json').write_text(json.dumps(report,indent=2))
+                  print('PASS actual App desktop layout: '+sys.platform+'; controls visible; key masked; no engine/provider calls')
+              finally:
+                  root.destroy()
+          ''')"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vectorcraft-chat-desktop-${{ matrix.os }}
+          path: |
+            chat-desktop.png
+            chat-desktop-report.json
+          if-no-files-found: warn

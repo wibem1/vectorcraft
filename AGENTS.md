@@ -84,3 +84,14 @@ When a task lands, update in the same PR: the area row in `docs/target-app-parit
   GitHub profiles). Never hand-edit `contributors.json`.
 - Maintainers refresh the stats with `python3 ../../craftrules/scripts/contributors.py .` (it also
   re-verifies who wrote each `people.toml` entry; `--check` only verifies).
+
+## Contributor workflow: drawing with ChatGPT Work / Codex
+
+For requests such as “Zeichne in VectorCraft …” (constructing artwork in the running app),
+read [PROJECT_STATUS.md](PROJECT_STATUS.md), then
+[the VectorCraft drawing instruction](.agents/skills/vectorcraft-drawing/SKILL.md).
+For one-time host/project setup see
+[WORK_SETUP.md](projects/chatgpt-work/docs/WORK_SETUP.md).
+This is an additional artwork workflow, not an engine-development task or permission to
+change the core. Preserve all upstream instructions above, including clean-room,
+asset provenance and quality gates. Historical session scripts are references, not startup scripts.

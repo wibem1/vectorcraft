@@ -2,6 +2,8 @@
 
 Dieser Projektbereich sichert die Arbeit vom 20.–21. Oktober 2026. Er ergänzt das bestehende Repository, ohne dessen Engine, Rust-Anwendung oder Build-Konfiguration zu ändern.
 
+**Dauerhaft einrichten: [Work-Projektstart](docs/WORK_SETUP.md)** – einmalige Einrichtung, kurze künftige Eingabe und lesender Abnahmetest.
+
 **Einstieg: [PROJECT_STATUS.md](../../PROJECT_STATUS.md)**
 
 - [Direkte Steuerung: Aufbau und bestätigter Ablauf](docs/DIRECT_CONTROL.md)

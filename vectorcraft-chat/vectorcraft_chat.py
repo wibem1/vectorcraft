@@ -621,4 +621,8 @@ class App:
         self.settings.update({'model':self.model.get(),'port':port,'max_eur':budget});save_json(SETTINGS,self.settings)
     def close(self):self.save_settings();self.root.destroy()
 if __name__=='__main__':
+    if len(sys.argv)==3 and sys.argv[1]=='--self-test':
+        sys.modules['vectorcraft_chat']=sys.modules[__name__]
+        from packaged_check import run
+        raise SystemExit(run(sys.argv[2]))
     root=tk.Tk();ttk.Style().theme_use('clam');App(root);root.mainloop()

@@ -168,3 +168,15 @@ Die kombinierten nativen Bildschirmaufnahmen zeigen das vordere VectorCraft-Fens
 Alle genannten JSON-/PNG-Artefakte wurden heruntergeladen; SHA256 stimmt mit GitHub-Metadaten überein. Dauerhafter zusammengeführter Nachweis: [native-platforms.json](docs/test-results/2026-10-21-native-platforms.json). Die öffentliche Modellliste und HTTP-401 wurden im Linux-Job 119474489171 ebenfalls tatsächlich geprüft (16 Provider-Tests PASS); positive Modellantworten bleiben HTTP-Fixtures. Private Login-Keychains wurden absichtlich nicht verändert; der frühere fehlende Nachweis tatsächlicher macOS-Schlüsselspeicherung ist durch den isolierten echten OS-Keychain-Test abgedeckt.
 
 Offen bleiben installierbare Chat-Pakete, ein positiver Live-Auftrag mit gültigem CI-Key, allgemeine freie Konstruktionen und eine garantierte providerseitige 0,10-€-Kostengrenze. Die geprüften Runner ersetzen keine Zusage für jede Windows-/Mac-Hardware; Apple Silicon und persönliche Windows-11-Installationen wurden hier nicht nativ ausgeführt. Das bestehende macOS-GUI-Paket liefert die CLI separat als ZIP; ein vollständiges Chat-Paket muss die Bridge mitbringen oder ihre Installation eindeutig prüfen. Erstbuildzeiten wurden mit 28m04s (Windows) und 33m58s (Mac) gemessen; Wiederverwendung nachgewiesen identischer Engine-Binaries ist ein künftiger CI-Optimierungspunkt. Kein Test wurde wegen Laufzeit entfernt.
+
+## Laufender Schritt: eigenständige Testpakete
+
+TODO vor Änderung gelesen. Windows-/macOS-Intel-Kandidaten bündeln Python/Tk,
+Chat, tatsächlich kompilierte Engine und CLI. Die eingefrorene Anwendung führt
+über --self-test dieselbe echte native Integrationssuite aus, einschließlich
+Dreieck, Objektidentität, 30° und Provider-Fixture-Folgeänderung. Pakete werden
+nur nach bestandener Prüfung als Actions-Artefakt hochgeladen. Kein Release,
+kein Versionssprung. Build und gefrorene Ausführung zunächst **ausstehend**.
+PyInstaller-Aufbau anhand offizieller Dokumentation geprüft:
+https://pyinstaller.org/en/stable/usage.html . Positive Live-Completion und
+providerseitige Kostengarantie bleiben separat offen.

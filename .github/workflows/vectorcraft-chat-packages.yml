@@ -1,0 +1,49 @@
+name: VectorCraft Chat frozen candidates with real engine
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'vectorcraft-chat/*.py'
+      - 'vectorcraft-chat/packaging/**'
+      - 'vectorcraft-chat/tests/**'
+      - '.github/workflows/vectorcraft-chat-packages.yml'
+permissions:
+  contents: read
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-15-intel]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install PyInstaller==6.22.3 Pillow
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: '1.95.0'
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: native-chat-platform-v1
+          cache-on-failure: true
+          cache-workspace-crates: true
+      - run: cargo build --locked --release -p vectorcraft -p vectorcraft-cli
+      - name: Build and execute frozen app against bundled actual engine
+        run: python vectorcraft-chat/packaging/build_candidate.py
+      - name: Preserve packaged execution evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: packaged-evidence-${{ matrix.os }}
+          path: packaged-evidence/
+          if-no-files-found: warn
+      - name: Tested candidate only, no GitHub Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: tested-chat-candidate-${{ matrix.os }}
+          path: candidate/*.zip
+          if-no-files-found: error

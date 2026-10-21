@@ -8,6 +8,8 @@ on:
       - 'Tools/test_cost_audit.py'
       - 'Tools/ai_client_cost_policy.py'
       - 'Tools/test_ai_client_cost_policy.py'
+      - 'Tools/vectorcraft_local_bridge.py'
+      - 'Tools/test_vectorcraft_local_bridge.py'
       - 'docs/AI-COST-ARCHITECTURE.md'
       - '.github/workflows/ai-cost-audit.yml'
   workflow_dispatch:

@@ -194,3 +194,12 @@ Engine-/CLI-Erkennung ohne Pfad-Overrides, echter öffentlicher Modellkatalog
 Absichtlich ungültiger Testschlüssel, keine bezahlte/positive Completion.
 Dies prüft insbesondere SSL-/Runtime-Abhängigkeiten des eigenständigen Pakets.
 Ergebnisse zunächst ausstehend; unveränderte Produktions-App-Klasse.
+
+Tatsächliche Paketfehler gelesen: Windows 39679379961 / 119497548407
+kompiliert und friert erfolgreich ein, hängt aber vor Anlage des Testprotokolls
+und erreicht 300-s-Timeout; kein Paket hochgeladen. macOS 39679807472 /
+119499018802 scheitert bei PyInstaller-BUNDLE: --icon NONE wird dort als
+Dateiname behandelt. Korrektur: vorhandenes lizenziertes VectorCraft-ICNS unter
+macOS; frühes Bootstrap-Log vor Import der App; Fehlerdiagnose über zusätzliche
+Konsolen-EXE ausschließlich bei fehlgeschlagenem Windowed-Test. Kein Ersatz
+des verpflichtenden Windowed-Erfolgs. Erneuter echter Paketlauf erforderlich.

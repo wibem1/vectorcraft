@@ -9,7 +9,8 @@ import sys
 repo = Path(__file__).resolve().parents[2]
 chat = repo/'vectorcraft-chat'
 subprocess.run([sys.executable, '-m', 'PyInstaller', '--noconfirm', '--clean',
-                '--onedir', '--windowed', '--noupx', '--icon', 'NONE',
+                '--onedir', '--windowed', '--noupx', '--icon',
+                str(repo/'assets/app-icon/vectorcraft.icns') if sys.platform == 'darwin' else 'NONE',
                 '--name', 'VectorCraftChat', '--paths', str(chat), '--paths', str(chat/'tests'),
                 '--hidden-import', 'test_native_startup',
                 '--distpath', str(repo/'candidate'), '--workpath', str(repo/'build/chat'),
@@ -39,7 +40,26 @@ manifest = {'source_sha': __import__('os').environ.get('GITHUB_SHA'),
 for binary in (executable, binaries/('vectorcraft'+suffix), binaries/('vectorcraft-cli'+suffix)):
     manifest['sha256'][binary.name] = hashlib.file_digest(binary.open('rb'), 'sha256').hexdigest()
 (evidence/'bundle-manifest.json').write_text(json.dumps(manifest, indent=2), encoding='utf-8')
-subprocess.run([str(executable), '--self-test', str(repo/'packaged-evidence')], check=True, timeout=300)
+try:
+    subprocess.run([str(executable), '--self-test', str(evidence)], check=True, timeout=180)
+except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
+    # Capture Python/bootloader errors without a blocking windowed error dialog.
+    subprocess.run([sys.executable, '-m', 'PyInstaller', '--noconfirm', '--clean',
+                    '--onedir', '--console', '--noupx', '--icon', 'NONE' if sys.platform == 'win32' else str(repo/'assets/app-icon/vectorcraft.icns'),
+                    '--name', 'VectorCraftChatDiagnostic', '--paths', str(chat),
+                    '--paths', str(chat/'tests'), '--hidden-import', 'test_native_startup',
+                    '--distpath', str(repo/'diagnostic'), '--workpath', str(repo/'build/diagnostic'),
+                    '--specpath', str(repo/'build/diagnostic'), str(chat/'packaging/entry.py')], check=True)
+    diagnostic = repo/'diagnostic/VectorCraftChatDiagnostic'
+    for name in ('vectorcraft', 'vectorcraft-cli'):
+        shutil.copy2(repo/'target/release'/(name+suffix), diagnostic/(name+suffix))
+    with (evidence/'console-diagnostic.log').open('w', encoding='utf-8') as log:
+        try:
+            subprocess.run([str(diagnostic/('VectorCraftChatDiagnostic'+suffix)), '--self-test', str(evidence/'diagnostic')],
+                           stdout=log, stderr=subprocess.STDOUT, timeout=120)
+        except subprocess.TimeoutExpired:
+            log.write('Diagnostic executable also timed out\n')
+    raise
 # CI upload only follows successful frozen execution. Archives preserve macOS modes/symlinks.
 if sys.platform == 'darwin':
     subprocess.run(['ditto', '-c', '-k', '--sequesterRsrc', '--keepParent', str(bundle),

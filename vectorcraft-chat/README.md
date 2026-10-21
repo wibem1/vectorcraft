@@ -43,7 +43,7 @@ Test hosts: Windows Server 2025 x64 with DX12 software rendering, macOS 15.7.9 I
 
 ## Standalone candidate builds in progress
 
-The [frozen package workflow](../../.github/workflows/vectorcraft-chat-packages.yml)
+The [frozen package workflow](../.github/workflows/vectorcraft-chat-packages.yml)
 bundles Python/Tk, Chat, the actual native engine and its CLI on Windows x64 and
 macOS Intel. Candidates must pass the real native suite from their own frozen
 process, automatic binary discovery, actual public OpenRouter HTTPS and HTTP 401

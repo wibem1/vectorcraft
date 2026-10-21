@@ -6,7 +6,6 @@ from pathlib import Path
 import sys
 import traceback
 from unittest.mock import patch
-import vectorcraft_chat as app
 
 
 def self_test(output):
@@ -53,7 +52,18 @@ def self_test(output):
 
 if __name__ == '__main__':
     if len(sys.argv) == 3 and sys.argv[1] == '--self-test':
-        raise SystemExit(self_test(sys.argv[2]))
+        output = Path(sys.argv[2]).resolve()
+        output.mkdir(parents=True, exist_ok=True)
+        with (output/'bootstrap.log').open('w', encoding='utf-8') as log:
+            with contextlib.redirect_stdout(log), contextlib.redirect_stderr(log):
+                try:
+                    import vectorcraft_chat as app
+                    code = self_test(output)
+                except Exception:
+                    traceback.print_exc(file=log)
+                    code = 1
+        raise SystemExit(code)
+    import vectorcraft_chat as app
     root = app.tk.Tk()
     app.ttk.Style().theme_use('clam')
     app.App(root)

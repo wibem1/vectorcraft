@@ -1,8 +1,8 @@
 # VectorCraft Chat – TODO
 
-## Aktiver Schritt: echte native Windows-/macOS-Prüfung
+## Abgeschlossener Schritt: echte native Windows-/macOS-Prüfung
 
-TODO vor Änderung und Build gelesen. Neuer nativer Workflow kompiliert GUI und CLI und führt Start bei geschlossenem Programm, Wiederverwendung, erste Dokumentvorbereitung, Dreieck/ID/30°/Folgeänderung, echten OS-Startfehler, Schlüssel-Rundlauf/Löschen, Provider-HTTP-Fixture und Diagnose aus. Windows-CLI ohne Konsolenfenster; macOS mit isoliertem echtem Test-Keychain. Lokal 58 von 62 Tests bestanden, vier Spezialtests ausdrücklich ausgelagert. Native Ergebnisse stehen aus; Plattform-Checkbox bleibt offen. Keine Veröffentlichung. Details: [Plattformprotokoll](docs/PLATFORMS-2026-10-21.md).
+TODO vor Änderung, Build und Abschluss geprüft. Native Windows-/macOS-Integration, Linux-Regressionen, echte DPAPI-/Keychain-CRUD und getrennte Desktop-Layoutprüfung erfolgreich; vollständige Logs, Berichte und Bilder geprüft. Positiver Live-OpenRouter-Test bleibt mangels CI-Schlüssel offen. Keine Veröffentlichung. Details: [Plattformprotokoll](docs/PLATFORMS-2026-10-21.md).
 
 ## Verbindliche Regel für jedes neue Update
 
@@ -26,10 +26,10 @@ TODO vor Änderung und Build gelesen. Neuer nativer Workflow kompiliert GUI und 
 - [x] Erreichbarkeit und tatsächliche Protokollantwort abwarten, dann erst die Konstruktionsfunktionen freigeben.
 - [x] Kompakten Verbindungsstatus und Schaltfläche **„VectorCraft starten / verbinden“** anbieten.
 - [x] Bei fehlendem Programm, blockiertem Port, Zeitüberschreitung oder Verbindungsabbruch verständliche Fehler anzeigen und eine speicherbare Diagnose ermöglichen.
-- [ ] Windows- und macOS-Tests inklusive Start bei geschlossenem VectorCraft, vorhandener Instanz und fehlgeschlagenem Start automatisieren.
+- [x] Windows- und macOS-Tests inklusive Start bei geschlossenem VectorCraft, vorhandener Instanz und fehlgeschlagenem Start automatisieren (tatsächliche native CI: Windows Server 2025 x64 und macOS 15.7.9 Intel).
 - [x] Kein separates BAT- oder offenes Konsolenfenster als Voraussetzung. Die Chat-App ist der einzige Einstiegspunkt.
 
-**Status:** implementiert; echter nativer Linux-Start unter OpenGL und Vulkan erfolgreich geprüft. Windows/macOS-Lifecycle-Regressionen bestanden; echte native Prozessintegration dieser beiden Plattformen bleibt offen. Keine vollständige Release-Freigabe.
+**Status:** implementiert und tatsächlich unter Windows, macOS Intel und Linux geprüft; Referenzstand 1df86ea1, native Plattformintegration 39672716335 und Linux-Lauf 39672716402 erfolgreich. Pakete, positiver Live-OpenRouter-Auftrag und garantierte Kostenobergrenze bleiben offen. Keine vollständige Release-Freigabe.
 
 ## Weitere offene Hauptaufgaben
 
@@ -37,7 +37,7 @@ TODO vor Änderung und Build gelesen. Neuer nativer Workflow kompiliert GUI und 
 - [x] Echten Headless-Engine-Test für Dreieck → Objekt-ID → Drehung in GitHub Actions erfolgreich ausführen und Logs prüfen.
 - [ ] Freie KI-Konstruktionsaufträge robust und schemavalidiert in native VectorCraft-Aktionen überführen.
 - [x] Interaktive Nachbearbeitung und Erhalt manueller Änderungen nachweisen (geprüfte Dreieck-/Transformationsfolge; freie Konstruktionen bleiben separat offen).
-- [ ] Dynamische Modellauswahl, sichere API-Key-Speicherung und Diagnose im Betrieb prüfen.
+- [x] Dynamische Modellauswahl, API-Key-Speicherung und Diagnose im Betrieb prüfen (native Integration mit HTTP-Fixture; echte DPAPI-/isolierte Keychain-CRUD und Linux-Datei; positiver Live-OpenRouter-Auftrag bleibt separat offen).
 - [ ] Kostengrenze 0,10 € pro Auftrag technisch zuverlässig absichern.
 
 ## Prüfung dieses Entwicklungsschritts, 21.10.2026
@@ -146,3 +146,25 @@ TODO vor CI-Änderung gelesen. Ein separater Workflow prüft einen gegebenenfall
 ## Getrennte native Layoutprüfung
 
 TODO vor Ergänzung gelesen. Windows-Integration 39672716335 / 119474489253 ist tatsächlich erfolgreich; vollständige Logs und JSON gelesen, native Dreiecksgeometrie auch im Bild sichtbar. Das vordere VectorCraft-Fenster verdeckt dort jedoch Chat. Ein schneller eigener Desktop-Workflow prüft deshalb die echte App-Klasse mit Produktions-Theme und isoliertem Profil in ihrem getrennt gekennzeichneten Anfangszustand, maskiertes Key-Feld und sichtbare/ungeclippte Hauptbedienelemente. Anheben ausschließlich für die Testaufnahme. Keine Engine- oder Provider-Aufrufe in diesem Layouttest; er ersetzt keinen nativen Funktionstest. Anwendungscode und bereits bestandene Windows-Assertions bleiben unverändert. macOS-GUI-Build noch ausstehend. Aufnahmeergebnis nach tatsächlicher Ausführung ergänzen.
+
+## Verifizierter Abschluss: native Plattformen und Oberfläche
+
+TODO vor Abschluss erneut gelesen. Anwendungsstand `1df86ea1bea85a70b9933ea8783498d981262698` ist auf allen drei geprüften Plattformen erfolgreich. Die danach übernommenen Änderungen betreffen ausschließlich CI und Dokumentation; Anwendungs-/Engine-Quellcode ist unverändert. Version bleibt **0.3.1-dev**, keine Veröffentlichung.
+
+| Prüfung | Tatsächliches Ergebnis |
+|---|---|
+| [Native Windows-/macOS-Integration 39672716335](https://github.com/wibem1/vectorcraft/actions/runs/39672716335) | Beide Jobs **SUCCESS**; vollständige Logs gelesen |
+| Windows 119474489253 | Server 2025 x64, echter DX12-Softwareadapter; 62 Regressionen (58 bestanden, 4 getrennte Spezialtests) und echter nativer GUI-Test bestanden |
+| macOS 119474489807 | macOS 15.7.9 Intel, echter Metal-Adapter; 62 Regressionen (57 bestanden, 5 getrennte Spezialtests) und echter nativer GUI-Test bestanden |
+| [Linux 39672716402](https://github.com/wibem1/vectorcraft/actions/runs/39672716402) | Headless-Geometrie, Tk, beide nativen Renderer OpenGL/Vulkan einschließlich neuem OS-Fehlerpfad bestanden |
+| [Echte Schlüsselspeicher 39673786475](https://github.com/wibem1/vectorcraft/actions/runs/39673786475) | Windows-DPAPI und isolierter tatsächlicher macOS-Keychain: Speichern/Lesen/Aktualisieren/Löschen **PASS** |
+| [Desktop-Layout 39677833630](https://github.com/wibem1/vectorcraft/actions/runs/39677833630) | Windows und macOS **PASS**, beide PNGs tatsächlich visuell geprüft |
+| [Positiver Live-OpenRouter-Test 39673176326](https://github.com/wibem1/vectorcraft/actions/runs/39673176326) | **NOT_CONFIGURED**, kein Repository-Testschlüssel, keine Completion gesendet |
+
+In beiden echten nativen Plattformläufen: genau ein gestarteter VectorCraft-Prozess, bestätigtes Steuerprotokoll, erstes Dokument automatisch vorbereitet, laufende Instanz wiederverwendet und bestehendes Dokument erhalten. Dreieck **ID 2**, drei geschlossene Anker, **30°**, nach Abwahl weitere native Bewegung **(17, -11)** bei gleicher Identität. Tatsächlicher OS-Startfehler einer ungültigen ausführbaren Datei geprüft; keine Prozesssimulation. Windows-MCP-Brücken werden tatsächlich mit CREATE_NO_WINDOW gestartet. Reale App-Funktionen prüfen Modellwahl, gespeicherten Schlüssel, frischen Objektkontext, Diagnose und Kostenbuchung gemeinsam mit echter TCP/MCP-Engine und lokaler HTTP-Provider-Fixture: drei HTTP-Anfragen, 0,0002 USD Fixture-Buchung, **0 USD externe Modellkosten**.
+
+Die kombinierten nativen Bildschirmaufnahmen zeigen das vordere VectorCraft-Fenster und verdecken Chat teilweise. Sie werden ausdrücklich nicht als unverdeckte Chat-Layoutprüfung gewertet. Der separate schnelle Layoutlauf startet dieselbe App-Klasse mit Produktions-Theme und isoliertem Profil im klar bezeichneten unverbundenen Anfangszustand, hebt sie für die Aufnahme an, prüft sichtbare Bedienelemente innerhalb der Fenstergrenzen und das maskierte Key-Feld. Beide unverdeckten 540×490-PNGs sind angesehen. Dieser Layouttest ruft weder Engine noch Provider auf und ersetzt keinen nativen Funktionstest.
+
+Alle genannten JSON-/PNG-Artefakte wurden heruntergeladen; SHA256 stimmt mit GitHub-Metadaten überein. Dauerhafter zusammengeführter Nachweis: [native-platforms.json](docs/test-results/2026-10-21-native-platforms.json). Die öffentliche Modellliste und HTTP-401 wurden im Linux-Job 119474489171 ebenfalls tatsächlich geprüft (16 Provider-Tests PASS); positive Modellantworten bleiben HTTP-Fixtures. Private Login-Keychains wurden absichtlich nicht verändert; der frühere fehlende Nachweis tatsächlicher macOS-Schlüsselspeicherung ist durch den isolierten echten OS-Keychain-Test abgedeckt.
+
+Offen bleiben installierbare Chat-Pakete, ein positiver Live-Auftrag mit gültigem CI-Key, allgemeine freie Konstruktionen und eine garantierte providerseitige 0,10-€-Kostengrenze. Die geprüften Runner ersetzen keine Zusage für jede Windows-/Mac-Hardware; Apple Silicon und persönliche Windows-11-Installationen wurden hier nicht nativ ausgeführt. Das bestehende macOS-GUI-Paket liefert die CLI separat als ZIP; ein vollständiges Chat-Paket muss die Bridge mitbringen oder ihre Installation eindeutig prüfen. Erstbuildzeiten wurden mit 28m04s (Windows) und 33m58s (Mac) gemessen; Wiederverwendung nachgewiesen identischer Engine-Binaries ist ein künftiger CI-Optimierungspunkt. Kein Test wurde wegen Laufzeit entfernt.

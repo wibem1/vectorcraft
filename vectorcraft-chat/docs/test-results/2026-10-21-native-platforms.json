@@ -1,0 +1,248 @@
+{
+  "application_source": "1df86ea1bea85a70b9933ea8783498d981262698",
+  "native_run": "https://github.com/wibem1/vectorcraft/actions/runs/39672716335",
+  "complete_job_logs_read": true,
+  "windows": {
+    "job": 119474489253,
+    "status": "PASS",
+    "environment": "Windows Server 2025 x64 (GitHub windows-latest)",
+    "renderer": "Microsoft Basic Render Driver (Dx12, Cpu)",
+    "build_time": "28m 04s",
+    "artifact": 12382168004,
+    "artifact_sha256": "f386031e49fdc5a2e875db0929809e3c8536c2119a3dbda6bc0a132cc866bce6",
+    "report": {
+      "status": "PASS",
+      "platform": "win32",
+      "transport": "actual native TCP and CLI MCP --connect",
+      "provider": "local HTTP fixture using actual OpenRouter request/response code; no paid live completion",
+      "native_launches": 1,
+      "port": 49383,
+      "triangle_id": 2,
+      "node": {
+        "anchors": 3,
+        "bounds": {
+          "height": 181.86550109604903,
+          "width": 157.50057608466068,
+          "x": 277.62471195766966,
+          "y": 154.55049945197547
+        },
+        "closed": true,
+        "fill": "#bcdfea",
+        "id": 2,
+        "kind": "Path",
+        "locked": false,
+        "name": "<Path>",
+        "rotation": 29.999999999999996,
+        "stroke": "#263e56",
+        "strokeOptions": {
+          "align": "center",
+          "alignDashes": false,
+          "arrowAlign": "extend",
+          "cap": "butt",
+          "dash": null,
+          "dashOffset": 0,
+          "endArrow": null,
+          "gradientMode": "within",
+          "join": "miter",
+          "miterLimit": 10,
+          "profile": "uniform",
+          "startArrow": null,
+          "widthPoints": null
+        },
+        "strokeWidth": 2,
+        "visible": true
+      },
+      "fixture_accounted_cost_usd": 0.0002,
+      "actual_provider_charge_usd": 0,
+      "provider_http_requests": 3,
+      "os_rejected_invalid_executable": true,
+      "key_store": "actual Windows DPAPI",
+      "secret_roundtrip_and_delete": true
+    }
+  },
+  "macos": {
+    "job": 119474489807,
+    "status": "PASS",
+    "environment": "macOS 15.7.9 Intel (GitHub macos-15-intel)",
+    "renderer": "Apple Paravirtual device (Metal)",
+    "build_time": "33m 58s",
+    "artifact": 12381148368,
+    "artifact_sha256": "ace237eef3bc71242b97a4fcef8138311e89de85b5a6a370c2c9483f5df1c789",
+    "report": {
+      "status": "PASS",
+      "platform": "darwin",
+      "transport": "actual native TCP and CLI MCP --connect",
+      "provider": "local HTTP fixture using actual OpenRouter request/response code; no paid live completion",
+      "native_launches": 1,
+      "port": 49246,
+      "triangle_id": 2,
+      "node": {
+        "anchors": 3,
+        "bounds": {
+          "height": 181.86550109604903,
+          "width": 157.50057608466068,
+          "x": 277.62471195766966,
+          "y": 154.55049945197547
+        },
+        "closed": true,
+        "fill": "#bcdfea",
+        "id": 2,
+        "kind": "Path",
+        "locked": false,
+        "name": "<Path>",
+        "rotation": 29.999999999999996,
+        "stroke": "#263e56",
+        "strokeOptions": {
+          "align": "center",
+          "alignDashes": false,
+          "arrowAlign": "extend",
+          "cap": "butt",
+          "dash": null,
+          "dashOffset": 0,
+          "endArrow": null,
+          "gradientMode": "within",
+          "join": "miter",
+          "miterLimit": 10,
+          "profile": "uniform",
+          "startArrow": null,
+          "widthPoints": null
+        },
+        "strokeWidth": 2,
+        "visible": true
+      },
+      "fixture_accounted_cost_usd": 0.0002,
+      "actual_provider_charge_usd": 0,
+      "provider_http_requests": 3,
+      "os_rejected_invalid_executable": true,
+      "key_store": "isolated actual macOS Keychain",
+      "secret_roundtrip_and_delete": true
+    }
+  },
+  "linux": {
+    "run": 39672716402,
+    "job": 119474488874,
+    "status": "PASS",
+    "renderers": [
+      "OpenGL",
+      "Vulkan"
+    ],
+    "artifact": 12380269574,
+    "artifact_sha256": "c375e34aa49a8f5a9589562ee4d45c6c1c0c918b1250de4dcab8113a6f79e81c",
+    "report": {
+      "status": "PASS",
+      "platform": "linux",
+      "transport": "actual native TCP and CLI MCP --connect",
+      "provider": "local HTTP fixture using actual OpenRouter request/response code; no paid live completion",
+      "native_launches": 1,
+      "port": 43673,
+      "triangle_id": 2,
+      "node": {
+        "anchors": 3,
+        "bounds": {
+          "height": 181.86550109604903,
+          "width": 157.50057608466068,
+          "x": 277.62471195766966,
+          "y": 154.55049945197547
+        },
+        "closed": true,
+        "fill": "#bcdfea",
+        "id": 2,
+        "kind": "Path",
+        "locked": false,
+        "name": "<Path>",
+        "rotation": 29.999999999999996,
+        "stroke": "#263e56",
+        "strokeOptions": {
+          "align": "center",
+          "alignDashes": false,
+          "arrowAlign": "extend",
+          "cap": "butt",
+          "dash": null,
+          "dashOffset": 0,
+          "endArrow": null,
+          "gradientMode": "within",
+          "join": "miter",
+          "miterLimit": 10,
+          "profile": "uniform",
+          "startArrow": null,
+          "widthPoints": null
+        },
+        "strokeWidth": 2,
+        "visible": true
+      },
+      "fixture_accounted_cost_usd": 0.0002,
+      "actual_provider_charge_usd": 0,
+      "provider_http_requests": 3,
+      "os_rejected_invalid_executable": true,
+      "key_store": "restricted Linux file",
+      "secret_roundtrip_and_delete": true
+    }
+  },
+  "desktop_layout": {
+    "run": 39677833630,
+    "source": "2c39c8cb151466579969b5a3603a8922803f958f",
+    "screenshots_visually_inspected": true,
+    "production_theme": "clam",
+    "windows": {
+      "job": 119492219696,
+      "artifact": 12382403312,
+      "sha256": "68fab5b65ddad3330e513955116746da19565ad6343537a0edcece2efb9b4fb8",
+      "report": {
+        "status": "PASS",
+        "platform": "win32",
+        "app_version": "0.3.1-dev",
+        "logical_size": [
+          540,
+          490
+        ],
+        "raised_for_capture": true,
+        "required_controls_visible_and_within_window": true,
+        "key_field_masked": true,
+        "state": "disconnected initial App",
+        "engine_actions_executed": false,
+        "provider_requests": 0
+      }
+    },
+    "macos": {
+      "job": 119492219346,
+      "artifact": 12382673041,
+      "sha256": "d0df80b6f02b7039ddf536ddab30442aaf45bb7d40485f8254cb7b246b95904d",
+      "report": {
+        "status": "PASS",
+        "platform": "darwin",
+        "app_version": "0.3.1-dev",
+        "logical_size": [
+          540,
+          490
+        ],
+        "raised_for_capture": true,
+        "required_controls_visible_and_within_window": true,
+        "key_field_masked": true,
+        "state": "disconnected initial App",
+        "engine_actions_executed": false,
+        "provider_requests": 0
+      }
+    }
+  },
+  "os_key_stores": {
+    "run": 39673786475,
+    "windows": "PASS actual DPAPI store/read/update/delete",
+    "macos": "PASS isolated actual Keychain store/read/update/delete",
+    "login_keychain_used": false
+  },
+  "openrouter_live": {
+    "run": 39673176326,
+    "status": "NOT_CONFIGURED",
+    "completion_requests": 0,
+    "reason": "No repository OPENROUTER_API_KEY"
+  },
+  "limitations": [
+    "Positive provider completions in native integration use local HTTP fixture.",
+    "Desktop layout snapshots are separate initial-state actual App windows, with no engine/provider calls.",
+    "Combined native-flow screen capture is occluded by VectorCraft; it does not establish an unobscured Chat view.",
+    "Actual user Windows 11 hardware and Apple Silicon are not covered by these specific CI hosts.",
+    "Installable Chat packages, positive live OpenRouter completion, general free-form constructions and provider-enforced EUR cap remain open."
+  ],
+  "release": false,
+  "version": "0.3.1-dev"
+}

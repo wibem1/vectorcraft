@@ -212,3 +212,10 @@ Native Änderungen erzwingen Neubuild. Jeder Paketkandidat führt unabhängig vo
 Cache weiterhin die echte native Engine-Suite aus. Damit sollen reine
 Python-Paketkorrekturen nicht erneut vollständige Rust-Links erfordern.
 Grundlage: https://github.com/actions/cache (getrennte restore/save Actions).
+
+Überholte Paketläufe begrenzt: Neuer Kandidatenlauf beendet ausschließlich
+ältere Läufe desselben Paket-Workflows auf demselben Branch; Headless- und native
+Quelltests bleiben erhalten. Eigenes kleines Ubuntu-Job mit actions:write nur
+für diesen Abbruch; native Buildjobs bleiben contents:read. Künftige Läufe
+verwenden zusätzlich dieselbe Concurrency-Gruppe. So blockieren bekannte alte
+Icon-/Bootstrap-Varianten keine Windows-/Mac-Runner für die Korrektur.

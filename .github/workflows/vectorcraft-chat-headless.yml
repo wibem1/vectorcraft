@@ -3,7 +3,8 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'vectorcraft-chat/**'
+      - 'vectorcraft-chat/*.py'
+      - 'vectorcraft-chat/tests/**'
       - '.github/workflows/vectorcraft-chat-headless.yml'
 jobs:
   headless:
@@ -15,8 +16,12 @@ jobs:
         with:
           toolchain: '1.95.0'
       - uses: Swatinem/rust-cache@v2
-      - name: Compile actual VectorCraft MCP CLI
-        run: cargo build --locked --release -p vectorcraft-cli
+      - name: Native GUI dependencies and virtual display
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libegl1 mesa-vulkan-drivers xvfb xauth imagemagick
+      - name: Compile actual native VectorCraft and MCP CLI
+        run: cargo build --locked --release -p vectorcraft -p vectorcraft-cli
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -31,6 +36,14 @@ jobs:
           PYTHONPATH: vectorcraft-chat
           VC_CHAT_REAL_CLI: target/release/vectorcraft-cli
         run: xvfb-run -a python -m unittest discover -s vectorcraft-chat/tests -p test_ui_real_engine.py -v
+      - name: Chat starts actual native VectorCraft and edits through real TCP/MCP
+        timeout-minutes: 4
+        env:
+          PYTHONPATH: vectorcraft-chat
+          VC_CHAT_NATIVE_APP: target/release/vectorcraft
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          WGPU_BACKEND: vulkan
+        run: xvfb-run -a python -m unittest discover -s vectorcraft-chat/tests -p test_native_startup.py -v
       - name: Preserve real engine evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -39,4 +52,6 @@ jobs:
           path: |
             headless-report.json
             headless-triangle.png
+            native-startup-report.json
+            native-chat.png
           if-no-files-found: warn

@@ -27,6 +27,7 @@ class ActualEngineUITests(unittest.TestCase):
                 for key,value in {'APP_DIR':base,'SETTINGS':base/'settings.json','HISTORY':base/'history.json','COSTS':base/'costs.json','KEY_FILE':base/'key'}.items():
                     stack.enter_context(patch.object(app,key,value))
                 stack.enter_context(patch.object(app,'control',side_effect=control))
+                stack.enter_context(patch.object(app,'ensure_connection',return_value={'catalog':[{'id':'object.move'}],'started':False,'path':None,'process':None}))
                 stack.enter_context(patch.object(app,'MCPClient',side_effect=lambda *a,**k:contextlib.nullcontext(client)))
                 stack.enter_context(patch.object(app,'mcp_executable',return_value='actual-engine-injected'))
                 stack.enter_context(patch.object(app.messagebox,'askyesno',return_value=True))
@@ -34,7 +35,7 @@ class ActualEngineUITests(unittest.TestCase):
                 stack.enter_context(patch.object(app,'model_catalog',return_value=prices))
                 root=app.tk.Tk()
                 try:
-                    gui=app.App(root);root.update()
+                    gui=app.App(root,auto_connect=False);root.update()
                     self.assertGreaterEqual(root.winfo_width(),420)
                     self.assertGreaterEqual(root.winfo_height(),360)
                     def wait():

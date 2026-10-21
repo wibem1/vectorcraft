@@ -2,7 +2,9 @@ name: VectorCraft Chat regression and provider checks
 on:
   push:
     paths:
-      - 'vectorcraft-chat/**'
+      - 'vectorcraft-chat/*.py'
+      - 'vectorcraft-chat/*.vbs'
+      - 'vectorcraft-chat/tests/**'
       - '.github/workflows/vectorcraft-chat-core.yml'
   workflow_dispatch:
 jobs:

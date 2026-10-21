@@ -6,6 +6,7 @@ from pathlib import Path
 from datetime import datetime
 from engine_session import create_triangle, transform_object
 from cost_control import admit, money
+from app_connection import ensure_connection, MissingApplication, command_ids, normalize_executable
 
 APP_DIR = Path.home()/'.vectorcraft-chat'
 SETTINGS = APP_DIR/'settings.json'
@@ -131,6 +132,11 @@ def mcp_executable():
     guesses = [custom] if custom else []
     if sys.platform == 'win32':
         guesses += [str(Path(os.getenv('ProgramFiles', r'C:\Program Files'))/'VectorCraft'/'vectorcraft-cli.exe')]
+    selected=normalize_executable(read_json(SETTINGS,{}).get('vectorcraft_app'))
+    if selected:
+        guesses += [str(selected.parent/('vectorcraft-cli.exe' if sys.platform=='win32' else 'vectorcraft-cli'))]
+    if getattr(sys,'frozen',False):
+        guesses += [str(Path(sys.executable).parent/('vectorcraft-cli.exe' if sys.platform=='win32' else 'vectorcraft-cli'))]
     guesses += [shutil.which('vectorcraft-cli') or '']
     return next((p for p in guesses if p and Path(p).is_file()), None)
 
@@ -301,7 +307,7 @@ def stored_spend():
     return float(money(value['spent_usd']))
 
 class App:
-    def __init__(self,root):
+    def __init__(self,root,auto_connect=True):
         self.root=root; root.title('VectorCraft Chat '+APP_VERSION); root.geometry('540x490');root.minsize(420,360)
         self.settings=read_json(SETTINGS,{'model':'google/gemini-2.5-flash','port':7979,'max_eur':0.10,'usd_to_eur':0.92});self.messages=read_json(HISTORY,[])
         self.pending=[];self.last_triangle_id=None;self.command_ids=set();self.busy=False;self.q=queue.Queue();self.session_spend_usd=0.0;self.cost_error=''
@@ -311,6 +317,7 @@ class App:
         self.port=tk.StringVar(value=str(self.settings.get('port',7979)))
         self.key=tk.StringVar(value=os.getenv('OPENROUTER_API_KEY') or load_secret())
         self.models=[];self.last_error='';self.last_operation='';self.total_usage=[]
+        self.connected=False;self.connected_port=None;self.active_job='';self.native_process=None
         self.budget=tk.StringVar(value=str(self.settings.get('max_eur',0.10)))
         root.columnconfigure(0,weight=1)
         root.rowconfigure(1,weight=1)
@@ -326,7 +333,8 @@ class App:
         ttk.Entry(settings,textvariable=self.port,width=7).grid(row=2,column=1,sticky='w',pady=2)
         ttk.Label(settings,text='Budget €').grid(row=2,column=2,sticky='e',padx=(8,4),pady=2)
         ttk.Entry(settings,textvariable=self.budget,width=7).grid(row=2,column=3,sticky='w',pady=2)
-        ttk.Button(settings,text='Verbindung prüfen',command=self.inspect).grid(row=3,column=0,columnspan=3,sticky='ew',pady=(3,4))
+        self.connect_button=ttk.Button(settings,text='VectorCraft starten / verbinden',command=self.connect)
+        self.connect_button.grid(row=3,column=0,columnspan=3,sticky='ew',pady=(3,4))
         ttk.Button(settings,text='Diagnose speichern',command=self.export_diagnostic).grid(row=3,column=3,sticky='e',padx=(3,0))
         self.chat=scrolledtext.ScrolledText(root,wrap='word',state='disabled',font=('Segoe UI',10),padx=10,pady=7,width=1,height=1); self.chat.grid(row=1,column=0,sticky='nsew',padx=7,pady=(0,3))
         self.chat.tag_config('user',foreground='#2576b7');self.chat.tag_config('assistant',foreground='#24815c');self.chat.tag_config('system',foreground='#8b6b18')
@@ -340,22 +348,43 @@ class App:
         for m in self.messages[-50:]: self.write(m['role'],m['content'])
         root.after(100,self.pump)
         root.protocol('WM_DELETE_WINDOW',self.close)
+        self.send_button.config(state='disabled')
+        if auto_connect:root.after(200,self.connect)
     def write(self,role,text):
         self.chat.configure(state='normal');self.chat.insert('end', {'user':'Du','assistant':'KI','system':'VectorCraft'}.get(role,role)+': ',role);self.chat.insert('end',text+'\n\n');self.chat.configure(state='disabled');self.chat.see('end')
     def task(self,fn):
         if self.busy:return
-        self.busy=True;self.send_button.config(state='disabled');self.exec_button.config(state='disabled')
+        self.busy=True;self.send_button.config(state='disabled');self.exec_button.config(state='disabled');self.connect_button.config(state='disabled')
         threading.Thread(target=lambda:self.runner(fn),daemon=True).start()
     def runner(self,fn):
         try: self.q.put(('ok',fn()))
+        except (ConnectionError,socket.timeout) as e:self.q.put(('connection_error',str(e)))
         except Exception as e:self.q.put(('error',str(e)))
     def pump(self):
         try:
             while True:
-                kind,payload=self.q.get_nowait();self.busy=False;self.send_button.config(state='normal')
-                if kind=='error':
+                kind,payload=self.q.get_nowait();self.busy=False;self.send_button.config(state='normal' if self.connected else 'disabled');self.connect_button.config(state='normal')
+                if kind in ('error','connection_error'):
+                    if self.active_job=='connect' or kind=='connection_error':
+                        self.connected=False;self.command_ids=set();self.pending=[];self.send_button.config(state='disabled')
                     self.last_error=safe_error(payload);event('error',self.last_error)
                     self.write('system','Fehler: '+self.last_error);self.status.set('Fehler – Diagnose speichern möglich')
+                elif isinstance(payload,tuple) and payload[0]=='choose_application':
+                    self.active_job='';self.connected=False;self.status.set(payload[1]);self.write('system',payload[1])
+                    selected=filedialog.askopenfilename(title='Installiertes VectorCraft auswählen',filetypes=[('VectorCraft','*.exe *.app'),('Alle Dateien','*')])
+                    if selected:
+                        self.settings['vectorcraft_app']=selected;save_json(SETTINGS,self.settings)
+                        self.root.after(0,self.connect)
+                elif isinstance(payload,tuple) and payload[0]=='connected':
+                    _,result,port=payload
+                    self.connected=True;self.connected_port=port;self.active_job='';self.command_ids=command_ids(result['catalog'])
+                    self.native_process=result.get('process') or self.native_process
+                    if result.get('path'):
+                        self.settings['vectorcraft_app']=result['path'];save_json(SETTINGS,self.settings)
+                    self.send_button.config(state='normal');self.last_error=''
+                    self.status.set('Verbunden · VectorCraft '+('gestartet' if result['started'] else 'bereits geöffnet'))
+                    self.write('system','VectorCraft ist verbunden. Du kannst mit der Konstruktion beginnen.')
+                    event('connection_ready',f'port={port}; started={result["started"]}; commands={len(self.command_ids)}')
                 elif isinstance(payload,tuple) and payload[0]=='chat':
                     _,text,actions,usage=payload;self.write('assistant',text)
                     self.messages.append({'role':'assistant','content':text});save_json(HISTORY,self.messages)
@@ -386,20 +415,28 @@ class App:
     def export_diagnostic(self):
         path=filedialog.asksaveasfilename(title='Diagnose speichern',defaultextension='.json',filetypes=[('JSON-Diagnose','*.json')],initialfile='VectorCraft-Chat-Diagnose-'+datetime.now().strftime('%Y%m%d-%H%M%S')+'.json')
         if not path:return
-        doc={'app_version':APP_VERSION,'timestamp':datetime.now().astimezone().isoformat(),'platform':sys.platform,'python':sys.version.split()[0], 'settings':{'model':self.model.get(),'port':self.port.get(),'max_eur':self.budget.get(),'key_present':bool(self.key.get().strip()),'key_saved':bool(load_secret())},'connection_command_count':len(self.command_ids),'models_loaded':len(self.models),'last_error':self.last_error,'events':DIAG_EVENTS[-100:],'usage':self.total_usage[-30:],'pending_action_count':len(self.pending),'accounted_cost_usd':self.session_spend_usd,'cost_error':self.cost_error,'cost_policy':'conservative estimate; unresolved usage retains reservation; no provider-enforced EUR cap','history_messages':len(self.messages),'notes':'Keine API-Keys, keine Prompt-Texte und keine Dokumentinhalte gespeichert. Keine automatische Übertragung.'}
+        doc={'app_version':APP_VERSION,'timestamp':datetime.now().astimezone().isoformat(),'platform':sys.platform,'python':sys.version.split()[0], 'settings':{'model':self.model.get(),'port':self.port.get(),'max_eur':self.budget.get(),'key_present':bool(self.key.get().strip()),'key_saved':bool(load_secret())},'connection_ready':self.connected,'connected_port':self.connected_port,'native_app_configured':bool(self.settings.get('vectorcraft_app')),'connection_command_count':len(self.command_ids),'models_loaded':len(self.models),'last_error':self.last_error,'events':DIAG_EVENTS[-100:],'usage':self.total_usage[-30:],'pending_action_count':len(self.pending),'accounted_cost_usd':self.session_spend_usd,'cost_error':self.cost_error,'cost_policy':'conservative estimate; unresolved usage retains reservation; no provider-enforced EUR cap','history_messages':len(self.messages),'notes':'Keine API-Keys, keine Prompt-Texte und keine Dokumentinhalte gespeichert. Keine automatische Übertragung.'}
         Path(path).write_text(json.dumps(doc,ensure_ascii=False,indent=2),encoding='utf8')
         self.status.set('Diagnose gespeichert: '+Path(path).name)
-    def inspect(self):
-        self.save_settings()
-        port=int(self.port.get())
+    def connect(self):
+        if self.busy:return
+        try:port,_=validated_options(self.port.get(),self.budget.get())
+        except ValueError:
+            self.write('system','Bitte einen gültigen Port und ein positives Budget eintragen.');return
+        self.save_settings();self.connected=False;self.connected_port=None;self.command_ids=set();self.pending=[];self.last_triangle_id=None
+        self.active_job='connect';self.status.set('VectorCraft wird gesucht / verbunden …')
+        saved_path=self.settings.get('vectorcraft_app')
         def job():
-            doc=control('document.inspect',{'depth':1,'childLimit':10},port);catalog=control('engine.commands',{},port)
-            ids=self.extract_ids(catalog)
-            
-            artboards=doc.get('artboards',[]) if isinstance(doc,dict) else []
-            title=', '.join(str(a.get('name','ohne Namen')) for a in artboards[:3] if isinstance(a,dict))
-            return ('inspect','Verbindung erfolgreich. Dokument: '+(title or 'geöffnet')+'.',ids)
+            try:return ('connected',ensure_connection(port,APP_DIR,saved_path),port)
+            except MissingApplication as exc:return ('choose_application',str(exc))
         self.task(job)
+    def inspect(self):
+        # Retained as a compatibility alias; the primary button now handles launch and reuse.
+        self.connect()
+    def connection_matches(self):
+        try:port=int(self.port.get())
+        except ValueError:return False
+        return self.connected and self.connected_port==port
     @staticmethod
     def extract_ids(catalog):
         if isinstance(catalog,dict):
@@ -411,6 +448,9 @@ class App:
     def send(self):
         prompt=self.entry.get('1.0','end').strip()
         if not prompt:return
+        if not self.connection_matches():
+            self.write('system','Bitte zuerst VectorCraft starten / verbinden.');return
+        self.active_job='chat'
         key=self.key.get().strip()
         if not key and not (detect_triangle(prompt) or rotate_request_degrees(prompt) is not None):messagebox.showwarning('API-Key','Bitte OpenRouter API-Key eintragen.');return
         if self.busy:return
@@ -501,6 +541,9 @@ class App:
     def execute(self):
         actions=list(self.pending)
         if not actions or self.busy:return
+        if not self.connection_matches():
+            self.pending=[];self.exec_button.config(state='disabled');self.write('system','Verbindung nicht bestätigt. Bitte erneut verbinden.');return
+        self.active_job='execute'
         if not messagebox.askyesno('VectorCraft ändern?',f'{len(actions)} vorgeschlagene Aktionen in VectorCraft ausführen?\nVorher bitte das Dokument speichern.'):return
         self.pending=[]
         port=int(self.port.get())

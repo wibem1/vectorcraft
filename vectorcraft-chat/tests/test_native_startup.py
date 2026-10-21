@@ -1,6 +1,10 @@
 """Actual native GUI process, actual TCP, actual MCP bridge; no engine/control mocks."""
 import contextlib
 import json
+import http.server
+import threading
+import urllib.request
+import urllib.parse
 import os
 from pathlib import Path
 import socket
@@ -68,7 +72,68 @@ class NativeStartupTests(unittest.TestCase):
                 self.assertEqual(actual['anchors'],3);self.assertTrue(actual['closed'])
                 self.assertEqual(gui.session_spend_usd,0)
                 self.assertEqual(app.read_json(app.SETTINGS,{})['vectorcraft_app'],executable)
-                report={'status':'PASS','transport':'actual native TCP and CLI MCP --connect','native_launches':len(processes),'port':port,'triangle_id':target,'node':actual,'model_cost_usd':gui.session_spend_usd}
+                # Exercise the actual provider HTTP/JSON code and the native engine together.
+                # Only OpenRouter's remote endpoint is redirected to a local HTTP fixture.
+                # This is explicitly not a paid live OpenRouter completion.
+                requests=[]
+                model='fixture/native-integration'
+                answer='Verschieben <vc_actions>{"actions":[{"method":"engine.execute","params":{"command":"object.move","params":{"dx":17,"dy":-11}}}]}</vc_actions>'
+                class Provider(http.server.BaseHTTPRequestHandler):
+                    def log_message(self,*args):pass
+                    def reply(self,value):
+                        body=json.dumps(value).encode()
+                        self.send_response(200);self.send_header('Content-Type','application/json')
+                        self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
+                    def do_GET(self):
+                        requests.append(('GET',self.path,None,self.headers.get('Authorization')))
+                        self.reply({'data':[{'id':model,'context_length':200000,'pricing':{'prompt':'0.0000001','completion':'0.0000002'}}]})
+                    def do_POST(self):
+                        payload=json.loads(self.rfile.read(int(self.headers['Content-Length'])))
+                        requests.append(('POST',self.path,payload,self.headers.get('Authorization')))
+                        self.reply({'choices':[{'message':{'content':answer}}],'usage':{'cost':0.0002,'total_tokens':40}})
+                server=http.server.ThreadingHTTPServer(('127.0.0.1',0),Provider)
+                server.daemon_threads=True
+                thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+                original_urlopen=urllib.request.urlopen
+                def redirect(request,**kwargs):
+                    self.assertEqual(urllib.parse.urlsplit(request.full_url).netloc,'openrouter.ai')
+                    path=urllib.parse.urlsplit(request.full_url).path
+                    local=urllib.request.Request(f'http://127.0.0.1:{server.server_port}'+path,data=request.data,headers=dict(request.header_items()),method=request.get_method())
+                    return original_urlopen(local,**kwargs)
+                try:
+                    with patch.object(urllib.request,'urlopen',side_effect=redirect):
+                        gui.key.set('dummy-native-key');gui.store_key()
+                        self.assertEqual(app.load_secret(),'dummy-native-key')
+                        gui.refresh_models();wait(lambda:not gui.busy and gui.q.empty())
+                        self.assertEqual(gui.models,[model]);gui.model.set(model)
+                        gui.entry.insert('1.0','Verschiebe das Objekt etwas nach rechts');gui.send()
+                        wait(lambda:not gui.busy and gui.q.empty())
+                        self.assertEqual(len(gui.pending),1)
+                        post=[r for r in requests if r[0]=='POST']
+                        self.assertEqual(len(post),1)
+                        self.assertEqual(post[0][1],'/api/v1/chat/completions')
+                        self.assertEqual(post[0][2]['model'],model)
+                        self.assertEqual(post[0][2]['max_tokens'],2000)
+                        self.assertIn(str(target),post[0][2]['messages'][0]['content'])
+                        self.assertEqual(post[0][3],'Bearer dummy-native-key')
+                        before=actual['bounds']
+                        app.control('engine.execute',{'command':'select.set','params':{'ids':[]}},port)
+                        gui.execute();wait(lambda:not gui.busy and gui.q.empty())
+                        actual=app.control('engine.execute',{'command':'document.node','params':{'id':target,'summary':True}},port)
+                        self.assertEqual(gui.last_triangle_id,target)
+                        self.assertAlmostEqual(actual['rotation'],30)
+                        self.assertAlmostEqual(actual['bounds']['x']-before['x'],17)
+                        self.assertAlmostEqual(actual['bounds']['y']-before['y'],-11)
+                        self.assertAlmostEqual(gui.session_spend_usd,0.0002)
+                        self.assertAlmostEqual(app.stored_spend(),0.0002)
+                        diagnostic=base/'diagnostic.json'
+                        with patch.object(app.filedialog,'asksaveasfilename',return_value=str(diagnostic)):
+                            gui.export_diagnostic()
+                        self.assertNotIn('dummy-native-key',diagnostic.read_text())
+                        self.assertEqual(json.loads(diagnostic.read_text())['settings']['model'],model)
+                finally:
+                    server.shutdown();server.server_close();thread.join(timeout=5)
+                report={'status':'PASS','transport':'actual native TCP and CLI MCP --connect','provider':'local HTTP fixture using actual OpenRouter request/response code; no paid live completion','native_launches':len(processes),'port':port,'triangle_id':target,'node':actual,'fixture_accounted_cost_usd':gui.session_spend_usd,'actual_provider_charge_usd':0,'provider_http_requests':len(requests)}
                 Path('native-startup-report.json').write_text(json.dumps(report,indent=2))
                 # Take the actual chat window for layout inspection; the X display is test-only.
                 root.update()

@@ -30,3 +30,11 @@ Die neue Version 0.2.0 wurde auf Basis des realen 0.1.3-Quellcodes erstellt. Das
 
 ### Historischer Bezug
 Siehe [Fehlerdiagnose v0.1.3](DIAGNOSE-2026-10-21.md).
+
+## Nachtrag: Praxistest vom 21.10.2026, 16:24 — FEHLGESCHLAGEN
+
+Die Nutzerdiagnose `VectorCraft-Chat-Diagnose-20261021-162358.json` belegt: `document.inspect` erfolgreich; Catalog 1.028 Commands, 22 ausgewählt, darunter `object.path.addAnchorPoints`, `select.object.openPaths`, `object.blend.spine.addAnchor` und `object.mesh.movePoint`. API-Aufruf erfolgreich: 3.217 Tokens und 0,00597375 USD. KI-Antwort mit 489 Zeichen, aber `action_parser: no action tag`; danach `no_actions` und `actions=0`. Kein VectorCraft-Zeichenbefehl ausgeführt. 0 dynamisch geladene Modelle.
+
+**Nachgewiesene Schwächen im Code:** Der Command-Selector basiert auf Teilwortwertung und priorisiert bei „Dreieck“ gerade Bearbeitungsbefehle für Anker/Pfade statt zwingend notwendige Pfaderstellung; der Handlungsparser akzeptiert ausschließlich einen speziellen XML-artigen Aktionsblock, ohne eine robuste alternative Tool-Calling-Schnittstelle. Das Ende-zu-Ende-Ziel wurde erneut verfehlt. **v0.2.0 NICHT als funktionsfähig bezeichnen.**
+
+**Nächste Entwicklungsbedingung:** zuerst den realen VectorCraft-Befehlskatalog nach Pfaderstellungsbefehlen und Parametern analysieren, gezielte kontraktbasierte Auswahl, echte Engine-Tests einschließlich Dreieck und Folgeänderung, erst danach neue öffentliche Testversion. Keine erneute Nutzer-Testversion allein auf Grundlage von Unit-Tests.

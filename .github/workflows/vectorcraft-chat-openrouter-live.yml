@@ -1,0 +1,76 @@
+name: VectorCraft Chat actual OpenRouter completion
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/vectorcraft-chat-openrouter-live.yml'
+permissions:
+  contents: read
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: One actual zero-price completion when test key exists
+        env:
+          PYTHONPATH: vectorcraft-chat
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          import vectorcraft_chat as app
+          from cost_control import money
+          report={'status':'NOT_CONFIGURED','provider':'actual OpenRouter','requests':0,'release_authorized':False}
+          path=Path('openrouter-live-report.json')
+          key=os.environ.get('OPENROUTER_API_KEY','').strip()
+          if not key:
+              path.write_text(json.dumps(report,indent=2))
+              print('NOT_CONFIGURED: no repository OPENROUTER_API_KEY; no completion sent, no live success claimed')
+          else:
+              try:
+                  catalog=app.model_catalog(key)
+                  candidates=[]
+                  for ident, model in catalog.items():
+                      pricing=model.get('pricing',{})
+                      if not ident.endswith(':free') or not isinstance(pricing,dict) or not {'prompt','completion'} <= pricing.keys():
+                          continue
+                      try:
+                          zero_price=all(money(value) == 0 for value in pricing.values())
+                      except ValueError:
+                          continue
+                      if not zero_price:
+                          continue
+                      architecture=model.get('architecture',{})
+                      if architecture.get('output_modalities') not in (None,['text']):
+                          continue
+                      candidates.append(ident)
+                  if not candidates:
+                      raise RuntimeError('No confirmed zero-price text model; request blocked')
+                  candidates.sort(key=lambda ident:('gemma' not in ident,ident))
+                  report.update(model=candidates[0],requests=1,status='REQUESTED',max_output_tokens=32)
+                  path.write_text(json.dumps(report,indent=2))
+                  answer,usage=app.api_chat(key,candidates[0],[{'role':'user','content':'Reply only with OK.'}],max_tokens=32)
+                  if not answer.strip():
+                      raise RuntimeError('Actual provider returned no visible answer')
+                  if usage.get('cost') is None or money(usage['cost']) != 0:
+                      raise RuntimeError('Provider did not confirm zero charge; no retry')
+                  report.update(status='PASS',actual_cost_usd=0,answer_chars=len(answer),total_tokens=usage.get('total_tokens'))
+                  print('PASS: actual OpenRouter completion; model='+candidates[0]+'; confirmed cost USD 0; no retry')
+              except Exception as exc:
+                  report.update(status='ERROR',error=app.safe_error(exc))
+                  raise RuntimeError(report['error']) from None
+              finally:
+                  path.write_text(json.dumps(report,indent=2))
+          PY
+      - name: Preserve actual live-test status (including missing key)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vectorcraft-chat-openrouter-live-evidence
+          path: openrouter-live-report.json
+          if-no-files-found: error

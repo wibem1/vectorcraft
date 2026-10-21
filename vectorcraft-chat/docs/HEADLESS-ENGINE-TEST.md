@@ -31,3 +31,10 @@ python3 vectorcraft-chat/tests/smoke_headless.py target/release/vectorcraft-cli
 ## Prüfung am 21.10.2026
 
 Die GitHub-Connector-Abfrage lieferte für den Workflow-Einrichtungscommit keine Commit-Status-Einträge und keine abrufbaren PR-Workflow-Läufe. **Das ist kein Beleg eines bestandenen oder gescheiterten Push-Workflows.** Eine Workflow-Dispatch-Funktion steht über die hier verbundene GitHub-Schnittstelle nicht zur Verfügung. Daher wird kein erfolgreicher Real-Engine-Test behauptet. Der Smoke-Test wurde um einen Vorher/Nachher-Vergleich des tatsächlichen Objektmodells nach `object.rotate` erweitert. Auch dieser erweiterte Test muss erst in GitHub Actions laufen.
+
+## Fortschritt bei GitHub-Actions-Prüfung, 21.10.2026
+
+- Der verbundene GitHub-Connector lieferte für Commit `178d9d5` keine Commit-Statusmeldungen; seine Workflow-Laufabfrage erfasst ausschließlich PR-Läufe. Daraus ist **kein** Urteil über den Push-Workflow möglich.
+- Der direkte Abruf der GitHub-Actions-API war in dieser Ausführungsumgebung nicht erreichbar; eine Workflow-Dispatch-Aktion ist durch die verbundene GitHub-Schnittstelle nicht verfügbar.
+- Der MCP-Smoke-Test wurde deshalb auf ungepufferte Binär-Pipe-Lesevorgänge mit eigenem Zeilenpuffer umgestellt, da `select` mit `TextIOWrapper.readline` ansonsten falsche Timeouts produzieren kann. Commit `e5e1ed7`.
+- **Ergebnis:** Kein echter Engine-Lauf verifiziert. Der Workflow wird durch Änderungen am Testskript erneut für Push-Ereignisse angefordert, aber ein erfolgreicher Lauf ist nicht belegt. Keine neue App-Freigabe.

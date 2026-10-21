@@ -85,3 +85,11 @@ TODO vor Implementierung und Build geprüft. Start/Verbindung, Instanzwiederverw
 - Vollständige native Folge und Provider-Fixture müssen auf diesem Stand erneut unter Actions bestehen. Kein Release.
 
 - TODO vor CI-Änderung gelesen. Rust-Cache um Workspace-Crates und einen getrennten Cache-Key erweitert (offizielles Action-Schema geprüft). Cargo-Build bleibt verpflichtend; unveränderter Rust-Code kann künftig wiederverwendet werden, statt ihn für jede Python-Korrektur vollständig neu zu übersetzen. Kein Test wird übersprungen.
+
+## Tatsächlich laufende Prüfung des korrigierten Dokumentstarts
+
+- Geprüfter Quellstand: `c97651bb02c67c842031e93df04327c089daa36a` (enthält Dokumentkorrektur `5f9b9e4f`).
+- [Native Integration 39663769616](https://github.com/wibem1/vectorcraft/actions/runs/39663769616), Job `119443285040`: beim letzten Abruf noch Rust-Kompilation; **noch kein Testerfolg**.
+- [Plattformprüfung 39663769551](https://github.com/wibem1/vectorcraft/actions/runs/39663769551): Linux `119443284998` und Windows `119443285327` erfolgreich. Je 62 Tests entdeckt, 58 bestanden und 4 explizite CI-Spezialtests ausgelagert. Linux zusätzlich 16 Provider-Tests bestanden, darunter echte öffentliche Modellliste und HTTP-401-Prüfung. Logs tatsächlich gelesen. macOS `119443285238` noch queued.
+- Lokal: 62 Tests entdeckt, 58 bestanden, 4 ausdrücklich ausgelagert. `git diff --check` ohne Fehler. `cargo xtask ci` konnte lokal nicht starten (Cargo fehlt); kein vollständiger Rust-Workspace-Gate behauptet. Rust-Quellcode unverändert, echte GUI/CLI-Kompilation bleibt in Actions verpflichtend.
+- Kein gültiger OpenRouter-Key in dieser Ausführungsumgebung: positive Live-Completion bleibt ungeprüft. Native Provider-Folge verwendet ausdrücklich einen lokalen HTTP-Testserver. Keine Veröffentlichung und keine manuellen App-Tests angefordert.

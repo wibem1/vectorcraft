@@ -187,3 +187,10 @@ liegen (Apple errSecCSUnsealedAppRoot). Zusätzlich strikte codesign-Verifikatio
 und SHA256-Manifest der tatsächlich getesteten Chat-/Engine-/CLI-Binaries.
 Dies ist eine vorsorgliche Quellcodekorrektur, kein bereits beobachteter CI-Fehler.
 Referenz: https://developer.apple.com/documentation/security/errseccsunsealedapproot .
+
+Paket-Einstieg ergänzt: Nach dem nativen Selbsttest müssen auch automatische
+Engine-/CLI-Erkennung ohne Pfad-Overrides, echter öffentlicher Modellkatalog
+über HTTPS und echter HTTP-401-Pfad aus dem gefrorenen Prozess bestehen.
+Absichtlich ungültiger Testschlüssel, keine bezahlte/positive Completion.
+Dies prüft insbesondere SSL-/Runtime-Abhängigkeiten des eigenständigen Pakets.
+Ergebnisse zunächst ausstehend; unveränderte Produktions-App-Klasse.

@@ -10,10 +10,10 @@ repo = Path(__file__).resolve().parents[2]
 chat = repo/'vectorcraft-chat'
 subprocess.run([sys.executable, '-m', 'PyInstaller', '--noconfirm', '--clean',
                 '--onedir', '--windowed', '--noupx', '--icon', 'NONE',
-                '--name', 'VectorCraftChat', '--paths', str(chat/'tests'),
+                '--name', 'VectorCraftChat', '--paths', str(chat), '--paths', str(chat/'tests'),
                 '--hidden-import', 'test_native_startup',
                 '--distpath', str(repo/'candidate'), '--workpath', str(repo/'build/chat'),
-                '--specpath', str(repo/'build/chat'), str(chat/'vectorcraft_chat.py')], check=True)
+                '--specpath', str(repo/'build/chat'), str(chat/'packaging/entry.py')], check=True)
 if sys.platform == 'darwin':
     bundle = repo/'candidate/VectorCraftChat.app'
     binaries = bundle/'Contents/MacOS'

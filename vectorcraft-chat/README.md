@@ -6,7 +6,9 @@ Standalone Python/Tk chat for the local VectorCraft control port (default 7979).
 
 ## Run
 
-Python 3 with Tkinter and an installed `vectorcraft-cli` are required. Set `VECTORCRAFT_CLI` if the CLI is not on PATH or in the standard Windows installation directory. Start VectorCraft with `--control 7979`, then use `START-Windows.cmd`, `START-Mac.command`, or `python vectorcraft_chat.py`.
+Python 3 with Tkinter, the native VectorCraft application and `vectorcraft-cli` are required. Open `START-Windows.vbs` (without a console), `START-Mac.command`, or run `python vectorcraft_chat.py`. Chat probes the local control protocol and reuses a running instance, or starts VectorCraft itself with `--control 7979`. Construction remains disabled until the application and document are ready. If discovery fails, select the installed executable once; its path is saved. Existing documents are preserved. Use **VectorCraft starten / verbinden** to retry after a connection error.
+
+Set `VECTORCRAFT_APP` for a nonstandard native installation and `VECTORCRAFT_CLI` if the CLI cannot be found beside it or on PATH. These are source launchers; installable application packages remain open work. Automatic native startup verification is recorded in the [startup log](docs/STARTUP-2026-10-21.md).
 
 A triangle request is planned locally with no model cost. Confirm its execution in the chat. Its ID is obtained from the actual engine reply and checked against the document tree and three closed anchors. Follow-up rotation uses that same ID and verifies the resulting angle. General model-generated moves, rotations and scales also reselect and verify the recorded triangle.
 

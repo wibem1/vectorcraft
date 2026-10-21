@@ -138,8 +138,9 @@ class NativeStartupTests(unittest.TestCase):
                 report={'status':'PASS','transport':'actual native TCP and CLI MCP --connect','provider':'local HTTP fixture using actual OpenRouter request/response code; no paid live completion','native_launches':len(processes),'port':port,'triangle_id':target,'node':actual,'fixture_accounted_cost_usd':gui.session_spend_usd,'actual_provider_charge_usd':0,'provider_http_requests':len(requests)}
                 Path('native-startup-report.json').write_text(json.dumps(report,indent=2))
                 # Take the actual chat window for layout inspection; the X display is test-only.
-                root.update()
-                subprocess.run(['import','-window',str(root.winfo_id()),'native-chat.png'],check=False,timeout=10)
+                root.lift();root.update()
+                time.sleep(0.2);root.update()  # Repaint after the native window exposed Chat.
+                subprocess.run(['import','-window',str(root.winfo_id()),'native-chat.png'],check=True,timeout=10)
                 print('PASS NATIVE: Chat auto-start, protocol readiness, single instance, real remote triangle/30-degree rotation/move, provider HTTP fixture, zero external model charge',flush=True)
             finally:
                 root.destroy()

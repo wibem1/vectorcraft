@@ -1,0 +1,61 @@
+name: VectorCraft Chat uploaded candidate audit
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/vectorcraft-chat-candidate-audit.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: '39682760797'
+          path: audit
+      - name: Verify actual uploaded ZIP binaries and frozen reports
+        shell: python
+        run: |
+          import hashlib, json, pathlib, zipfile
+          report = {'run_id': 39682760797, 'source_sha': '6ba2c2c159d5cdd3f64ef3f03215a425652670d7', 'release': False, 'status': 'PASS', 'platforms': {}}
+          for platform in ('windows-latest', 'macos-15-intel'):
+              evidence = pathlib.Path('audit')/('packaged-evidence-'+platform)
+              reports = {name: json.loads((evidence/(name+'.json')).read_text()) for name in ('packaged-check', 'packaged-network', 'native-startup-report', 'bundle-manifest')}
+              frozen, network, native, manifest = (reports[name] for name in ('packaged-check', 'packaged-network', 'native-startup-report', 'bundle-manifest'))
+              assert frozen['status'] == network['status'] == native['status'] == 'PASS'
+              assert frozen['frozen'] and frozen['tests_run'] == 1 and frozen['skipped'] == 0
+              assert manifest['source_sha'] == report['source_sha'] and not manifest['release']
+              assert network['public_models'] > 10 and network['unauthorized_http'] == 401
+              assert network['automatic_bundled_discovery'] and not network['valid_key_used'] and not network['positive_live_completion']
+              assert native['native_launches'] == 1 and native['secret_roundtrip_and_delete']
+              assert native['node']['id'] == native['triangle_id'] and native['node']['anchors'] == 3 and native['node']['closed']
+              assert abs(native['node']['rotation']-30) < 1e-8
+              assert native['actual_provider_charge_usd'] == network['actual_provider_charge_usd'] == 0
+              folder = pathlib.Path('audit')/('tested-chat-candidate-'+platform)
+              archives = list(folder.glob('*.zip'))
+              assert len(archives) == 1
+              archive = archives[0]
+              mac = platform.startswith('macos')
+              prefix = 'VectorCraftChat.app/Contents/MacOS/' if mac else 'VectorCraftChat/'
+              documents = 'VectorCraftChat.app/Contents/Resources/ChatDocs/' if mac else prefix
+              with zipfile.ZipFile(archive) as package:
+                  for name, expected in manifest['sha256'].items():
+                      info = package.getinfo(prefix+name)
+                      assert hashlib.sha256(package.read(info)).hexdigest() == expected, name
+                      if mac:
+                          assert (info.external_attr >> 16) & 0o111, name
+                  for name in ('LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'CANDIDATE.md'):
+                      assert documents+name in package.namelist(), name
+              report['platforms'][platform] = {'status': 'PASS', 'uploaded_binaries_match_test_manifest': True, 'license_notices_present': True, 'executable_modes_checked': mac, 'candidate_inner_zip_sha256': hashlib.sha256(archive.read_bytes()).hexdigest(), 'reports': reports}
+          pathlib.Path('candidate-audit.json').write_text(json.dumps(report, indent=2))
+          print('BEGIN_VECTORCRAFT_PACKAGE_AUDIT_JSON')
+          print(json.dumps(report))
+          print('END_VECTORCRAFT_PACKAGE_AUDIT_JSON')
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-uploaded-candidate-audit
+          path: candidate-audit.json
+          if-no-files-found: error

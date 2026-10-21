@@ -219,3 +219,15 @@ Quelltests bleiben erhalten. Eigenes kleines Ubuntu-Job mit actions:write nur
 für diesen Abbruch; native Buildjobs bleiben contents:read. Künftige Läufe
 verwenden zusätzlich dieselbe Concurrency-Gruppe. So blockieren bekannte alte
 Icon-/Bootstrap-Varianten keine Windows-/Mac-Runner für die Korrektur.
+
+
+## Abschließende Prüfung hochgeladener Kandidaten
+
+Paketlauf 39682760797: Windows und macOS Intel erfolgreich. Windows-Berichte und
+vollständiges Archiv bereits lokal heruntergeladen, SHA256 geprüft und alle drei
+Executables gegen das Testmanifest abgeglichen. Danach Verbindung der lokalen
+Ausführungsumgebung verloren; die abschließende Prüfung beider hochgeladenen
+Archive wird deshalb direkt in Actions ausgeführt. Der Audit prüft gefrorene
+Berichte, echte native Identität/30°, OS-Schlüsseltest, echte öffentliche HTTPS-
+Prüfungen ohne gültigen Key, alle Binary-SHA256, macOS-Ausführungsrechte und
+Lizenzhinweise. Keine neue Version oder Veröffentlichung.

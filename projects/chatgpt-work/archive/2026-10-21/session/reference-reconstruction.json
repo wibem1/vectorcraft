@@ -1,0 +1,17 @@
+[
+  {
+    "symbol": "Außenblätter",
+    "contours": 8,
+    "anchors": 360
+  },
+  {
+    "symbol": "Verschränkter Mittelkranz",
+    "contours": 11,
+    "anchors": 453
+  },
+  {
+    "symbol": "Blüte und Innenrahmen",
+    "contours": 8,
+    "anchors": 310
+  }
+]

@@ -1,0 +1,72 @@
+VectorCraft Symbol-Experiment 0.4.2
+
+NEU: Du musst keinen Symbolnamen mehr eingeben.
+
+START
+Alte Version schließen. ZIP vollständig entpacken und die neue EXE starten.
+Den Ordner _internal neben der EXE lassen. Python ist bereits enthalten.
+VectorCraft muss wie bisher mit dem Steuerkanal auf Port 7979 laufen:
+"C:\Program Files\VectorCraft\vectorcraft.exe" --control 7979
+Auf „Verbindung“ klicken. Mit einer gespeicherten Testkopie arbeiten.
+
+SO GEHT ES
+1. In VectorCraft ein verknüpftes Symbol in deiner Zeichnung anklicken.
+2. Hier auf „1 · Symbol bearbeiten“ klicken. Der Name wird automatisch erkannt.
+   Im Hinweis wird das erkannte Symbol angezeigt. Mit „Ja“ beginnt die Bearbeitung.
+3. Die Form in VectorCraft verändern, zum Beispiel ihre Farbe.
+4. Hier auf „Bearbeitete Form auswählen“ klicken.
+5. „2 · Änderung übernehmen (für alle Instanzen)“ anklicken und bestätigen.
+6. Ergebnis in VectorCraft ansehen und die Testkopie speichern.
+
+WENN ES NICHT GEHT
+Die Meldung erklärt, ob nichts, mehrere Objekte, eine Gruppe oder eine gewöhnliche
+Form ausgewählt wurde. Die Auswahl wird vor der Änderung noch einmal geprüft.
+Eine ungeeignete Auswahl wird nicht verändert.
+Eine normale Form ist noch kein Symbol. Falls gewünscht, kann sie unter
+„Weitere Funktionen“ mit „Symbol aus Auswahl“ in ein Symbol umgewandelt werden.
+Nur dort wird für die Zusatzfunktionen weiterhin ein Name verwendet.
+
+Während der Bearbeitung nicht das Dokument wechseln. Die aufgelöste Form oder
+ihre äußere Gruppe nicht löschen oder neu gruppieren; ihre Zuordnung muss erhalten
+bleiben. Neue Inhalte sind innerhalb einer vorhandenen Bearbeitungsgruppe möglich.
+„Sitzung verwerfen“ löscht nur die Zuordnung im Testprogramm. Es macht keine
+Änderung in VectorCraft rückgängig.
+
+Bei „Ergebnis unklar“ zuerst „Bericht exportieren“ anklicken und das Dokument
+prüfen. Ein unterbrochener Befehl könnte bereits ausgeführt worden sein; deshalb
+gibt es keine automatische Wiederholung. Eine offene Sitzung aus einer vorherigen
+Programmversion bleibt auch in 0.4.2 gesperrt. Alte und neue Version nicht parallel
+starten. Rückgängig-Schritte bewusst in VectorCraft ausführen.
+
+WEITERE FUNKTIONEN
+Referenz speichern, Änderungen prüfen, automatische Vergleiche, Symbolstatus,
+Symbol aus Auswahl, 12 Instanzen mit Mittelpunkt/Radius und der alte symbol.replace-
+Diagnosetest sind weiter vorhanden. Für die normale Symbolbearbeitung braucht
+man diese Zusatzfunktionen nicht.
+
+DIAGNOSE UND TESTGRENZEN
+Der Bericht enthält auch Auswahlart und erkannten Symbolnamen. Er kann Namen,
+Dateipfade und Dokumentgeometrie enthalten; vor Weitergabe prüfen.
+Das Programm sendet keine Daten an externe Dienste. Keine KI-Kosten/API-Schlüssel.
+Prüfungen und Änderungen sind auf dem Steuerkanal nicht atomar. Während der
+Bestätigung und Ausführung nicht parallel in VectorCraft weiterarbeiten.
+Identische Dokumente und ein Wechsel weg und zurück zwischen zwei Abfragen können
+nicht zuverlässig unterschieden werden; es gibt hier keine stabile Dokument-UUID.
+Sitzungsdaten: %LOCALAPPDATA%\VectorCraft-Symbol-Experiment-0.4
+
+14 automatisierte Tests, Integration mit installierter headless VectorCraft-Engine,
+kompakte Oberfläche und EXE-Start geprüft. Die manuelle Sichtprüfung aller Instanzen
+bleibt beim Anwender. Am VectorCraft-Repository wurde nichts geändert.
+Details und Quellcode im Paket. Windows x64; EXE nicht codesigniert.
+
+OPTIONAL: QUELLCODE TESTEN / BAUEN
+Python 3.12 mit tkinter erforderlich. Im Ordner source:
+py test_workflow.py
+py vectorcraft_experiment.py --smoke-test
+py -m pip install pyinstaller==6.22.3
+py -m PyInstaller --noconfirm --windowed --onedir --name VectorCraft-Symbol-Experiment-0.4.2 vectorcraft_experiment.py
+
+Enginevertrag:
+https://github.com/wibem1/vectorcraft/blob/main/crates/engine/src/cmd/brushsym.rs
+symbol.edit löst die ausgewählte Instanz in Geometrie auf.
+symbol.update übernimmt deren Änderungen in die gemeinsame Definition.

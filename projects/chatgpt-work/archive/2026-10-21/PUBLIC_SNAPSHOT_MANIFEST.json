@@ -1,0 +1,679 @@
+{
+  "snapshot_date": "2026-10-21",
+  "initial_local_files": 134,
+  "public_files": [
+    {
+      "path": "deliverables/ANLEITUNG.txt",
+      "bytes": 6760,
+      "sha256": "274377425ef8e9835f22c0f014f36cbe17186f8fa69f5300a19e047d98fbd723"
+    },
+    {
+      "path": "deliverables/KI-Mandala-Aurelia.png",
+      "bytes": 633843,
+      "sha256": "765f103331102f5f07e091653cc68234f2c4b3598fa0ae7b14b5eb095720f289"
+    },
+    {
+      "path": "deliverables/KI-Mandala-Aurelia.svg",
+      "bytes": 402490,
+      "sha256": "3503f098a1ffa26c93db31f9e5131145ffc0fde68b2cf8a720fbb1339a7b6fa6"
+    },
+    {
+      "path": "deliverables/KI-Mandala-Aurelia.vectorcraft",
+      "bytes": 1384413,
+      "sha256": "87de981b7b9c9d7ea934a3e23ba7d3e19597c40087e541d5a642a47c6202607c"
+    },
+    {
+      "path": "deliverables/KI-Mandala-Liniara-Farben.png",
+      "bytes": 1275678,
+      "sha256": "44999eba526a494204458c75f76a2f116bcae56d9d48d184372cbe91a0ffa2cd"
+    },
+    {
+      "path": "deliverables/KI-Mandala-Liniara-Farben.svg",
+      "bytes": 491939,
+      "sha256": "bcd7e673f22cd550c93be27294926491946a485b483e170f776a7cc5758fcefa"
+    },
+    {
+      "path": "deliverables/KI-Mandala-Liniara-Farben.vectorcraft",
+      "bytes": 1742441,
+      "sha256": "1d14ba8c44daca5da3596ef80da618b964755295818b8fdcbe88e5bb0777d2bd"
+    },
+    {
+      "path": "deliverables/KI-Mandala-Liniara.png",
+      "bytes": 1105257,
+      "sha256": "f980676e43ec4418d7a3a8a671283f3defd323e32450f9730a50bf22dcff795a"
+    },
+    {
+      "path": "deliverables/KI-Mandala-Liniara.svg",
+      "bytes": 491941,
+      "sha256": "3efe81e19e63d27cecec8e36c5d728a40a78566376f44cd77feb7c50320a93d0"
+    },
+    {
+      "path": "deliverables/KI-Mandala-Liniara.vectorcraft",
+      "bytes": 1742497,
+      "sha256": "a78e0f9f2c7fca2c393b4d00b2742d4feeefd21bedf9a8ba304932458f818142"
+    },
+    {
+      "path": "deliverables/KI-Mandala-Sonnenrosette.png",
+      "bytes": 53761,
+      "sha256": "ba36b4078c2001064ec51665c3ebdec5321ef5f2b0622c88e6b7b3d8f6ae1581"
+    },
+    {
+      "path": "deliverables/KI-Mandala-Sonnenrosette.svg",
+      "bytes": 16424,
+      "sha256": "3679220c090c476f56a6b05c325f138ff6c22d27865bd7f9f237f76650a10fef"
+    },
+    {
+      "path": "deliverables/KI-Mandala-Sonnenrosette.vectorcraft",
+      "bytes": 203198,
+      "sha256": "df93767694d4a7a813cb3798b17510bd32a4efc5a578b70cb36be82ed6ed4781"
+    },
+    {
+      "path": "deliverables/TESTBERICHT.txt",
+      "bytes": 2618,
+      "sha256": "4832386a855c6f69530307499a78df0bb8be3c73d487459f0b4c5b0292e2c776"
+    },
+    {
+      "path": "deliverables/VectorCraft-0.5-Anleitung.txt",
+      "bytes": 5853,
+      "sha256": "51a735aa4f9c714003aae2e7e0c1b47e4ca4edb177f8b993469db2dd294d0868"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4/ANLEITUNG.txt",
+      "bytes": 6760,
+      "sha256": "274377425ef8e9835f22c0f014f36cbe17186f8fa69f5300a19e047d98fbd723"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4/engine-test.json",
+      "bytes": 249554,
+      "sha256": "12ba87cce81de303d1ee1ceebab8e1d223425db96d53a2f301519ba6676b481f"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4/PYTHON-LICENSE.txt",
+      "bytes": 25066,
+      "sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4/TESTBERICHT.txt",
+      "bytes": 2618,
+      "sha256": "4832386a855c6f69530307499a78df0bb8be3c73d487459f0b4c5b0292e2c776"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4/source/legacy.py",
+      "bytes": 14820,
+      "sha256": "da7fbe80a6cc4c8f7043055fefb8a83d9b30ddec99f315d52ed8953a79885123"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4/source/test_engine.py",
+      "bytes": 3257,
+      "sha256": "2f841f44a097b6f3489e860a7e60a1122028959e7c3d7c0cf160050b70c2223e"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4/source/test_workflow.py",
+      "bytes": 5483,
+      "sha256": "4b8f87a7a2bf34462801b58f2a448f0791df58f9a779a56b1c199d8a8832aa18"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4/source/vc_workflow.py",
+      "bytes": 7342,
+      "sha256": "510f41d172f8d8dcc311366afc13864390d27f88287f26a222b533b64ea0d631"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4/source/vectorcraft_experiment.py",
+      "bytes": 12975,
+      "sha256": "a4c18a9edf3cb06049fffc2c77d8da0dc7abe2cff08e5f2f344ef5e4074e803a"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/ANLEITUNG.txt",
+      "bytes": 6760,
+      "sha256": "274377425ef8e9835f22c0f014f36cbe17186f8fa69f5300a19e047d98fbd723"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/engine-test.json",
+      "bytes": 249554,
+      "sha256": "12ba87cce81de303d1ee1ceebab8e1d223425db96d53a2f301519ba6676b481f"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/PYTHON-LICENSE.txt",
+      "bytes": 25066,
+      "sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/TESTBERICHT.txt",
+      "bytes": 2618,
+      "sha256": "4832386a855c6f69530307499a78df0bb8be3c73d487459f0b4c5b0292e2c776"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/source/legacy.py",
+      "bytes": 14820,
+      "sha256": "da7fbe80a6cc4c8f7043055fefb8a83d9b30ddec99f315d52ed8953a79885123"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/source/test_engine.py",
+      "bytes": 3257,
+      "sha256": "2f841f44a097b6f3489e860a7e60a1122028959e7c3d7c0cf160050b70c2223e"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/source/test_workflow.py",
+      "bytes": 5483,
+      "sha256": "4b8f87a7a2bf34462801b58f2a448f0791df58f9a779a56b1c199d8a8832aa18"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/source/vc_workflow.py",
+      "bytes": 7342,
+      "sha256": "510f41d172f8d8dcc311366afc13864390d27f88287f26a222b533b64ea0d631"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/source/vectorcraft_experiment.py",
+      "bytes": 12975,
+      "sha256": "a4c18a9edf3cb06049fffc2c77d8da0dc7abe2cff08e5f2f344ef5e4074e803a"
+    },
+    {
+      "path": "deliverables/VectorCraft-Symbol-Experiment-0.4-Windows-x64.zip",
+      "bytes": 12073618,
+      "sha256": "fd783d11d26563c9d07b37a655da627d8cfeacceff08ce9ff8f5f5e0e002de7e"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.1/ANLEITUNG.txt",
+      "bytes": 7181,
+      "sha256": "b737cfd9a0d3a67732634d09742381bbca1001e5bd4ed08cf9c4a80f104786d5"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.1/engine-test.json",
+      "bytes": 249554,
+      "sha256": "12ba87cce81de303d1ee1ceebab8e1d223425db96d53a2f301519ba6676b481f"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.1/PYTHON-LICENSE.txt",
+      "bytes": 25066,
+      "sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.1/TESTBERICHT.txt",
+      "bytes": 2954,
+      "sha256": "49cd846c6cee0471e2b10ebbe9174847cbf4d72613d200e2ea735caf883043bf"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.1/source/legacy.py",
+      "bytes": 14820,
+      "sha256": "da7fbe80a6cc4c8f7043055fefb8a83d9b30ddec99f315d52ed8953a79885123"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.1/source/test_engine.py",
+      "bytes": 3257,
+      "sha256": "2f841f44a097b6f3489e860a7e60a1122028959e7c3d7c0cf160050b70c2223e"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.1/source/test_workflow.py",
+      "bytes": 5483,
+      "sha256": "4b8f87a7a2bf34462801b58f2a448f0791df58f9a779a56b1c199d8a8832aa18"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.1/source/vc_workflow.py",
+      "bytes": 7342,
+      "sha256": "510f41d172f8d8dcc311366afc13864390d27f88287f26a222b533b64ea0d631"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.1/source/vectorcraft_experiment.py",
+      "bytes": 15143,
+      "sha256": "9ef8e1e794737faa14eb3e87055c797bc4cc3163f7934f998be56d019956c3a3"
+    },
+    {
+      "path": "deliverables/VectorCraft-Symbol-Experiment-0.4.1-Windows-x64.zip",
+      "bytes": 11798179,
+      "sha256": "8dbc06a144defaf2342bbc90445451d468f76b0c5536ca8c47c569de3f6363cf"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.2/ANLEITUNG.txt",
+      "bytes": 4012,
+      "sha256": "d8eb49eb0171c7ca3e77ebfca4e8f400a694700a75a2aca5ed0c1a48a64381a5"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.2/engine-test.json",
+      "bytes": 249836,
+      "sha256": "82857c618feabaaee7fdbc7ef53c3f4ecb21a1eb750be6e3c19dc45842d7c4c5"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.2/PYTHON-LICENSE.txt",
+      "bytes": 25066,
+      "sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.2/TESTBERICHT.txt",
+      "bytes": 999,
+      "sha256": "fcbf8c3d596d4ac2436c1c9120b4d4d8aaba3e3bfe69f585e2258c09c1eda6fd"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.2/source/legacy.py",
+      "bytes": 14820,
+      "sha256": "da7fbe80a6cc4c8f7043055fefb8a83d9b30ddec99f315d52ed8953a79885123"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.2/source/test_engine.py",
+      "bytes": 3488,
+      "sha256": "7f8cc58ff5488c5ab0eaf3704220ed1595a38ee831998098588b356e1b785211"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.2/source/test_workflow.py",
+      "bytes": 7087,
+      "sha256": "692c979444d1c0a95f580077ad3df755ce2e69003e3b4911bdefbdba6fd6998d"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.2/source/vc_workflow.py",
+      "bytes": 9563,
+      "sha256": "488e5bbbe8f8d172386a0d8c0b96231fffc4fa3311a22a4cda877b2cba756a9f"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.4.2/source/vectorcraft_experiment.py",
+      "bytes": 16626,
+      "sha256": "f43b66bb7f228b7db636ffd4ff135c299919e916f2fab2a16401ca1612176e2b"
+    },
+    {
+      "path": "deliverables/VectorCraft-Symbol-Experiment-0.4.2-Windows-x64.zip",
+      "bytes": 11799367,
+      "sha256": "c48496c12f63edd0d303231552d814be9dff567ffe6d4f305ed85b101918afb6"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.5/ANLEITUNG.txt",
+      "bytes": 5853,
+      "sha256": "51a735aa4f9c714003aae2e7e0c1b47e4ca4edb177f8b993469db2dd294d0868"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.5/engine-test.json",
+      "bytes": 249836,
+      "sha256": "cf5dd5369678a2d84e6215922869479880190a1e96cde994c40eb4f2f86fb444"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.5/mandala-engine-test.json",
+      "bytes": 71707,
+      "sha256": "3442c56c95f042898bf3ab95d0f11b3fda3030dcbe00cc772a3eba00eadc2d6c"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.5/PYTHON-LICENSE.txt",
+      "bytes": 25066,
+      "sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.5/TESTBERICHT.txt",
+      "bytes": 2094,
+      "sha256": "02dec4ae58e006959f889b464222363acc43bf7f5fa0698a7731999a0613f392"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.5/source/check_compact.py",
+      "bytes": 913,
+      "sha256": "600a57d289a12e91960b4e581fad47761b8bc6ffd2ba10d20e69d4ae3c204ff5"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.5/source/check_live_ui.py",
+      "bytes": 2448,
+      "sha256": "d5e5f279b149b2f0a5f1c26457f75b6699f778d9c47005df2f376ce4b551acd8"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.5/source/legacy.py",
+      "bytes": 14820,
+      "sha256": "da7fbe80a6cc4c8f7043055fefb8a83d9b30ddec99f315d52ed8953a79885123"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.5/source/mandala.py",
+      "bytes": 7769,
+      "sha256": "c55cee26ce68f71ea7d3881369979e029499f30be6c6bc91e465732faf40af21"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.5/source/test_engine.py",
+      "bytes": 6308,
+      "sha256": "d68eb0fe6fcaa714289bc8327e6c8c65ed6ca3103c6eec1963b3851aadc8bb9a"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.5/source/test_mandala.py",
+      "bytes": 5391,
+      "sha256": "0d3e96964e374314a6bd9fb9dc72ff8abb7ce5156e9414335d3e634640557f6f"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.5/source/test_workflow.py",
+      "bytes": 7087,
+      "sha256": "692c979444d1c0a95f580077ad3df755ce2e69003e3b4911bdefbdba6fd6998d"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.5/source/vc_workflow.py",
+      "bytes": 9563,
+      "sha256": "488e5bbbe8f8d172386a0d8c0b96231fffc4fa3311a22a4cda877b2cba756a9f"
+    },
+    {
+      "path": "versions/VectorCraft-Symbol-Experiment-0.5/source/vectorcraft_experiment.py",
+      "bytes": 26662,
+      "sha256": "4676c525d89d5060f524b6ddf1e3494c9fa3e62dd27c8e52bcfb0457821003ab"
+    },
+    {
+      "path": "deliverables/VectorCraft-Symbol-Experiment-0.5-Windows-x64.zip",
+      "bytes": 11827078,
+      "sha256": "653a17c3a36b8e983e3c61bd7cde32cc8051ea83ffa067aabf287f7522dbd894"
+    },
+    {
+      "path": "session/add_mandala_ui.py",
+      "bytes": 10936,
+      "sha256": "231ebadf9db4c62b30cde507e6b1e55c11e12bdf56622285e04ff34ac66ec6bd"
+    },
+    {
+      "path": "session/ai-mandala-new-doc.json",
+      "bytes": 24719,
+      "sha256": "feb773f0a41ad47eeabc4092a98ef5a42172a915d4c00382828140370c259850"
+    },
+    {
+      "path": "session/ai-rosette-state.json",
+      "bytes": 212699,
+      "sha256": "11ec28c26c223e223c182557b2bc460464070a1afcc650442f6a4b2806966475"
+    },
+    {
+      "path": "session/ai-source-preview.png",
+      "bytes": 18457,
+      "sha256": "0ef01974ac05833f0db91704de1532066da611cf1c962d4b703ef57566103bf1"
+    },
+    {
+      "path": "session/ANLEITUNG-0.4.2.txt",
+      "bytes": 4012,
+      "sha256": "d8eb49eb0171c7ca3e77ebfca4e8f400a694700a75a2aca5ed0c1a48a64381a5"
+    },
+    {
+      "path": "session/ANLEITUNG-0.5.txt",
+      "bytes": 5853,
+      "sha256": "51a735aa4f9c714003aae2e7e0c1b47e4ca4edb177f8b993469db2dd294d0868"
+    },
+    {
+      "path": "session/ANLEITUNG.txt",
+      "bytes": 6760,
+      "sha256": "274377425ef8e9835f22c0f014f36cbe17186f8fa69f5300a19e047d98fbd723"
+    },
+    {
+      "path": "session/check_compact.py",
+      "bytes": 850,
+      "sha256": "18e147de06a5fcf6d81e2654b97132abb11eb9864113e590150d148682de75a2"
+    },
+    {
+      "path": "session/check_live_ui.py",
+      "bytes": 2345,
+      "sha256": "032ee843edc392a5192578429fd098f404593d6b48eedab7f527452a02571bbd"
+    },
+    {
+      "path": "session/color_definitions.py",
+      "bytes": 2920,
+      "sha256": "6dc932c8c4636a7d601eb655e6b541fe50821287837fdb059a66488be3bf6dd6"
+    },
+    {
+      "path": "session/color_liniara.py",
+      "bytes": 4401,
+      "sha256": "34fe97478e12b6e024a7d52005a97f0a0552aa0288efe41d67ba593ce40d8aaa"
+    },
+    {
+      "path": "session/commands.json",
+      "bytes": 373780,
+      "sha256": "42bbb9315a093e0d454336632f5f453b8e3ed375178b533241916b2c2dc2e780"
+    },
+    {
+      "path": "session/compact_ui.py",
+      "bytes": 4144,
+      "sha256": "f417e76baf3d7e2fd63fe7f3f73adda4aa5df4c1bb1d9486bc961d43470ab6b7"
+    },
+    {
+      "path": "session/construct_rosette.py",
+      "bytes": 3373,
+      "sha256": "cd90b093b609ec042397b3a73e1823664d931c7c983459d8efdee0c9c2ec99cc"
+    },
+    {
+      "path": "session/create_aurelia.py",
+      "bytes": 5631,
+      "sha256": "bd2013cc4b96b08a44ac573fbd80445609d304d0b6ed7923f980f173c2d367fe"
+    },
+    {
+      "path": "session/create_liniara.py",
+      "bytes": 7818,
+      "sha256": "0d41a0d8dfd583b0125d829c20ebdfc983916bbaad4d4f62b06c6f0e38dbbcc0"
+    },
+    {
+      "path": "session/engine-test.json",
+      "bytes": 249836,
+      "sha256": "cf5dd5369678a2d84e6215922869479880190a1e96cde994c40eb4f2f86fb444"
+    },
+    {
+      "path": "session/liniara-before-color.json",
+      "bytes": 470498,
+      "sha256": "eeaaf5cb833d0ffd875b50958a748aad2fb2fad5a3b048eca2b67b55213d8f7a"
+    },
+    {
+      "path": "session/liniara-symbol-test.json",
+      "bytes": 2029,
+      "sha256": "ba0b523e97536c5f3b75906ddddfecce62903b1d841568ed116fccd7c6839515"
+    },
+    {
+      "path": "session/liniara-unknown-test.vectorcraft",
+      "bytes": 461851,
+      "sha256": "b8c09077abbfa52132412d96c034cc02d9b4c107135f2e361da4bb82d8a253cc"
+    },
+    {
+      "path": "session/live-before-ai-mandala.json",
+      "bytes": 52485,
+      "sha256": "c411879b769af1e67b24c99c4faea28ca88b9afef5066bfbbcd560937c516dff"
+    },
+    {
+      "path": "session/mandala-engine-test.json",
+      "bytes": 71707,
+      "sha256": "3442c56c95f042898bf3ab95d0f11b3fda3030dcbe00cc772a3eba00eadc2d6c"
+    },
+    {
+      "path": "session/package_compact.py",
+      "bytes": 1786,
+      "sha256": "16f928bec9a924ce962a3795b91ab173aef36046d1c554718bceab6dd9ccf5ac"
+    },
+    {
+      "path": "session/package_mandala.py",
+      "bytes": 3499,
+      "sha256": "3d85609070db86516508f77e13a84f3f0489de38d378f950461d8faec7cd2d95"
+    },
+    {
+      "path": "session/package_simple.py",
+      "bytes": 1942,
+      "sha256": "da2ebba03feb8411ce7454cec938ce6c4da1db272c01c3259f592756918bccc5"
+    },
+    {
+      "path": "session/probe_mcp.py",
+      "bytes": 619,
+      "sha256": "c13d8b90d7e379cd52995c2fa435945f80df6a9cf786b04ee09e7b3f5e486766"
+    },
+    {
+      "path": "session/probe_symbol_sizes.py",
+      "bytes": 579,
+      "sha256": "42708e6a71f7c43373e7f1aeb4d5575887430a725be30b4b43a5d84932086c4e"
+    },
+    {
+      "path": "session/rebuild_reference.py",
+      "bytes": 5641,
+      "sha256": "f2a2f74a0f93feb67b2779f6ba88d6edfa072a97e6b59f0edf3c72727c997ceb"
+    },
+    {
+      "path": "session/reference-reconstruction.json",
+      "bytes": 276,
+      "sha256": "a30b854f50334bc24385cb5ee272dce24aa33c526981d7ea8f8a2da2c9d6787c"
+    },
+    {
+      "path": "session/simplify.py",
+      "bytes": 4830,
+      "sha256": "39a0b2059bb78a48753f5c5855e7a41a1e354003c1d10e0b81a2d0fcaa8b4c4d"
+    },
+    {
+      "path": "session/snapshot_before_github.py",
+      "bytes": 2129,
+      "sha256": "199c38fa3063ec9be61986df15a663ffec18eb58ec6853817e88026055da900f"
+    },
+    {
+      "path": "session/TESTBERICHT.txt",
+      "bytes": 2618,
+      "sha256": "4832386a855c6f69530307499a78df0bb8be3c73d487459f0b4c5b0292e2c776"
+    },
+    {
+      "path": "session/test_liniara.py",
+      "bytes": 1101,
+      "sha256": "5303fe2371e0f7de63d8fd71fe8d7ed726551c0c5880d86fea354fd928ddf905"
+    },
+    {
+      "path": "session/VectorCraft-Symbol-Experiment-0.4.1.spec",
+      "bytes": 862,
+      "sha256": "be698de8a8041dea51b1a065d17e110504456d9bf47f9af3427e2662fa971be1"
+    },
+    {
+      "path": "session/VectorCraft-Symbol-Experiment-0.4.2.spec",
+      "bytes": 862,
+      "sha256": "af548fd2ce67e0244def2f1b06e4601a830d9f9438e2188b22ceed3b310e1fc8"
+    },
+    {
+      "path": "session/VectorCraft-Symbol-Experiment-0.4.spec",
+      "bytes": 858,
+      "sha256": "a84c2a5d40f31e7a00d9be2d662176f93563fb91771acc50c2a935f414fffc45"
+    },
+    {
+      "path": "session/VectorCraft-Symbol-Experiment-0.5.spec",
+      "bytes": 858,
+      "sha256": "5b413e6484e41ac64db78ed61c815a2ad41748bbf3a385c0a2d0a4cdd75a0c0d"
+    },
+    {
+      "path": "session/app/legacy.py",
+      "bytes": 14820,
+      "sha256": "da7fbe80a6cc4c8f7043055fefb8a83d9b30ddec99f315d52ed8953a79885123"
+    },
+    {
+      "path": "session/app/mandala.py",
+      "bytes": 7769,
+      "sha256": "c55cee26ce68f71ea7d3881369979e029499f30be6c6bc91e465732faf40af21"
+    },
+    {
+      "path": "session/app/test_engine.py",
+      "bytes": 6308,
+      "sha256": "d68eb0fe6fcaa714289bc8327e6c8c65ed6ca3103c6eec1963b3851aadc8bb9a"
+    },
+    {
+      "path": "session/app/test_mandala.py",
+      "bytes": 5391,
+      "sha256": "0d3e96964e374314a6bd9fb9dc72ff8abb7ce5156e9414335d3e634640557f6f"
+    },
+    {
+      "path": "session/app/test_workflow.py",
+      "bytes": 7087,
+      "sha256": "692c979444d1c0a95f580077ad3df755ce2e69003e3b4911bdefbdba6fd6998d"
+    },
+    {
+      "path": "session/app/vc_workflow.py",
+      "bytes": 9563,
+      "sha256": "488e5bbbe8f8d172386a0d8c0b96231fffc4fa3311a22a4cda877b2cba756a9f"
+    },
+    {
+      "path": "session/app/vectorcraft_experiment.py",
+      "bytes": 26662,
+      "sha256": "4676c525d89d5060f524b6ddf1e3494c9fa3e62dd27c8e52bcfb0457821003ab"
+    },
+    {
+      "path": "session/baseline/vectorcraft_experiment/README.txt",
+      "bytes": 1425,
+      "sha256": "35a216d699d7279c0834cf65609889a25ccd6df5b715f36f95edb1f3686ecd0d"
+    },
+    {
+      "path": "session/baseline/vectorcraft_experiment/vectorcraft_experiment.py",
+      "bytes": 14346,
+      "sha256": "50047c4b43edb42092fcc0e9aa6e3d0220a64875d3ba426f4bfb9c29c04544cf"
+    },
+    {
+      "path": "session/isolated-profile/ui.json",
+      "bytes": 9402,
+      "sha256": "e925d32c10fc88f40c31a850471b9abf761c70f741906991c9ffe4ec7eb23cc9"
+    },
+    {
+      "path": "session/isolated-profile/logs/vectorcraft.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "inputs/VectorCraft-Symbol-Experiment-0.1.zip",
+      "bytes": 12903,
+      "sha256": "b8ba60a1d294e4de395a27fa57b8204acd6162d31833f0f2b8139f639f397a5c"
+    },
+    {
+      "path": "inputs/VectorCraft-Symbol-Experiment-0.2 (1).zip",
+      "bytes": 5826,
+      "sha256": "7ca6dc4ac8d7e5c4387a5e80457745f40539a44cf85385b42e0595fd01a524be"
+    },
+    {
+      "path": "inputs/VectorCraft-Symbol-Experiment-0.2 (2).zip",
+      "bytes": 5826,
+      "sha256": "7ca6dc4ac8d7e5c4387a5e80457745f40539a44cf85385b42e0595fd01a524be"
+    },
+    {
+      "path": "inputs/VectorCraft-Symbol-Experiment-0.2.zip",
+      "bytes": 5826,
+      "sha256": "7ca6dc4ac8d7e5c4387a5e80457745f40539a44cf85385b42e0595fd01a524be"
+    },
+    {
+      "path": "inputs/VectorCraft-Symbol-Experiment-0.3 (1).zip",
+      "bytes": 19612,
+      "sha256": "fdc7e05b01f8d6a66daff2c5c39dc41edb49e5bbe0da1b522911f91396478810"
+    },
+    {
+      "path": "inputs/VectorCraft-Symbol-Experiment-0.3.1 (1).zip",
+      "bytes": 6495,
+      "sha256": "2937404118d621f6647424d82a731078943c6e67da60b1e717d3a977bf534ab9"
+    },
+    {
+      "path": "inputs/VectorCraft-Symbol-Experiment-0.3.1.zip",
+      "bytes": 6495,
+      "sha256": "2937404118d621f6647424d82a731078943c6e67da60b1e717d3a977bf534ab9"
+    },
+    {
+      "path": "inputs/VectorCraft-Symbol-Experiment-0.3.zip",
+      "bytes": 19612,
+      "sha256": "fdc7e05b01f8d6a66daff2c5c39dc41edb49e5bbe0da1b522911f91396478810"
+    },
+    {
+      "path": "inputs/VectorCraft-Symbol-Experiment-0.4.1-Windows-x64.zip",
+      "bytes": 11798179,
+      "sha256": "8dbc06a144defaf2342bbc90445451d468f76b0c5536ca8c47c569de3f6363cf"
+    },
+    {
+      "path": "inputs/VectorCraft-Symbol-Experiment-0.4.2-Windows-x64.zip",
+      "bytes": 11799367,
+      "sha256": "c48496c12f63edd0d303231552d814be9dff567ffe6d4f305ed85b101918afb6"
+    },
+    {
+      "path": "inputs/VectorCraft-Symbol-Experiment-0.5-Windows-x64.zip",
+      "bytes": 11827078,
+      "sha256": "653a17c3a36b8e983e3c61bd7cde32cc8051ea83ffa067aabf287f7522dbd894"
+    },
+    {
+      "path": "inputs/VectorCraft-Aenderungen.json",
+      "bytes": 4304,
+      "sha256": "e0e9b3a762b7b1ed269f54e8e8d3e5b0508d6dc4e9371339f78d1e8d8be3c44b"
+    },
+    {
+      "path": "inputs/VectorCraft-Diagnose-0.4.json",
+      "bytes": 1088,
+      "sha256": "7f0ab60fb832504d6d8306766ce223cb972b827d497ec938a6c9321567c75eec"
+    }
+  ],
+  "local_only": [
+    {
+      "path": "deliverables/Mandala-nach-Vorlage.png",
+      "bytes": 83567,
+      "sha256": "a46e271b7265d277cc0247f8a5026c73076e493468389a17b1a4d8b8e2a62e9d"
+    },
+    {
+      "path": "deliverables/Mandala-nach-Vorlage.svg",
+      "bytes": 19573,
+      "sha256": "c9d9a86bb60583c1c67363b863fb40908e4b461a0fcf815fb6d35346b620de3f"
+    },
+    {
+      "path": "deliverables/Mandala-nach-Vorlage.vectorcraft",
+      "bytes": 246556,
+      "sha256": "070a0113cede639c5a61ef46374bd900ea17aba923d4dc44e7009fd343ccd9a8"
+    },
+    {
+      "path": "inputs/sacred-circles-of-light-the-spiritual-journey-through-mandala-design-free-vector.jpg",
+      "bytes": 87070,
+      "sha256": "5ac0ac9de4cb254e93cb74b2d560631614e6850e60e3fedfd31dc743fc041892"
+    }
+  ],
+  "note": "Initial local manifest and restricted content remain only in the local full backup."
+}

@@ -72,3 +72,15 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+ChatGPT Work project archive
+
+projects/chatgpt-work/ preserves original project scripts, vector artwork and diagnostic
+evidence contributed by wibem1 with ChatGPT Work/Codex assistance. Original project
+code and artwork follow the repository MIT OR Apache-2.0 terms. External reference
+artwork and its traced derivative are excluded from this public archive.
+Archived executable ZIPs retain their embedded third-party components and licences;
+see projects/chatgpt-work/licenses/ and the licences in each package. PyInstaller
+bootloader redistribution is covered by its bootloader exception. These packages
+are historical user-requested backups, not new VectorCraft runtime dependencies.

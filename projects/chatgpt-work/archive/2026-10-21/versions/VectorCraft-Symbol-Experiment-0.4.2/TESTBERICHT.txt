@@ -1,0 +1,10 @@
+Version 0.4.2
+
+14 automatisierte Tests bestanden: bisherige Zustands-/Fehlersperren sowie automatische Erkennung, Auswahlwechsel nach Bestätigung, Dokumentänderung nach Erkennung, verständliche Ablehnung ungeeigneter Objekte, Prüfung vor erneuter Auswahl.
+
+Integration mit installierter VectorCraft-Engine im separaten headless MCP-Prozess bestanden: Symbol automatisch erkennen, symbol.edit, Farbe ändern, Auswahl leeren, gespeicherte Bearbeitungsform auswählen, symbol.update. Definition geändert und wieder zwei verknüpfte Instanzen bestätigt. Bericht: engine-test.json. Tabmetadaten liefert im headless Test ein Adapter. Kein Benutzer-Dokument verändert.
+
+GUI-Start und beide Reiter bei 620 x 480 geprüft. Alle sichtbaren Schaltflächen innerhalb des Fensters.
+EXE-Starttest bestanden (Exitcode 0).
+
+Kein vollständiger manueller Durchlauf der Desktopoberfläche mit Sichtprüfung sämtlicher Instanzen. Zustandsprüfungen sind nicht atomar. Weitere Grenzen: ANLEITUNG.txt.

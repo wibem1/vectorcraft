@@ -1,0 +1,338 @@
+"""VectorCraft Symbol-Experiment 0.4, Windows portable application."""
+import json
+import os
+import queue
+import sys
+import threading
+import tempfile
+from pathlib import Path
+import tkinter as tk
+from tkinter import ttk, messagebox, filedialog
+import legacy
+from vc_workflow import Workflow, read_state
+
+VERSION = '0.4.2'
+HOME = Path(os.environ.get('LOCALAPPDATA', str(Path.home()))) / 'VectorCraft-Symbol-Experiment-0.4'
+
+
+def atomic_json(path, data):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, name = tempfile.mkstemp(dir=path.parent, prefix='.writing-', suffix='.json')
+    try:
+        with os.fdopen(fd, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(name, path)
+    finally:
+        if os.path.exists(name):
+            os.unlink(name)
+
+
+class App(legacy.App):
+    def __init__(self, root, storage=HOME):
+        self.storage = Path(storage)
+        self.messages = queue.Queue()
+        self.workflow = Workflow(save=self.save_pending)
+        self.status_text = tk.StringVar(value='Bereit · Schritt 1: eine Symbolinstanz auswählen.')
+        self.audit = []
+        self.last_error = None
+        self.user_hint = 'Klicke in VectorCraft ein Symbol an. Danach hier auf „Symbol bearbeiten“ klicken.'
+        self.detected_name = tk.StringVar(value='Der Symbolname wird automatisch erkannt.')
+        self.worker = None
+        super().__init__(root)
+        root.title('VectorCraft Symbol-Experiment 0.4.2')
+        # Reuse the existing actions and state, with a compact two-tab layout.
+        root.winfo_children()[0].destroy()
+        width = min(720, max(540, root.winfo_screenwidth() - 80))
+        height = min(600, max(420, root.winfo_screenheight() - 120))
+        root.geometry(f'{width}x{height}')
+        root.minsize(min(620, width), min(480, height))
+        frame = ttk.Frame(root, padding=10)
+        frame.pack(fill='both', expand=True)
+        ttk.Label(frame, text='VectorCraft · Symbol-Experiment 0.4.2', font=('', 12, 'bold')).pack(anchor='w')
+        top = ttk.Frame(frame)
+        top.pack(fill='x', pady=(5, 6))
+        ttk.Button(top, text='Verbindung', command=self.check).pack(side='left', padx=(0, 6))
+        ttk.Button(top, text='Bericht exportieren', command=self.export).pack(side='left')
+        tabs = ttk.Notebook(frame)
+        tabs.pack(fill='x')
+        symbol = ttk.Frame(tabs, padding=8)
+        tools = ttk.Frame(tabs, padding=8)
+        tabs.add(symbol, text='Symbol bearbeiten')
+        tabs.add(tools, text='Weitere Funktionen')
+        name_row = ttk.Frame(symbol)
+        name_row.pack(fill='x', pady=(0, 6))
+        ttk.Label(name_row, textvariable=self.detected_name).pack(anchor='w')
+        self.edit_button = ttk.Button(symbol, text='1 · Symbol bearbeiten', command=self.edit_symbol)
+        self.edit_button.pack(fill='x', pady=2)
+        self.apply_button = ttk.Button(symbol, text='2 · Änderung übernehmen (für alle Instanzen)', command=self.apply_symbol)
+        self.apply_button.pack(fill='x', pady=2)
+        actions = ttk.Frame(symbol)
+        actions.pack(fill='x', pady=(6, 0))
+        ttk.Button(actions, text='Bearbeitete Form auswählen', command=self.select_edit_geometry).pack(side='left', padx=(0, 6))
+        ttk.Button(actions, text='Sitzung verwerfen …', command=self.discard_session).pack(side='left')
+        ttk.Label(symbol, text='Nur an einer gespeicherten Testkopie arbeiten.', foreground='#555').pack(anchor='w', pady=(5, 0))
+        names = ttk.Frame(tools)
+        names.pack(fill='x', pady=2)
+        ttk.Label(names, text='Symbolname für Zusatzfunktionen:').pack(side='left')
+        ttk.Entry(names, textvariable=self.name, width=20).pack(side='left', padx=5)
+        for row in [
+            [('Bearbeitungszustand prüfen', self.validate_session)],
+            [('Referenz speichern', self.snapshot), ('Änderungen prüfen', self.diff), ('Symbolstatus lesen', self.symbol_status)],
+            [('Symbol aus Auswahl', self.new_symbol), ('12 Instanzen', self.ring), ('Alter symbol.replace-Test …', self.replace_symbol)]
+        ]:
+            line = ttk.Frame(tools)
+            line.pack(fill='x', pady=2)
+            for text, action in row:
+                ttk.Button(line, text=text, command=action).pack(side='left', padx=(0, 5))
+        params = ttk.Frame(tools)
+        params.pack(fill='x', pady=6)
+        for title, value in [('Mittelpunkt X:', self.cx), ('Y:', self.cy), ('Radius:', self.radius)]:
+            ttk.Label(params, text=title).pack(side='left')
+            ttk.Entry(params, textvariable=value, width=7).pack(side='left', padx=(4, 8))
+        ttk.Checkbutton(tools, text='Alle 2 Sekunden vergleichen (nur lesen)', variable=self.auto).pack(anchor='w')
+        status = ttk.Label(frame, textvariable=self.status_text, wraplength=660, foreground='#174b76')
+        status.pack(fill='x', pady=6)
+        status.bind('<Configure>', lambda event: status.configure(wraplength=max(200, event.width)))
+        ttk.Label(frame, text='Änderungsprotokoll:').pack(anchor='w')
+        self.logbox = legacy.scrolledtext.ScrolledText(frame, height=7, width=45, wrap='word')
+        self.logbox.pack(fill='both', expand=True)
+        try:
+            path = self.storage / 'pending.json'
+            if path.exists():
+                self.workflow.pending = json.loads(path.read_text(encoding='utf-8'))
+                if self.workflow.pending:
+                    self.workflow.pending['status'] = 'uncertain'
+                    self.log('Offene Sitzung aus vorherigem Start: Übernahme gesperrt. Diagnose exportieren und Dokument prüfen; keine automatische Fortsetzung.')
+        except Exception as exc:
+            self.workflow.pending = {'status': 'uncertain', 'name': '?', 'ids': []}
+            self.last_error = str(exc)
+            self.log('Sitzungsdatei nicht lesbar. Schreibzugriff gesperrt: ' + str(exc))
+        root.after(80, self.poll)
+        self.refresh()
+
+    def save_pending(self, pending):
+        atomic_json(self.storage / 'pending.json', pending)
+
+    def refresh(self):
+        p = self.workflow.pending
+        if self.busy:
+            text = 'Prüfung/Befehl läuft. Bitte in VectorCraft kurz nicht weiterarbeiten.'
+        elif p:
+            if p['status'] == 'editing':
+                text = f'„{p["name"]}“ ist bereit zum Bearbeiten. Ändere die Form in VectorCraft. Danach auf „Bearbeitete Form auswählen“ und „Änderung übernehmen“ klicken.'
+            else:
+                text = 'ERGEBNIS UNKLAR · Schreibzugriff gesperrt. Diagnose exportieren, Dokument prüfen. Kein Befehl wird automatisch wiederholt.'
+        else:
+            text = self.user_hint
+        self.status_text.set(text)
+        self.edit_button.configure(state='disabled' if self.busy or p else 'normal')
+        self.apply_button.configure(state='normal' if not self.busy and p and p['status'] == 'editing' else 'disabled')
+
+    def work(self, label, func, callback=None):
+        if self.busy:
+            self.log('Bitte warten: ein Vorgang läuft bereits.')
+            return
+        self.busy = True
+        self.refresh()
+        def job():
+            try:
+                value = func()
+                self.messages.put((label, value, None, callback))
+            except Exception as exc:
+                self.messages.put((label, None, str(exc), None))
+        self.worker = threading.Thread(target=job, daemon=True)
+        self.worker.start()
+
+    def poll(self):
+        if self._closed:
+            return
+        try:
+            while True:
+                label, value, error, callback = self.messages.get_nowait()
+                self.busy = False
+                self.audit.append({'action': label, 'result': value, 'error': error})
+                if error:
+                    self.last_error = error
+                    self.user_hint = error
+                    if label in ('Auswahl erkennen', 'Symbol bearbeiten', 'Änderung übernehmen', 'Bearbeitete Form auswählen'):
+                        messagebox.showinfo('Hinweis', error)
+                    self.log('FEHLER · ' + label + ': ' + error)
+                else:
+                    self.log('OK · ' + label + ': ' + legacy.compact(value, 350))
+                    if callback:
+                        try:
+                            callback(value)
+                        except Exception as exc:
+                            self.last_error = str(exc)
+                            self.log('Auswertungsfehler: ' + str(exc))
+                self.refresh()
+        except queue.Empty:
+            pass
+        self.root.after(80, self.poll)
+
+    def available(self):
+        if self.busy:
+            self.log('Bitte laufenden Vorgang abwarten.')
+            return False
+        return True
+
+    def allow_other_write(self):
+        if not self.available():
+            return False
+        if self.workflow.pending:
+            self.log('Andere Schreibaktionen sind während einer offenen/unklaren Symbolbearbeitung gesperrt.')
+            return False
+        return True
+
+    def edit_symbol(self):
+        if not self.allow_other_write():
+            return
+        def detected(selection):
+            self.name.set(selection['name'])
+            self.detected_name.set('Erkanntes Symbol: ' + selection['name'])
+            if not messagebox.askyesno('Symbol bearbeiten',
+                    f'Erkannt: „{selection["name"]}“.\n\nDu kannst diese Form danach in VectorCraft verändern. '
+                    'Mit „Änderung übernehmen“ werden später alle zugehörigen Instanzen aktualisiert.\n\n'
+                    'Bitte mit einer gespeicherten Testkopie arbeiten. Jetzt bearbeiten?'):
+                return
+            self.work('Symbol bearbeiten', lambda: self.workflow.begin(expected=selection))
+        self.work('Auswahl erkennen', self.workflow.inspect_selection, detected)
+
+    def apply_symbol(self):
+        if not self.available():
+            return
+        p = self.workflow.pending
+        if not p or p['status'] != 'editing':
+            self.log('Keine bestätigte Bearbeitung offen.')
+            return
+        if not messagebox.askyesno('Schritt 2 · Alle Instanzen aktualisieren',
+                f'Deine Änderung an „{p["name"]}“ wird jetzt auf alle zugehörigen Instanzen übertragen. '
+                'Alle verknüpften Instanzen werden aktualisiert.\n\nNur die Bearbeitungsobjekte auswählen. '
+                'Während des Aufrufs nicht weiterarbeiten. Jetzt übernehmen?'):
+            return
+        self.work('Änderung übernehmen', self.workflow.apply, self.applied)
+
+    def applied(self, result):
+        self.user_hint = 'Fertig. Die Änderung wurde übernommen. Prüfe die Instanzen in VectorCraft und speichere die Testkopie.'
+        messagebox.showinfo('Änderung übernommen', self.user_hint)
+
+    def select_edit_geometry(self):
+        def run():
+            current = self.workflow.validate(require_selection=False)
+            result = legacy.command('select.set', {'ids': self.workflow.pending['ids']})
+            self.workflow.record('edit_geometry_selected', result=result)
+            return 'Die bearbeitete Form ist in VectorCraft ausgewählt. Jetzt kannst du die Änderung übernehmen.'
+        self.work('Bearbeitete Form auswählen', run)
+
+    def validate_session(self):
+        def run():
+            value = self.workflow.validate()
+            self.workflow.record('manual_validation', state=value)
+            return 'Zustand gültig; Geometrie-IDs und gemeinsame Definition geprüft.'
+        self.work('Bearbeitungszustand prüfen', run)
+
+    def discard_session(self):
+        if not self.available() or not self.workflow.pending:
+            return
+        if not messagebox.askyesno('Sitzung verwerfen',
+                'Dies löscht nur die Sitzungszuordnung im Testprogramm. Es macht keine Dokumentänderung rückgängig. '
+                'Die aufgelöste Geometrie bleibt bestehen.\n\nBei unklarem Ergebnis zuerst Diagnose exportieren und VectorCraft prüfen. '
+                'Zum Rückgängigmachen die passenden Schritte in VectorCraft verwenden. Sitzung jetzt verwerfen?'):
+            return
+        try:
+            self.save_pending(None)
+            self.workflow.record('session_discarded', pending=self.workflow.pending)
+            self.workflow.pending = None
+            self.refresh()
+        except OSError as exc:
+            self.log('Sitzung konnte nicht verworfen werden: ' + str(exc))
+
+    def new_symbol(self):
+        if self.allow_other_write():
+            super().new_symbol()
+
+    def ring(self):
+        if self.allow_other_write():
+            super().ring()
+
+    def replace_symbol(self):
+        if self.allow_other_write() and messagebox.askyesno('Alter Diagnosetest',
+                'symbol.replace tauscht die Symbolzuordnung ausgewählter Instanzen. Es definiert kein Symbol neu. '
+                'Der alte Test bleibt zum Vergleich verfügbar. Trotzdem öffnen?'):
+            super().replace_symbol()
+
+    def export(self):
+        if not self.available():
+            return
+        path = filedialog.asksaveasfilename(defaultextension='.json', filetypes=[('JSON', '*.json')], initialfile='VectorCraft-Diagnose-0.4.json')
+        if not path:
+            return
+        report = {'version': VERSION, 'pending': self.workflow.pending, 'events': self.workflow.events,
+                  'actions': self.audit, 'last_error': self.last_error, 'legacy_report': self.last_report,
+                  'reference': self.base, 'protocol': '127.0.0.1:7979',
+                  'notice': 'Enthält Dokumentgeometrie und Titel. Vor Weitergabe prüfen. Abfragen sind nicht atomar; keine visuelle Erfolgsgarantie.'}
+        try:
+            atomic_json(Path(path), report)
+            self.log('Diagnose gespeichert: ' + path)
+        except Exception as exc:
+            self.last_error = str(exc)
+            self.log('Diagnose konnte nicht gespeichert werden: ' + str(exc))
+
+    def close(self):
+        if self.busy:
+            messagebox.showwarning('Vorgang läuft', 'Bitte den laufenden Aufruf abwarten. Sein Ergebnis könnte bereits das Dokument verändern.')
+            return
+        if self.workflow.pending and not messagebox.askyesno('Offene Bearbeitung',
+                'Eine Symbolbearbeitung ist offen oder unklar. Sie wird beim Neustart gesperrt. Vorher Diagnose exportieren? '
+                '\n\nTrotzdem schließen?'):
+            return
+        super().close()
+
+
+def main():
+    root = tk.Tk()
+    if '--smoke-test' in sys.argv:
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as directory:
+            app = App(root, directory)
+            root.update()
+            assert root.title().endswith('0.4.2')
+            labels=[]
+            def collect(widget):
+                if isinstance(widget, ttk.Button): labels.append(widget.cget('text'))
+                for child in widget.winfo_children(): collect(child)
+            collect(root)
+            assert 'Symbol aus Auswahl' in labels and '12 Instanzen' in labels
+            assert '1 · Symbol bearbeiten' in labels
+            assert '2 · Änderung übernehmen (für alle Instanzen)' in labels
+            assert app.apply_button.instate(['disabled'])
+            assert app.name.get()=='Mandala-Blatt'
+            assert app.edit_button.winfo_width()>100
+            assert root.winfo_width()<=720 and root.winfo_height()<=600
+            root.after(200, root.destroy)
+            root.mainloop()
+    else:
+        lock=None
+        try:
+            import msvcrt
+            HOME.mkdir(parents=True, exist_ok=True)
+            lock=open(HOME/'application.lock', 'a+b')
+            if lock.tell()==0:
+                lock.write(b'0'); lock.flush()
+            lock.seek(0)
+            msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
+        except OSError as exc:
+            messagebox.showerror('Start gesperrt', 'Das Programm läuft bereits oder der Sitzungsordner ist nicht beschreibbar.\n'+str(exc))
+            root.destroy()
+            return
+        try:
+            App(root)
+            root.mainloop()
+        finally:
+            if lock: lock.close()
+
+
+if __name__ == '__main__':
+    main()
+

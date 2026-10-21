@@ -1,0 +1,53 @@
+Ergänzung 0.4.1: Kompakte Oberfläche geprüft. Beide Reiter und sämtliche
+sichtbaren Schaltflächen passen bei 620 x 480 ins Fenster; Protokoll bleibt
+nutzbar. Starttest der gebauten EXE erfolgreich (Exitcode 0).
+Die Engine-/Workflow-Logik wurde gegenüber 0.4 nicht verändert.
+
+VectorCraft Symbol-Experiment 0.4 – Prüfbericht
+================================================
+
+Ausgeführte Prüfungen, 20. Oktober 2026:
+
+1. Neun automatisierte Tests, bestanden:
+   - vollständiger edit/update-Ablauf mit explizitem Namen und IDs
+   - Ablehnung leerer, mehrfacher, falscher und unbekannter Auswahl
+   - Sperren bei Auswahl-/Dokumentwechsel, geänderter Definition,
+     fehlender Geometrie, zurückgesetzter Revision und erneuter Instanz
+   - Timeout ohne automatische Wiederholung
+   - ungültige Edit-Antworten führen zu gesperrtem Zustand
+   - Fehler beim Nachlesen nach Update hält den Zustand gesperrt
+   - Fehler beim Speichern der Sitzung verhindert das Senden
+   - Prüfung ungültiger IDs
+   - Ablehnung einer während des Auslesens geänderten Revision
+
+2. Integration mit der tatsächlich installierten VectorCraft-Engine:
+   Eigenständiger vectorcraft-cli mcp --headless Prozess, neues Testdokument.
+   Rechteck -> Symbol mit zwei Instanzen -> symbol.edit -> blaue Füllung
+   auf zurückgegebener Geometrie -> symbol.update mit gemerkten IDs.
+   Bestätigt: nach Edit eine verbleibende Instanz; Definition danach geändert;
+   nach Update wieder genau zwei Symbolinstanzen; Sitzung abgeschlossen.
+   Vollständiger synthetischer Bericht: engine-test.json.
+   Tabinformationen für ui.inspect wurden im Test durch einen Adapter geliefert,
+   da die headless Engine keine Desktopoberfläche besitzt.
+
+3. Lesende Prüfung des laufenden Desktop-Steuerkanals auf Port 7979:
+   document.json, symbol.list, document.inspect und ui.inspect erreichbar.
+   Tatsächliche serialisierte Art „symbolinstance“ sowie Tab-/Auswahlfelder
+   geprüft. Keine schreibenden Tests am vorhandenen Benutzer-Dokument.
+
+4. GUI-Starttest:
+   tkinter-Fenster erstellt, beide Schritte vorhanden, Schritt 2 initial
+   deaktiviert; Symbolname, Symbolerstellung und Ringfunktion weiter vorhanden.
+   Zusätzlich Starttest des gebauten Windows-Programms mit --smoke-test.
+
+Grenzen:
+Kein vollständiger manueller Durchlauf der Desktopoberfläche mit realer
+Mausbearbeitung und visueller Prüfung sämtlicher Instanzen. Ein separater
+Desktopstart auf einem Testport war nicht erreichbar; der schreibende
+Integrationstest verwendete deshalb die installierte headless Engine.
+Keine Garantie gegen Dokumentwechsel in dem kurzen Zeitraum zwischen Prüfung
+und Befehl. Details und Wiederherstellung siehe ANLEITUNG.txt.
+
+Die mitgelieferte EXE ist ein portabler Windows-x64-Build mit gebündeltem
+Python/tkinter. Keine Installation von VectorCraft oder Änderung seines
+Repositorys. Die EXE ist nicht codesigniert.

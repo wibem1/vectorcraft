@@ -1,0 +1,182 @@
+{
+  "test": "symbol.replace",
+  "target_name": "Mandala-Blatt",
+  "zeit": "2026-10-20T23:08:33",
+  "command_result": {
+    "ids": [
+      74
+    ]
+  },
+  "command_error": null,
+  "warning": null,
+  "before_symbol_list": {
+    "current": "Mandala-Blatt 4",
+    "symbols": [
+      {
+        "instances": 13,
+        "name": "Mandala-Blatt",
+        "size": [
+          374.6958637469586,
+          218.00486618004868
+        ]
+      },
+      {
+        "instances": 0,
+        "name": "Mandala-Blatt 2",
+        "size": [
+          187.3479318734794,
+          181.30616984964252
+        ]
+      },
+      {
+        "instances": 0,
+        "name": "Mandala Blatt",
+        "size": [
+          177.1289537712895,
+          204.37956204379554
+        ]
+      },
+      {
+        "instances": 1,
+        "name": "Mandala-Blatt 3",
+        "size": [
+          291.1505107601615,
+          304.44971793879114
+        ]
+      },
+      {
+        "instances": 1,
+        "name": "Mandala-Blatt 4",
+        "size": [
+          325.4232724027583,
+          300.2271644345592
+        ]
+      }
+    ]
+  },
+  "after_symbol_list": {
+    "current": "Mandala-Blatt 4",
+    "symbols": [
+      {
+        "instances": 14,
+        "name": "Mandala-Blatt",
+        "size": [
+          374.6958637469586,
+          218.00486618004868
+        ]
+      },
+      {
+        "instances": 0,
+        "name": "Mandala-Blatt 2",
+        "size": [
+          187.3479318734794,
+          181.30616984964252
+        ]
+      },
+      {
+        "instances": 0,
+        "name": "Mandala Blatt",
+        "size": [
+          177.1289537712895,
+          204.37956204379554
+        ]
+      },
+      {
+        "instances": 1,
+        "name": "Mandala-Blatt 3",
+        "size": [
+          291.1505107601615,
+          304.44971793879114
+        ]
+      },
+      {
+        "instances": 0,
+        "name": "Mandala-Blatt 4",
+        "size": [
+          325.4232724027583,
+          300.2271644345592
+        ]
+      }
+    ]
+  },
+  "before_document_hash": "e193e460bf9ede1bdbb6327ccd6c415521e781ab63d03e839b18f8d074b4682e",
+  "after_document_hash": "d1607693a82801bd5c3224653f46e8828996ff5bd48eaed0502c7f905542a3e2",
+  "symbol_aenderungen": [
+    {
+      "pfad": "/symbols/symbols/0/instances",
+      "art": "geändert",
+      "alt": 13,
+      "neu": 14
+    },
+    {
+      "pfad": "/symbols/symbols/4/instances",
+      "art": "geändert",
+      "alt": 1,
+      "neu": 0
+    }
+  ],
+  "dokument_aenderungen": [
+    {
+      "pfad": "/document/layers/0/kind/children/16/kind/symbol",
+      "art": "geändert",
+      "alt": "Mandala-Blatt 4",
+      "neu": "Mandala-Blatt"
+    },
+    {
+      "pfad": "/document/layers/0/kind/children/16/kind/xf/0",
+      "art": "geändert",
+      "alt": 16.271163620137916,
+      "neu": 18.734793187347933
+    },
+    {
+      "pfad": "/document/layers/0/kind/children/16/kind/xf/3",
+      "art": "geändert",
+      "alt": 15.01135822172796,
+      "neu": 10.900243309002434
+    }
+  ],
+  "uebersicht_aenderungen": [
+    {
+      "pfad": "/overview/history/114",
+      "art": "hinzugefügt",
+      "neu": "Replace Symbol"
+    },
+    {
+      "pfad": "/overview/layers/0/bounds/height",
+      "art": "geändert",
+      "alt": 997.8670637457543,
+      "neu": 956.7559146184991
+    },
+    {
+      "pfad": "/overview/revision",
+      "art": "geändert",
+      "alt": 1144,
+      "neu": 1145
+    },
+    {
+      "pfad": "/overview/selectionBounds/height",
+      "art": "geändert",
+      "alt": 300.2271644345591,
+      "neu": 218.00486618004868
+    },
+    {
+      "pfad": "/overview/selectionBounds/width",
+      "art": "geändert",
+      "alt": 325.4232724027583,
+      "neu": 374.69586374695865
+    },
+    {
+      "pfad": "/overview/selectionBounds/x",
+      "art": "geändert",
+      "alt": 157.28836379862088,
+      "neu": 132.65206812652065
+    },
+    {
+      "pfad": "/overview/selectionBounds/y",
+      "art": "geändert",
+      "alt": 828.6374662211709,
+      "neu": 869.7486153484261
+    }
+  ],
+  "hinweis": "Zustand unmittelbar vor/nach dem Aufruf; weitere Parameter oder Auswahl können erforderlich sein. Keine automatische Erfolgsgarantie."
+}

@@ -1,0 +1,95 @@
+VectorCraft Symbol-Experiment 0.5 – Interaktive Mandala-Steuerung
+
+START
+Alte Version schließen. ZIP vollständig entpacken und die EXE starten.
+Den Ordner _internal neben der EXE lassen. Python ist enthalten.
+VectorCraft wie bisher mit Steuerkanal auf Port 7979 starten:
+"C:\Program Files\VectorCraft\vectorcraft.exe" --control 7979
+Mit einer gespeicherten Testkopie arbeiten. „Verbindung“ prüft den Kanal.
+
+MANDALA INTERAKTIV STEUERN
+1. In VectorCraft eine verknüpfte Symbolinstanz in der Zeichnung auswählen.
+2. Im neuen Reiter „Mandala · Live“ auf „Mandala starten“ klicken.
+   Der Symbolname wird automatisch erkannt. Nach der Bestätigung entstehen
+   zusätzliche verknüpfte Instanzen. Die ursprüngliche Vorlage bleibt erhalten.
+3. Anzahl, Radius und Motivdrehung über die Regler oder Zahlenfelder verändern.
+   Solange „Live aktualisieren“ angehakt ist, ändert sich das Mandala direkt
+   in VectorCraft, nach etwa 0,4 Sekunden ohne weitere Reglereingabe.
+4. „Steuerung beenden“ anklicken, wenn die Anordnung passt. Alle Instanzen bleiben
+   erhalten. Anschließend die Zeichnung in VectorCraft speichern.
+
+BEDIENELEMENTE
+Anzahl: 2 bis 72 zusätzliche Instanzen.
+Radius: Abstand der Instanzmittelpunkte von der Mitte, 0 bis 2000 Dokumentpunkte.
+Motivdrehung: −180 bis +180 Grad zusätzlich zur Ausrichtung der Vorlage.
+Mitte X / Y: Mittelpunkt des Mandalas. Beim Start wird die Mitte der ersten
+Zeichenfläche eingesetzt, sofern noch keine eigenen Mittelpunktwerte eingegeben
+wurden. Beide Werte können auch live verändert werden.
+Motive mitdrehen: Die erste Kopie steht oben und behält bei Drehung 0 die
+Ausrichtung der Vorlage. Die weiteren Kopien drehen sich mit ihrer Kreisposition
+weiter. Für nach innen zeigende Motive die Vorlage passend ausrichten oder
+die Motivdrehung einstellen. Ohne Häkchen sind alle Motive parallel ausgerichtet.
+Live aktualisieren: Ausschalten pausiert automatische Änderungen. „Aktualisieren“
+übernimmt die aktuellen Werte dann einmalig. Ein bereits gesendeter Aufruf kann
+noch fertig werden. Regler und Zahlenfelder zeigen dieselben Werte.
+
+WICHTIG BEIM BEARBEITEN
+Die Steuerung ersetzt bei jeder Aktualisierung ausschließlich ihre selbst
+erzeugten Mandala-Instanzen durch neue verknüpfte Kopien der Vorlage. Position,
+Größe, Orientierung und Erscheinungsbild der Vorlage werden berücksichtigt.
+Andere vorhandene Instanzen werden nicht umgeordnet.
+Während die Steuerung aktiv ist, Vorlage und Mandala nicht zusätzlich manuell
+verändern, löschen oder gruppieren. Auch das Dokument nicht wechseln.
+Bei erkannten Änderungen hält die Live-Steuerung an, damit manuelle Änderungen
+nicht überschrieben werden. Erst prüfen und dann die Steuerung beenden.
+Eine Fehlermeldung deaktiviert Live; keine automatische Wiederholung.
+
+RÜCKGÄNGIG UND FEHLER
+Jede bestätigte Aktualisierung ist EIN Rückgängig-Schritt in VectorCraft.
+Vor Strg+Z Live ausschalten oder die Steuerung beenden. Nach einem Rückgängig-
+Schritt sind die gespeicherten Instanzzuordnungen möglicherweise ungültig;
+eine weitere Aktualisierung wird dann gesperrt.
+Die Engine führt eine Aktualisierung als gemeinsamen command.batch aus und
+rollt bei Befehlsfehlern den gesamten Batch zurück. Ein Timeout kann trotzdem
+ein bereits ausgeführtes Ergebnis verdecken: Status „Ergebnis unklar“ sperrt
+weitere Änderungen. Diagnose exportieren, Zeichnung prüfen, Steuerung beenden.
+„Steuerung beenden“ löscht niemals Objekte und macht keine Änderung rückgängig.
+Eine beim Schließen offene Steuerung bleibt nach Neustart gesperrt. Es wird
+nichts automatisch fortgesetzt. Bei Bedarf die Zuordnung beenden und mit
+einer ausgewählten Instanz ein NEUES Mandala starten; dieses erzeugt neue Kopien.
+
+SYMBOLFORM ÄNDERN (bewährter Ablauf aus 0.4.2)
+Zuerst die Mandala-Steuerung beenden. Im Reiter „Symbol bearbeiten“:
+Symbol in VectorCraft anklicken -> „1 · Symbol bearbeiten“ -> Form/Farbe ändern
+-> „Bearbeitete Form auswählen“ -> „2 · Änderung übernehmen“.
+Die gemeinsame Symboldefinition aktualisiert alle verknüpften Instanzen,
+einschließlich des fertig angeordneten Mandalas.
+Wurzelobjekte/äußere Bearbeitungsgruppe dabei nicht löschen oder neu gruppieren.
+
+WEITERE FUNKTIONEN UND DIAGNOSE
+Die bisherigen Funktionen bleiben unter „Weitere Funktionen“ erhalten.
+„Bericht exportieren“ enthält nun zusätzlich Mandala-Zuordnung, Werte,
+Befehlsantworten und Fehler. Der Export kann Dokumentgeometrie, Namen und Pfade
+enthalten; vor Weitergabe prüfen. Keine Datenübertragung an externe Dienste,
+keine KI-Kosten und keine API-Schlüssel.
+Sitzungsdaten: %LOCALAPPDATA%\VectorCraft-Symbol-Experiment-0.4
+Die gemeinsame Anwendungssperre verhindert parallele Programm-Instanzen.
+
+TESTGRENZEN
+Zustandsprüfung und Schreibbefehl sind nicht atomar miteinander verbunden.
+Während der Ausführung nicht parallel in VectorCraft weiterarbeiten.
+Es gibt hier keine unveränderliche Dokument-UUID; identische Dokumente und
+ein Wechsel weg und zurück zwischen Abfragen können unerkannt bleiben.
+Die Mandala-Erzeugung und Symbolbearbeitung sind mit der installierten Engine
+getestet. Den vollständigen manuellen Durchlauf und die Sichtprüfung der eigenen
+Zeichnung bitte selbst vornehmen. Details in TESTBERICHT.txt.
+Am VectorCraft-Repository wurde nichts verändert. Windows x64; EXE nicht signiert.
+
+OPTIONAL: QUELLCODE PRÜFEN UND BAUEN
+Python 3.12 mit tkinter. Im Ordner source:
+py -m unittest discover -s . -p "test_*.py" -v
+py vectorcraft_experiment.py --smoke-test
+py -m pip install pyinstaller==6.22.3
+py -m PyInstaller --noconfirm --windowed --onedir --name VectorCraft-Symbol-Experiment-0.5 vectorcraft_experiment.py
+Engine-Test: Ordner work anlegen, dann py test_engine.py ausführen.
+Voraussetzung: C:\Program Files\VectorCraft\vectorcraft-cli.exe.

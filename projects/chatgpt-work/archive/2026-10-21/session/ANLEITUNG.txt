@@ -1,0 +1,113 @@
+VectorCraft Symbol-Experiment 0.4 – Windows x64
+================================================
+
+START
+1. ZIP vollständig in einen normalen Ordner entpacken.
+2. VectorCraft mit aktiviertem Steuerkanal starten, zum Beispiel:
+   "C:\Program Files\VectorCraft\vectorcraft.exe" --control 7979
+   Eine bereits laufende Instanz ohne Steuerkanal vorher regulär schließen.
+3. Das gewünschte Dokument unter einem neuen Namen als TESTKOPIE speichern.
+4. VectorCraft-Symbol-Experiment-0.4.exe doppelklicken.
+   Der Ordner _internal muss neben der EXE bleiben. Python muss nicht
+   installiert werden. Keine API-Schlüssel und keine KI-Kosten.
+5. Auf „Verbindung“ klicken. Der Steuerkanal ist fest 127.0.0.1:7979.
+
+DIE ZWEI SCHRITTE
+1. In VectorCraft genau eine Symbolinstanz direkt auswählen, keine Gruppe.
+   Im Testprogramm deren exakten Symbolnamen eintragen.
+   „1 · Symbol bearbeiten“ anklicken und den Hinweis bestätigen.
+   Das Programm prüft Auswahl und Ziel, führt symbol.edit mit der Instanz-ID
+   aus und merkt sich den tatsächlich zurückgegebenen Namen und die IDs.
+   Diese eine Instanz wird zu frei bearbeitbarer Geometrie. Die gemeinsame
+   Definition und die anderen Instanzen bleiben zunächst bestehen.
+
+2. Die aufgelöste Geometrie manuell in VectorCraft bearbeiten, etwa Füllung,
+   Kontur oder Form ändern. Die ursprünglichen Wurzelobjekte müssen bestehen
+   bleiben. Innerhalb einer vorhandenen Bearbeitungsgruppe kann deren Inhalt
+   bearbeitet werden; die äußere Gruppe muss ihre ID behalten.
+   Danach ausschließlich die im Status genannten Bearbeitungsobjekte auswählen.
+   „Bearbeitungszustand prüfen“ kann vorab lesend prüfen.
+   „2 · Änderung auf alle Instanzen übernehmen“ anklicken und bestätigen.
+   Das Programm verwendet den gemerkten Namen und explizite IDs:
+       symbol.update {name, ids}
+   Die gemeinsame Definition wird ersetzt; alle verknüpften Instanzen
+   aktualisieren sich. Die Bearbeitungsgeometrie wird wieder eine Instanz.
+   Ergebnis in VectorCraft visuell prüfen und die Testkopie speichern.
+
+WAS GESPERRT WIRD
+- Leere/mehrfache Auswahl, falsches Symbol und Gruppen statt einer Instanz.
+- Übernahme ohne vorheriges bestätigtes symbol.edit.
+- Fehlende Bearbeitungsobjekte, veränderte gemeinsame Definition, andere Auswahl,
+  erkennbarer Dokument-/Tabwechsel oder zurückgesetzte Revision.
+- Zweite Symbolbearbeitung und andere Schreibaktionen während einer Sitzung.
+- Parallele Vorgänge; eine zweite laufende Programm-Instanz.
+
+Bei Bearbeitungen, die die Wurzel-ID ersetzen (z.B. Auflösen der äußeren Gruppe,
+Neugruppieren, Löschen/Neuanlegen), sperrt 0.4 die Übernahme bewusst. Dann die
+Testkopie prüfen, passende Schritte in VectorCraft rückgängig machen und die
+Sitzung verwerfen, bevor eine neue Bearbeitung begonnen wird. Es gibt keine
+automatische Übernahme einer beliebigen neuen Auswahl.
+
+FEHLER UND UNKLARES ERGEBNIS
+Bei Timeout/Verbindungsabbruch kann ein bereits gesendeter Schreibbefehl trotzdem
+ausgeführt worden sein. Deshalb wird er niemals automatisch wiederholt.
+„ERGEBNIS UNKLAR“ sperrt weitere Schreibaktionen. Zuerst Diagnose exportieren,
+dann das Dokument prüfen. Nach Neustart bleibt eine zuvor offene Sitzung gesperrt.
+„Sitzung verwerfen“ entfernt nur die Zuordnung im Testprogramm und macht im
+Dokument NICHTS rückgängig. Rückgängig-Schritte erfolgen bewusst in VectorCraft.
+Wurde ein Befehl abgelehnt, kann die Sitzung vorsichtshalber ebenfalls gesperrt
+bleiben. Auch dann zuerst prüfen. Keine automatische Rücksetzung der Geometrie.
+
+Wenn Auswahl oder Name vor dem Senden ungültig sind, findet keine Änderung statt.
+Bei fehlgeschlagener Nachprüfung kann eine Änderung bereits ausgeführt sein.
+Beim Erzeugen von 12 Instanzen meldet ein Fehler die Zahl der bestätigten
+Platzierungen. Keine automatische Wiederholung des kompletten Rings.
+
+BEIBEHALTENE FUNKTIONEN
+Verbindung, Referenz speichern, Änderungen prüfen, automatischer Vergleich alle
+2 Sekunden, Bericht exportieren, Symbolstatus, Symbol aus Auswahl, 12 Instanzen
+mit Mittelpunkt/Radius (ohne radiale Drehung).
+Der alte symbol.replace-Test bleibt als ausdrücklich benannter Diagnosetest
+erreichbar. Er tauscht Symbolzuordnungen von Instanzen; für die Neudefinition
+ist ausschließlich die neue Zwei-Schritt-Steuerung vorgesehen.
+
+DIAGNOSE
+„Bericht exportieren“ funktioniert auch ohne bisherigen Änderungsvergleich.
+Die JSON enthält Version, Sitzung, Fehler, Aktionen, Befehlsantworten,
+Vorher-/Nachher-Zustände und begrenzte strukturelle Unterschiede (max. 120).
+Der Export kann Dokumentgeometrie, Namen und Dateipfade enthalten.
+Vor Weitergabe prüfen. Das Programm überträgt nichts an externe Dienste.
+Sitzungszuordnung: %LOCALAPPDATA%\VectorCraft-Symbol-Experiment-0.4\pending.json
+Der Ordner muss beschreibbar sein; vor jedem Schreibbefehl wird der unklare
+Zwischenzustand dauerhaft gespeichert. Die application.lock verhindert
+gleichzeitige lokale Programm-Instanzen.
+
+GRENZEN DER ZUSTANDSPRÜFUNG
+Der Steuerkanal bietet hier keine atomare Transaktion zwischen Prüfung und
+Schreibbefehl und keine unveränderliche Dokument-UUID. Die Prüfung vergleicht
+Tabindex, Dokumenttitel, Dateipfad, geöffnete Dokumenttitel, Revision, Definition,
+Auswahl und Objekt-IDs. Ein Austausch gegen ein identisches Dokument oder ein
+Wechsel weg und zurück zwischen zwei Abfragen ist nicht zuverlässig erkennbar.
+Während Prüfung/Übernahme daher nicht parallel weiterarbeiten und bei offener
+Sitzung das Dokument nicht wechseln, speichern unter neuem Namen oder neu öffnen.
+Geänderte IDs werden nicht automatisch neu zugeordnet. Strukturelle Diffs sind
+keine semantische Objektverfolgung und kein Nachweis visueller Korrektheit.
+
+TESTS UND QUELLEN
+TESTBERICHT.txt beschreibt die ausgeführten Prüfungen und ihre Grenzen.
+Quellcode und wiederholbare Tests liegen im Ordner source.
+Grundlage: heruntergeladenes Testprogramm 0.3.1 und VectorCraft-Aenderungen.json.
+Bestätigter Enginevertrag:
+https://github.com/wibem1/vectorcraft/blob/main/crates/engine/src/cmd/brushsym.rs
+brushsym.rs Blob-SHA: df6358cfedbddfb7eac18c20747616f616b15491
+Protokoll: https://github.com/wibem1/vectorcraft/blob/main/docs/control-protocol.md
+Am VectorCraft-Repository wurde nichts geändert.
+
+BUILD (optional, Windows x64 mit Python 3.12 und tkinter)
+Im Ordner source:
+  py -m pip install pyinstaller==6.22.3
+  py -m PyInstaller --noconfirm --windowed --onedir --name VectorCraft-Symbol-Experiment-0.4 vectorcraft_experiment.py
+Tests: py test_workflow.py
+GUI-Starttest: py vectorcraft_experiment.py --smoke-test
+Engine-Test: py test_engine.py (installierte vectorcraft-cli.exe erforderlich;
+aus dem übergeordneten Projektordner mit vorhandenem Unterordner work starten).

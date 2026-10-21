@@ -1,0 +1,106 @@
+[
+  {
+    "path": "outputs\\KI-Mandala-Liniara.vectorcraft",
+    "result": {
+      "format": "vectorcraft",
+      "index": 0,
+      "missingLinks": [],
+      "modifiedLinks": [],
+      "restored": false,
+      "title": "KI-Mandala-Liniara.vectorcraft",
+      "updatedLinks": [],
+      "warnings": []
+    },
+    "step": "open"
+  },
+  {
+    "command": "select.set",
+    "result": {
+      "count": 1,
+      "ids": [
+        229
+      ]
+    },
+    "step": "cmd"
+  },
+  {
+    "command": "symbol.edit",
+    "result": {
+      "ids": [
+        462
+      ],
+      "name": "Federfächer · Linien"
+    },
+    "step": "cmd"
+  },
+  {
+    "command": "paint.setStroke",
+    "result": null,
+    "step": "cmd"
+  },
+  {
+    "command": "symbol.update",
+    "result": {
+      "id": 510,
+      "name": "Federfächer · Linien"
+    },
+    "step": "cmd"
+  },
+  {
+    "command": "symbol.list",
+    "result": {
+      "current": "Federfächer · Linien",
+      "symbols": [
+        {
+          "instances": 32,
+          "name": "Federfächer · Linien",
+          "size": [
+            85.5,
+            228.0
+          ]
+        },
+        {
+          "instances": 24,
+          "name": "Spitzbogen · Maßwerk",
+          "size": [
+            116.0,
+            210.0
+          ]
+        },
+        {
+          "instances": 12,
+          "name": "Kernblatt · Linien",
+          "size": [
+            56.0,
+            116.0
+          ]
+        },
+        {
+          "instances": 48,
+          "name": "Randlanzette",
+          "size": [
+            44.0,
+            104.0
+          ]
+        },
+        {
+          "instances": 32,
+          "name": "Bogenbrücke · Arabeske",
+          "size": [
+            132.0,
+            66.0
+          ]
+        },
+        {
+          "instances": 64,
+          "name": "Perlenachse",
+          "size": [
+            18.0,
+            38.0
+          ]
+        }
+      ]
+    },
+    "step": "cmd"
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "version": "0.4.1",
+  "pending": null,
+  "events": [],
+  "actions": [
+    {
+      "action": "Verbindung",
+      "result": "Live-Control antwortet; {\"current\":\"Mandala-Blatt 4\",\"symbols\":[{\"instances\":14,\"name\":\"Mandala-Blatt\",\"size\":[374.6958637469586,218.00486618004868]},{\"instances\":0,\"name\":\"Mandala-Blatt 2\",\"size\":[187.3479318734794,181.30616984964252]},{\"instances\":0,\"n…",
+      "error": null
+    },
+    {
+      "action": "Symbol bearbeiten",
+      "result": null,
+      "error": "Die ausgewählte Instanz gehört nicht zum eingegebenen Symbolnamen."
+    },
+    {
+      "action": "Symbol bearbeiten",
+      "result": null,
+      "error": "Die ausgewählte Instanz gehört nicht zum eingegebenen Symbolnamen."
+    }
+  ],
+  "last_error": "Die ausgewählte Instanz gehört nicht zum eingegebenen Symbolnamen.",
+  "legacy_report": null,
+  "reference": null,
+  "protocol": "127.0.0.1:7979",
+  "notice": "Enthält Dokumentgeometrie und Titel. Vor Weitergabe prüfen. Abfragen sind nicht atomar; keine visuelle Erfolgsgarantie."
+}

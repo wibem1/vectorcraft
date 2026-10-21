@@ -1,0 +1,989 @@
+{
+  "created": "2026-10-21T10:45:18.141598+02:00",
+  "restored_active_document": 5,
+  "documents": [
+    {
+      "index": 0,
+      "title": "Untitled-1",
+      "captured": true,
+      "file": "document-00.vectorcraft",
+      "overview": {
+        "artboards": [
+          {
+            "height": 1400.0,
+            "name": "Artboard 1",
+            "width": 1400.0,
+            "x": 0.0,
+            "y": 0.0
+          }
+        ],
+        "colorMode": "Rgb",
+        "currentLayer": 1,
+        "dirty": true,
+        "history": [
+          "Rectangle",
+          "Rectangle",
+          "Rectangle",
+          "Rectangle",
+          "Rectangle",
+          "New Symbol",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Move",
+          "Move",
+          "Move",
+          "Clear",
+          "Rectangle",
+          "New Symbol",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Fill Color",
+          "Fill Color",
+          "Fill Color",
+          "Fill Color",
+          "Place Symbol Instance",
+          "Fill Color",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Fill Color",
+          "Place Symbol Instance",
+          "Fill Color",
+          "Edit Symbol",
+          "Fill Color",
+          "Edit Symbol",
+          "Place Symbol Instance",
+          "Fill Color",
+          "Edit Symbol",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke Color",
+          "Stroke Color",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Stroke",
+          "Place Symbol Instance",
+          "Stroke Color",
+          "Fill Color",
+          "Recolor Artwork",
+          "Redefine Symbol",
+          "Ellipse",
+          "Redefine Symbol",
+          "Ellipse",
+          "Clear",
+          "Clear",
+          "Ellipse",
+          "Ellipse",
+          "Fill Color",
+          "Stroke Color",
+          "New Symbol",
+          "Polygon",
+          "New Symbol",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Place Symbol Instance",
+          "Replace Symbol",
+          "Replace Symbol",
+          "Place Symbol Instance",
+          "Replace Symbol",
+          "Move",
+          "Edit Symbol",
+          "Polygon",
+          "Fill Color",
+          "New Symbol",
+          "Replace Symbol",
+          "Edit Symbol",
+          "Redefine Symbol",
+          "Fill Color",
+          "Edit Symbol",
+          "Stroke Color",
+          "Fill Color",
+          "Redefine Symbol",
+          "Clear",
+          "Clear",
+          "Place Symbol Instance",
+          "Mandala interaktiv",
+          "Mandala interaktiv",
+          "Mandala interaktiv",
+          "Mandala interaktiv",
+          "Mandala interaktiv",
+          "Mandala interaktiv",
+          "Mandala interaktiv",
+          "Mandala interaktiv",
+          "Move"
+        ],
+        "isolation": null,
+        "key": null,
+        "layerRows": [],
+        "layers": [
+          {
+            "bounds": {
+              "height": 1018.1351225357804,
+              "width": 896.39229769405,
+              "x": 251.8038511529752,
+              "y": 146.00048734222796
+            },
+            "childCount": 8,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 1,
+            "kind": "Layer",
+            "locked": false,
+            "name": "Layer 1",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          }
+        ],
+        "objects": 9,
+        "paint": {
+          "appearanceItem": null,
+          "fill": "#f7931e",
+          "fillActive": false,
+          "stroke": "#a45f89",
+          "strokeWidth": 23.0
+        },
+        "pasteRemembersLayers": false,
+        "path": null,
+        "redo": [],
+        "revision": 1298,
+        "selection": [
+          142
+        ],
+        "selectionBounds": {
+          "height": 402.27121975601665,
+          "width": 386.09432264186415,
+          "x": 499.6196251354781,
+          "y": 146.00048734222796
+        },
+        "selectionRotation": 108.0,
+        "target": null,
+        "title": "Untitled-1",
+        "tool": "selection",
+        "units": "Points"
+      },
+      "symbols": {
+        "current": "Mandala-Blatt 4",
+        "symbols": [
+          {
+            "instances": 0,
+            "name": "Mandala-Blatt",
+            "size": [
+              374.6958637469586,
+              218.00486618004874
+            ]
+          },
+          {
+            "instances": 0,
+            "name": "Mandala-Blatt 2",
+            "size": [
+              187.3479318734794,
+              181.30616984964252
+            ]
+          },
+          {
+            "instances": 0,
+            "name": "Mandala Blatt",
+            "size": [
+              177.1289537712895,
+              204.37956204379554
+            ]
+          },
+          {
+            "instances": 0,
+            "name": "Mandala-Blatt 3",
+            "size": [
+              291.1505107601615,
+              304.44971793879114
+            ]
+          },
+          {
+            "instances": 7,
+            "name": "Mandala-Blatt 4",
+            "size": [
+              325.4232724027583,
+              300.2271644345592
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "title": "KI-Mandala – Sonnenrosette",
+      "captured": true,
+      "file": "document-01.vectorcraft",
+      "overview": {
+        "artboards": [
+          {
+            "height": 1400.0,
+            "name": "Artboard 1",
+            "width": 1400.0,
+            "x": 0.0,
+            "y": 0.0
+          }
+        ],
+        "colorMode": "Rgb",
+        "currentLayer": 1,
+        "dirty": true,
+        "history": [
+          "KI-Mandala vorbereiten",
+          "KI-Sonnenrosette konstruieren",
+          "Äußerer Ring · 12 Motive",
+          "Object Properties",
+          "Innerer Ring · 12 Motive",
+          "Object Properties",
+          "Herz · 6 Motive",
+          "Object Properties",
+          "Object Properties",
+          "Punktekranz gruppieren",
+          "Object Properties"
+        ],
+        "isolation": null,
+        "key": null,
+        "layerRows": [],
+        "layers": [
+          {
+            "bounds": {
+              "height": 1112.0,
+              "width": 1108.0,
+              "x": 145.99999999999997,
+              "y": 144.0
+            },
+            "childCount": 5,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 1,
+            "kind": "Layer",
+            "locked": false,
+            "name": "Layer 1",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          }
+        ],
+        "objects": 72,
+        "paint": {
+          "appearanceItem": null,
+          "fill": "#f7931e",
+          "fillActive": false,
+          "stroke": "#a45f89",
+          "strokeWidth": 23.0
+        },
+        "pasteRemembersLayers": false,
+        "path": null,
+        "redo": [],
+        "revision": 92,
+        "selection": [],
+        "selectionBounds": null,
+        "selectionRotation": 0.0,
+        "target": null,
+        "title": "KI-Mandala – Sonnenrosette",
+        "tool": "selection",
+        "units": "Points"
+      },
+      "symbols": {
+        "current": "Mandala-Blatt 4",
+        "symbols": [
+          {
+            "instances": 31,
+            "name": "Mandala-Blatt 4",
+            "size": [
+              20.0,
+              20.0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "title": "Aurelia – Flechtmandala",
+      "captured": true,
+      "file": "document-02.vectorcraft",
+      "overview": {
+        "artboards": [
+          {
+            "height": 1600.0,
+            "name": "Artboard 1",
+            "width": 1600.0,
+            "x": 0.0,
+            "y": 0.0
+          }
+        ],
+        "colorMode": "Rgb",
+        "currentLayer": 1,
+        "dirty": true,
+        "history": [
+          "Object Properties",
+          "Object Properties"
+        ],
+        "isolation": null,
+        "key": null,
+        "layerRows": [],
+        "layers": [
+          {
+            "bounds": {
+              "height": 1600.0,
+              "width": 1600.0,
+              "x": 0.0,
+              "y": 0.0
+            },
+            "childCount": 2,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 1,
+            "kind": "Layer",
+            "locked": false,
+            "name": "Layer 1",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          }
+        ],
+        "objects": 1356,
+        "paint": {
+          "appearanceItem": null,
+          "fill": "#f7931e",
+          "fillActive": false,
+          "stroke": "#a45f89",
+          "strokeWidth": 23.0
+        },
+        "pasteRemembersLayers": false,
+        "path": null,
+        "redo": [],
+        "revision": 4,
+        "selection": [],
+        "selectionBounds": null,
+        "selectionRotation": 0.0,
+        "target": null,
+        "title": "Aurelia – Flechtmandala",
+        "tool": "selection",
+        "units": "Pixels"
+      },
+      "symbols": {
+        "current": null,
+        "symbols": []
+      }
+    },
+    {
+      "index": 3,
+      "title": "Liniara – Symbolmandala",
+      "captured": true,
+      "file": "document-03.vectorcraft",
+      "overview": {
+        "artboards": [
+          {
+            "height": 1600.0,
+            "name": "Liniara",
+            "width": 1600.0,
+            "x": 0.0,
+            "y": 0.0
+          }
+        ],
+        "colorMode": "Rgb",
+        "currentLayer": 446,
+        "dirty": false,
+        "history": [],
+        "isolation": null,
+        "key": null,
+        "layerRows": [],
+        "layers": [
+          {
+            "bounds": {
+              "height": 60.0,
+              "width": 60.0,
+              "x": 770.0,
+              "y": 770.0
+            },
+            "childCount": 14,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 461,
+            "kind": "Layer",
+            "locked": false,
+            "name": "09 · Zentrum",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 1237.8019762841734,
+              "width": 1237.8019762841734,
+              "x": 181.09901185791338,
+              "y": 181.09901185791338
+            },
+            "childCount": 64,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 446,
+            "kind": "Layer",
+            "locked": false,
+            "name": "08 · 64 Perlenachsen",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 1408.0,
+              "width": 1408.0,
+              "x": 96.0,
+              "y": 96.0
+            },
+            "childCount": 48,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 381,
+            "kind": "Layer",
+            "locked": false,
+            "name": "07 · 48 Randlanzetten",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 1134.9078336931734,
+              "width": 1134.9078336931734,
+              "x": 232.5460831534132,
+              "y": 232.5460831534132
+            },
+            "childCount": 32,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 332,
+            "kind": "Layer",
+            "locked": false,
+            "name": "06 · 32 Arabeskenbrücken",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 282.0967972048618,
+              "width": 282.0967972048618,
+              "x": 658.9516013975691,
+              "y": 658.9516013975691
+            },
+            "childCount": 12,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 299,
+            "kind": "Layer",
+            "locked": false,
+            "name": "05 · 12 Kernblätter",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 633.004205224247,
+              "width": 633.004205224247,
+              "x": 483.49789738787644,
+              "y": 483.4978973878765
+            },
+            "childCount": 24,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 286,
+            "kind": "Layer",
+            "locked": false,
+            "name": "04 · 24 Maßwerkbögen",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 1106.0,
+              "width": 1106.0,
+              "x": 247.0,
+              "y": 247.0
+            },
+            "childCount": 32,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 261,
+            "kind": "Layer",
+            "locked": false,
+            "name": "03 · 32 Federfächer",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 1454.0,
+              "width": 1454.0,
+              "x": 73.0,
+              "y": 73.0
+            },
+            "childCount": 166,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 228,
+            "kind": "Layer",
+            "locked": false,
+            "name": "02 · Guilloche und Konstruktionslinien",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 1600.0,
+              "width": 1600.0,
+              "x": 0.0,
+              "y": 0.0
+            },
+            "childCount": 1,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 227,
+            "kind": "Layer",
+            "locked": false,
+            "name": "01 · Papier",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          }
+        ],
+        "objects": 402,
+        "paint": {
+          "appearanceItem": null,
+          "fill": "#f7931e",
+          "fillActive": false,
+          "stroke": "#a45f89",
+          "strokeWidth": 23.0
+        },
+        "pasteRemembersLayers": false,
+        "path": null,
+        "redo": [],
+        "revision": 249,
+        "selection": [
+          229
+        ],
+        "selectionBounds": {
+          "height": 228.0,
+          "width": 85.5,
+          "x": 757.25,
+          "y": 247.0
+        },
+        "selectionRotation": 0.0,
+        "target": null,
+        "title": "Liniara – Symbolmandala",
+        "tool": "selection",
+        "units": "Points"
+      },
+      "symbols": {
+        "current": "Federfächer · Linien",
+        "symbols": [
+          {
+            "instances": 32,
+            "name": "Federfächer · Linien",
+            "size": [
+              120.0,
+              240.0
+            ]
+          },
+          {
+            "instances": 24,
+            "name": "Spitzbogen · Maßwerk",
+            "size": [
+              116.0,
+              210.0
+            ]
+          },
+          {
+            "instances": 12,
+            "name": "Kernblatt · Linien",
+            "size": [
+              56.0,
+              116.0
+            ]
+          },
+          {
+            "instances": 48,
+            "name": "Randlanzette",
+            "size": [
+              44.0,
+              104.0
+            ]
+          },
+          {
+            "instances": 32,
+            "name": "Bogenbrücke · Arabeske",
+            "size": [
+              132.0,
+              66.0
+            ]
+          },
+          {
+            "instances": 64,
+            "name": "Perlenachse",
+            "size": [
+              18.0,
+              38.0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "title": "Liniara – Farbenspiel",
+      "captured": true,
+      "file": "document-04.vectorcraft",
+      "overview": {
+        "artboards": [
+          {
+            "height": 1600.0,
+            "name": "Liniara",
+            "width": 1600.0,
+            "x": 0.0,
+            "y": 0.0
+          }
+        ],
+        "colorMode": "Rgb",
+        "currentLayer": 461,
+        "dirty": false,
+        "history": [],
+        "isolation": null,
+        "key": null,
+        "layerRows": [],
+        "layers": [
+          {
+            "bounds": {
+              "height": 60.0,
+              "width": 60.0,
+              "x": 770.0,
+              "y": 770.0
+            },
+            "childCount": 14,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 461,
+            "kind": "Layer",
+            "locked": false,
+            "name": "09 · Zentrum",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 1237.8019762841734,
+              "width": 1237.8019762841734,
+              "x": 181.09901185791338,
+              "y": 181.09901185791338
+            },
+            "childCount": 64,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 446,
+            "kind": "Layer",
+            "locked": false,
+            "name": "08 · 64 Perlenachsen",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 1408.0,
+              "width": 1408.0,
+              "x": 96.0,
+              "y": 96.0
+            },
+            "childCount": 48,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 381,
+            "kind": "Layer",
+            "locked": false,
+            "name": "07 · 48 Randlanzetten",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 1134.9078336931734,
+              "width": 1134.9078336931734,
+              "x": 232.5460831534132,
+              "y": 232.5460831534132
+            },
+            "childCount": 32,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 332,
+            "kind": "Layer",
+            "locked": false,
+            "name": "06 · 32 Arabeskenbrücken",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 282.0967972048618,
+              "width": 282.0967972048618,
+              "x": 658.9516013975691,
+              "y": 658.9516013975691
+            },
+            "childCount": 12,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 299,
+            "kind": "Layer",
+            "locked": false,
+            "name": "05 · 12 Kernblätter",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 633.004205224247,
+              "width": 633.004205224247,
+              "x": 483.49789738787644,
+              "y": 483.4978973878765
+            },
+            "childCount": 24,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 286,
+            "kind": "Layer",
+            "locked": false,
+            "name": "04 · 24 Maßwerkbögen",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 1106.0,
+              "width": 1106.0,
+              "x": 247.0,
+              "y": 247.0
+            },
+            "childCount": 32,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 261,
+            "kind": "Layer",
+            "locked": false,
+            "name": "03 · 32 Federfächer",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 1454.0,
+              "width": 1454.0,
+              "x": 73.0,
+              "y": 73.0
+            },
+            "childCount": 166,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 228,
+            "kind": "Layer",
+            "locked": false,
+            "name": "02 · Guilloche und Konstruktionslinien",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          },
+          {
+            "bounds": {
+              "height": 1600.0,
+              "width": 1600.0,
+              "x": 0.0,
+              "y": 0.0
+            },
+            "childCount": 1,
+            "clip": false,
+            "color": "#4f80ff",
+            "dimImages": null,
+            "id": 227,
+            "kind": "Layer",
+            "locked": false,
+            "name": "01 · Papier",
+            "preview": true,
+            "printable": true,
+            "template": false,
+            "visible": true
+          }
+        ],
+        "objects": 402,
+        "paint": {
+          "appearanceItem": null,
+          "fill": "#f7931e",
+          "fillActive": false,
+          "stroke": "#a45f89",
+          "strokeWidth": 23.0
+        },
+        "pasteRemembersLayers": false,
+        "path": null,
+        "redo": [],
+        "revision": 1,
+        "selection": [],
+        "selectionBounds": null,
+        "selectionRotation": 0.0,
+        "target": null,
+        "title": "Liniara – Farbenspiel",
+        "tool": "selection",
+        "units": "Points"
+      },
+      "symbols": {
+        "current": "Federfächer · Linien",
+        "symbols": [
+          {
+            "instances": 32,
+            "name": "Federfächer · Linien",
+            "size": [
+              120.0,
+              240.0
+            ]
+          },
+          {
+            "instances": 24,
+            "name": "Spitzbogen · Maßwerk",
+            "size": [
+              116.0,
+              210.0
+            ]
+          },
+          {
+            "instances": 12,
+            "name": "Kernblatt · Linien",
+            "size": [
+              56.0,
+              116.0
+            ]
+          },
+          {
+            "instances": 48,
+            "name": "Randlanzette",
+            "size": [
+              44.0,
+              104.0
+            ]
+          },
+          {
+            "instances": 32,
+            "name": "Bogenbrücke · Arabeske",
+            "size": [
+              132.0,
+              66.0
+            ]
+          },
+          {
+            "instances": 64,
+            "name": "Perlenachse",
+            "size": [
+              18.0,
+              38.0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "title": "Sechsblättriges Mandala · nach Vorlage.svg",
+      "captured": false,
+      "reason": "Excluded from public capture; not a whitelisted original project drawing"
+    }
+  ]
+}

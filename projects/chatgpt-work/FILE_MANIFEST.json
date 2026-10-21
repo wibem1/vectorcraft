@@ -1,0 +1,1138 @@
+{
+  "files": [
+    {
+      "path": "projects/chatgpt-work/.gitattributes",
+      "bytes": 9,
+      "sha256": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992",
+      "git_blob_sha1": "625449502ba4b4d7c229c6ccee42e3ec41cc780c"
+    },
+    {
+      "path": "projects/chatgpt-work/.gitignore",
+      "bytes": 40,
+      "sha256": "ea04b30a0027740c9d49212584b9b6ac87f5d5a2061402ff092348a59a79c81c",
+      "git_blob_sha1": "351e180f3bef8e8cf51431debde5164dbfef2269"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/ANLEITUNG.txt",
+      "bytes": 6760,
+      "sha256": "274377425ef8e9835f22c0f014f36cbe17186f8fa69f5300a19e047d98fbd723",
+      "git_blob_sha1": "239129d2415622f8c860f071b97302aa50dad549"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/KI-Mandala-Aurelia.png",
+      "bytes": 633843,
+      "sha256": "765f103331102f5f07e091653cc68234f2c4b3598fa0ae7b14b5eb095720f289",
+      "git_blob_sha1": "5a4b9db88b915da9b8a26c6af2e47e0bbbb0c780"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/KI-Mandala-Aurelia.svg",
+      "bytes": 402490,
+      "sha256": "3503f098a1ffa26c93db31f9e5131145ffc0fde68b2cf8a720fbb1339a7b6fa6",
+      "git_blob_sha1": "8a6e49038095efeaa5c0babaac653c6fc4928873"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/KI-Mandala-Aurelia.vectorcraft",
+      "bytes": 1384413,
+      "sha256": "87de981b7b9c9d7ea934a3e23ba7d3e19597c40087e541d5a642a47c6202607c",
+      "git_blob_sha1": "d4dd7fc4d4a13b72303e3ab6a867496a55a3e564"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/KI-Mandala-Liniara-Farben.png",
+      "bytes": 1275678,
+      "sha256": "44999eba526a494204458c75f76a2f116bcae56d9d48d184372cbe91a0ffa2cd",
+      "git_blob_sha1": "14a9bb2b3c3d262d647b418b52999666aa0ddfaf"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/KI-Mandala-Liniara-Farben.svg",
+      "bytes": 491939,
+      "sha256": "bcd7e673f22cd550c93be27294926491946a485b483e170f776a7cc5758fcefa",
+      "git_blob_sha1": "30f03428cb95eaaab92559ff689e65790b7c1805"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/KI-Mandala-Liniara-Farben.vectorcraft",
+      "bytes": 1742441,
+      "sha256": "1d14ba8c44daca5da3596ef80da618b964755295818b8fdcbe88e5bb0777d2bd",
+      "git_blob_sha1": "af1d4ca95f52364c8ced6030522b2123b6bc1501"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/KI-Mandala-Liniara.png",
+      "bytes": 1105257,
+      "sha256": "f980676e43ec4418d7a3a8a671283f3defd323e32450f9730a50bf22dcff795a",
+      "git_blob_sha1": "e82fb55b43c194b0e40685f0b51fb42ea3a7b378"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/KI-Mandala-Liniara.svg",
+      "bytes": 491941,
+      "sha256": "3efe81e19e63d27cecec8e36c5d728a40a78566376f44cd77feb7c50320a93d0",
+      "git_blob_sha1": "14f045166044fa08ac97c74bf62d01d08e66b3b8"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/KI-Mandala-Liniara.vectorcraft",
+      "bytes": 1742497,
+      "sha256": "a78e0f9f2c7fca2c393b4d00b2742d4feeefd21bedf9a8ba304932458f818142",
+      "git_blob_sha1": "6f73be31c2f66c94b9d1a83502526187bb404b70"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/KI-Mandala-Sonnenrosette.png",
+      "bytes": 53761,
+      "sha256": "ba36b4078c2001064ec51665c3ebdec5321ef5f2b0622c88e6b7b3d8f6ae1581",
+      "git_blob_sha1": "1719308dce2732ea8cd71b72aa0274b03c3b42e7"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/KI-Mandala-Sonnenrosette.svg",
+      "bytes": 16424,
+      "sha256": "3679220c090c476f56a6b05c325f138ff6c22d27865bd7f9f237f76650a10fef",
+      "git_blob_sha1": "6f311d9c0ea3ca78ea2daedd3fa248424e42cc83"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/KI-Mandala-Sonnenrosette.vectorcraft",
+      "bytes": 203198,
+      "sha256": "df93767694d4a7a813cb3798b17510bd32a4efc5a578b70cb36be82ed6ed4781",
+      "git_blob_sha1": "827002f9aa63bdda90bc9037fc68b5e61954f109"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/TESTBERICHT.txt",
+      "bytes": 2618,
+      "sha256": "4832386a855c6f69530307499a78df0bb8be3c73d487459f0b4c5b0292e2c776",
+      "git_blob_sha1": "38d404af596cc967c96f74697d8fa84705350e39"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/VectorCraft-0.5-Anleitung.txt",
+      "bytes": 5853,
+      "sha256": "51a735aa4f9c714003aae2e7e0c1b47e4ca4edb177f8b993469db2dd294d0868",
+      "git_blob_sha1": "1abac9a152bcb5c7c9070e2dcb5a003eb239cb93"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/VectorCraft-Symbol-Experiment-0.4-Windows-x64.zip",
+      "bytes": 12073618,
+      "sha256": "fd783d11d26563c9d07b37a655da627d8cfeacceff08ce9ff8f5f5e0e002de7e",
+      "git_blob_sha1": "4c1c713793c362ab297ef8e6f65e3af9778dfa28"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/VectorCraft-Symbol-Experiment-0.4.1-Windows-x64.zip",
+      "bytes": 11798179,
+      "sha256": "8dbc06a144defaf2342bbc90445451d468f76b0c5536ca8c47c569de3f6363cf",
+      "git_blob_sha1": "814d2860d953dfc5f49b82b6a8588bf7d264940a"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/VectorCraft-Symbol-Experiment-0.4.2-Windows-x64.zip",
+      "bytes": 11799367,
+      "sha256": "c48496c12f63edd0d303231552d814be9dff567ffe6d4f305ed85b101918afb6",
+      "git_blob_sha1": "624f747f77a28e84464c2c4c1a2ec275008a8ab6"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/deliverables/VectorCraft-Symbol-Experiment-0.5-Windows-x64.zip",
+      "bytes": 11827078,
+      "sha256": "653a17c3a36b8e983e3c61bd7cde32cc8051ea83ffa067aabf287f7522dbd894",
+      "git_blob_sha1": "b1c290850bf92ed4eed0a25e788a6b7403c88dcc"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/inputs/VectorCraft-Aenderungen.json",
+      "bytes": 4304,
+      "sha256": "e0e9b3a762b7b1ed269f54e8e8d3e5b0508d6dc4e9371339f78d1e8d8be3c44b",
+      "git_blob_sha1": "04684d6aeb1b062d77c8f128b95c8ebd03d0e39b"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/inputs/VectorCraft-Diagnose-0.4.json",
+      "bytes": 1088,
+      "sha256": "7f0ab60fb832504d6d8306766ce223cb972b827d497ec938a6c9321567c75eec",
+      "git_blob_sha1": "f1078293b33d3d13048a9a87f187abe085f534e9"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/inputs/VectorCraft-Symbol-Experiment-0.1.zip",
+      "bytes": 12903,
+      "sha256": "b8ba60a1d294e4de395a27fa57b8204acd6162d31833f0f2b8139f639f397a5c",
+      "git_blob_sha1": "6c626c99667737e3300276466cd707356203fae4"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/inputs/VectorCraft-Symbol-Experiment-0.2 (1).zip",
+      "bytes": 5826,
+      "sha256": "7ca6dc4ac8d7e5c4387a5e80457745f40539a44cf85385b42e0595fd01a524be",
+      "git_blob_sha1": "53aaa17098076ccc980b4d6ec7abf18735991d92"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/inputs/VectorCraft-Symbol-Experiment-0.2 (2).zip",
+      "bytes": 5826,
+      "sha256": "7ca6dc4ac8d7e5c4387a5e80457745f40539a44cf85385b42e0595fd01a524be",
+      "git_blob_sha1": "53aaa17098076ccc980b4d6ec7abf18735991d92"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/inputs/VectorCraft-Symbol-Experiment-0.2.zip",
+      "bytes": 5826,
+      "sha256": "7ca6dc4ac8d7e5c4387a5e80457745f40539a44cf85385b42e0595fd01a524be",
+      "git_blob_sha1": "53aaa17098076ccc980b4d6ec7abf18735991d92"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/inputs/VectorCraft-Symbol-Experiment-0.3 (1).zip",
+      "bytes": 19612,
+      "sha256": "fdc7e05b01f8d6a66daff2c5c39dc41edb49e5bbe0da1b522911f91396478810",
+      "git_blob_sha1": "695aff1da53f90380683d36532fcf087e64072f5"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/inputs/VectorCraft-Symbol-Experiment-0.3.1 (1).zip",
+      "bytes": 6495,
+      "sha256": "2937404118d621f6647424d82a731078943c6e67da60b1e717d3a977bf534ab9",
+      "git_blob_sha1": "e8fcadeec9d82d139dca013c0156b711f91e42e2"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/inputs/VectorCraft-Symbol-Experiment-0.3.1.zip",
+      "bytes": 6495,
+      "sha256": "2937404118d621f6647424d82a731078943c6e67da60b1e717d3a977bf534ab9",
+      "git_blob_sha1": "e8fcadeec9d82d139dca013c0156b711f91e42e2"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/inputs/VectorCraft-Symbol-Experiment-0.3.zip",
+      "bytes": 19612,
+      "sha256": "fdc7e05b01f8d6a66daff2c5c39dc41edb49e5bbe0da1b522911f91396478810",
+      "git_blob_sha1": "695aff1da53f90380683d36532fcf087e64072f5"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/inputs/VectorCraft-Symbol-Experiment-0.4.1-Windows-x64.zip",
+      "bytes": 11798179,
+      "sha256": "8dbc06a144defaf2342bbc90445451d468f76b0c5536ca8c47c569de3f6363cf",
+      "git_blob_sha1": "814d2860d953dfc5f49b82b6a8588bf7d264940a"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/inputs/VectorCraft-Symbol-Experiment-0.4.2-Windows-x64.zip",
+      "bytes": 11799367,
+      "sha256": "c48496c12f63edd0d303231552d814be9dff567ffe6d4f305ed85b101918afb6",
+      "git_blob_sha1": "624f747f77a28e84464c2c4c1a2ec275008a8ab6"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/inputs/VectorCraft-Symbol-Experiment-0.5-Windows-x64.zip",
+      "bytes": 11827078,
+      "sha256": "653a17c3a36b8e983e3c61bd7cde32cc8051ea83ffa067aabf287f7522dbd894",
+      "git_blob_sha1": "b1c290850bf92ed4eed0a25e788a6b7403c88dcc"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/PUBLIC_SNAPSHOT_MANIFEST.json",
+      "bytes": 25777,
+      "sha256": "98723d558cac2178d1352751bd89f4e54d423239670eba82dde3c56e38b67e68",
+      "git_blob_sha1": "94468ed90e40f644a1831f9cb35fd5f7caff18d6"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/add_mandala_ui.py",
+      "bytes": 10936,
+      "sha256": "231ebadf9db4c62b30cde507e6b1e55c11e12bdf56622285e04ff34ac66ec6bd",
+      "git_blob_sha1": "665e734ee74564caf1a518db698bbd2c5dfb65c8"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/ai-mandala-new-doc.json",
+      "bytes": 24719,
+      "sha256": "feb773f0a41ad47eeabc4092a98ef5a42172a915d4c00382828140370c259850",
+      "git_blob_sha1": "6119530dcef8a6204fd9a8f7a9192e475cea18f0"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/ai-rosette-state.json",
+      "bytes": 212699,
+      "sha256": "11ec28c26c223e223c182557b2bc460464070a1afcc650442f6a4b2806966475",
+      "git_blob_sha1": "c1378dbfb4c3e8705c4b798d2b39731f69db79b0"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/ai-source-preview.png",
+      "bytes": 18457,
+      "sha256": "0ef01974ac05833f0db91704de1532066da611cf1c962d4b703ef57566103bf1",
+      "git_blob_sha1": "862e81b9e2c76a8b2b818d3c123114f7361b60eb"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/ANLEITUNG-0.4.2.txt",
+      "bytes": 4012,
+      "sha256": "d8eb49eb0171c7ca3e77ebfca4e8f400a694700a75a2aca5ed0c1a48a64381a5",
+      "git_blob_sha1": "c7d271dbe332b78e1452e96c6297b2d95597b326"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/ANLEITUNG-0.5.txt",
+      "bytes": 5853,
+      "sha256": "51a735aa4f9c714003aae2e7e0c1b47e4ca4edb177f8b993469db2dd294d0868",
+      "git_blob_sha1": "1abac9a152bcb5c7c9070e2dcb5a003eb239cb93"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/ANLEITUNG.txt",
+      "bytes": 6760,
+      "sha256": "274377425ef8e9835f22c0f014f36cbe17186f8fa69f5300a19e047d98fbd723",
+      "git_blob_sha1": "239129d2415622f8c860f071b97302aa50dad549"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/app/legacy.py",
+      "bytes": 14820,
+      "sha256": "da7fbe80a6cc4c8f7043055fefb8a83d9b30ddec99f315d52ed8953a79885123",
+      "git_blob_sha1": "b7f7dc43bf9625e15c33afba92f4507963264117"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/app/mandala.py",
+      "bytes": 7769,
+      "sha256": "c55cee26ce68f71ea7d3881369979e029499f30be6c6bc91e465732faf40af21",
+      "git_blob_sha1": "9c724c94f11339821077be950f9dd93d19120b38"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/app/test_engine.py",
+      "bytes": 6308,
+      "sha256": "d68eb0fe6fcaa714289bc8327e6c8c65ed6ca3103c6eec1963b3851aadc8bb9a",
+      "git_blob_sha1": "6c8e78bfed1a8c564747f8c4917e925917ee6fe3"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/app/test_mandala.py",
+      "bytes": 5391,
+      "sha256": "0d3e96964e374314a6bd9fb9dc72ff8abb7ce5156e9414335d3e634640557f6f",
+      "git_blob_sha1": "25c647fb7f259f78efb1eb29fb9344bd953b56df"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/app/test_workflow.py",
+      "bytes": 7087,
+      "sha256": "692c979444d1c0a95f580077ad3df755ce2e69003e3b4911bdefbdba6fd6998d",
+      "git_blob_sha1": "dd2f142b108d88e03b877ff81288147cffdad14d"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/app/vc_workflow.py",
+      "bytes": 9563,
+      "sha256": "488e5bbbe8f8d172386a0d8c0b96231fffc4fa3311a22a4cda877b2cba756a9f",
+      "git_blob_sha1": "7d243577fb883076a4b871d0c4499c1202e94b9b"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/app/vectorcraft_experiment.py",
+      "bytes": 26662,
+      "sha256": "4676c525d89d5060f524b6ddf1e3494c9fa3e62dd27c8e52bcfb0457821003ab",
+      "git_blob_sha1": "0b1f42f0df62a2cc958187254e17f2c81ae61dd3"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/baseline/vectorcraft_experiment/README.txt",
+      "bytes": 1425,
+      "sha256": "35a216d699d7279c0834cf65609889a25ccd6df5b715f36f95edb1f3686ecd0d",
+      "git_blob_sha1": "c2a82bad5ad9bbc9d9bfa669e08aa0ce67ea7a55"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/baseline/vectorcraft_experiment/vectorcraft_experiment.py",
+      "bytes": 14346,
+      "sha256": "50047c4b43edb42092fcc0e9aa6e3d0220a64875d3ba426f4bfb9c29c04544cf",
+      "git_blob_sha1": "5983f5148c3aad0d9a663c8a574a97ebadec1a54"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/check_compact.py",
+      "bytes": 850,
+      "sha256": "18e147de06a5fcf6d81e2654b97132abb11eb9864113e590150d148682de75a2",
+      "git_blob_sha1": "ed0b2db490bb2c2664bfea9517260a35b83e716f"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/check_live_ui.py",
+      "bytes": 2345,
+      "sha256": "032ee843edc392a5192578429fd098f404593d6b48eedab7f527452a02571bbd",
+      "git_blob_sha1": "74878192eae82c30af7e4de9aa3a2beda96594b4"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/color_definitions.py",
+      "bytes": 2920,
+      "sha256": "6dc932c8c4636a7d601eb655e6b541fe50821287837fdb059a66488be3bf6dd6",
+      "git_blob_sha1": "260aa07c0ce5948812825e4d24ec9c3e1b59c0d5"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/color_liniara.py",
+      "bytes": 4401,
+      "sha256": "34fe97478e12b6e024a7d52005a97f0a0552aa0288efe41d67ba593ce40d8aaa",
+      "git_blob_sha1": "07634f6ac0a8773f8100cb527ffff87650e3fab8"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/commands.json",
+      "bytes": 373780,
+      "sha256": "42bbb9315a093e0d454336632f5f453b8e3ed375178b533241916b2c2dc2e780",
+      "git_blob_sha1": "ae0ce89cdb2bc2b554d52d2b4cef5712f96aed43"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/compact_ui.py",
+      "bytes": 4144,
+      "sha256": "f417e76baf3d7e2fd63fe7f3f73adda4aa5df4c1bb1d9486bc961d43470ab6b7",
+      "git_blob_sha1": "6561700430282ce1b16fe194a66e4b49ecb0807b"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/construct_rosette.py",
+      "bytes": 3373,
+      "sha256": "cd90b093b609ec042397b3a73e1823664d931c7c983459d8efdee0c9c2ec99cc",
+      "git_blob_sha1": "bb45b9bd7ffdcbf275e1288f76533f6250ab6cdb"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/create_aurelia.py",
+      "bytes": 5631,
+      "sha256": "bd2013cc4b96b08a44ac573fbd80445609d304d0b6ed7923f980f173c2d367fe",
+      "git_blob_sha1": "acbf6b966535444b479c6b8941fc7c5f6d83ce95"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/create_liniara.py",
+      "bytes": 7818,
+      "sha256": "0d41a0d8dfd583b0125d829c20ebdfc983916bbaad4d4f62b06c6f0e38dbbcc0",
+      "git_blob_sha1": "4e8d379416af42a7e4cd009697463b9130db47cb"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/engine-test.json",
+      "bytes": 249836,
+      "sha256": "cf5dd5369678a2d84e6215922869479880190a1e96cde994c40eb4f2f86fb444",
+      "git_blob_sha1": "1d0db33250588920948dd4d84289e8306a15db09"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/isolated-profile/logs/vectorcraft.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/isolated-profile/ui.json",
+      "bytes": 9402,
+      "sha256": "e925d32c10fc88f40c31a850471b9abf761c70f741906991c9ffe4ec7eb23cc9",
+      "git_blob_sha1": "955c7b1b770e76474001a807852350189d51cb89"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/liniara-before-color.json",
+      "bytes": 470498,
+      "sha256": "eeaaf5cb833d0ffd875b50958a748aad2fb2fad5a3b048eca2b67b55213d8f7a",
+      "git_blob_sha1": "1ca86f16687902adf09d1c765d4527aeffa05e5b"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/liniara-symbol-test.json",
+      "bytes": 2029,
+      "sha256": "ba0b523e97536c5f3b75906ddddfecce62903b1d841568ed116fccd7c6839515",
+      "git_blob_sha1": "7f988fc7d5234905ff4233b7646a3b166585e315"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/liniara-unknown-test.vectorcraft",
+      "bytes": 461851,
+      "sha256": "b8c09077abbfa52132412d96c034cc02d9b4c107135f2e361da4bb82d8a253cc",
+      "git_blob_sha1": "151923fac828c663c87f85bf5605f5504195ba15"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/live-before-ai-mandala.json",
+      "bytes": 52485,
+      "sha256": "c411879b769af1e67b24c99c4faea28ca88b9afef5066bfbbcd560937c516dff",
+      "git_blob_sha1": "f247ddda6fac25b5fd5a4b55ecfe2ebb54e3d338"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/mandala-engine-test.json",
+      "bytes": 71707,
+      "sha256": "3442c56c95f042898bf3ab95d0f11b3fda3030dcbe00cc772a3eba00eadc2d6c",
+      "git_blob_sha1": "c0f6dae58bd8316d3be991c01d4c0134d3d8f3d9"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/package_compact.py",
+      "bytes": 1786,
+      "sha256": "16f928bec9a924ce962a3795b91ab173aef36046d1c554718bceab6dd9ccf5ac",
+      "git_blob_sha1": "643af6e8c5d088417e6d69b23ffd5040d27fb3e3"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/package_mandala.py",
+      "bytes": 3499,
+      "sha256": "3d85609070db86516508f77e13a84f3f0489de38d378f950461d8faec7cd2d95",
+      "git_blob_sha1": "e47f53e5c37726af711493f19ee7bb630a313901"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/package_simple.py",
+      "bytes": 1942,
+      "sha256": "da2ebba03feb8411ce7454cec938ce6c4da1db272c01c3259f592756918bccc5",
+      "git_blob_sha1": "a7341be8538617c6ea82abf7ae75f786a1899a63"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/probe_mcp.py",
+      "bytes": 619,
+      "sha256": "c13d8b90d7e379cd52995c2fa435945f80df6a9cf786b04ee09e7b3f5e486766",
+      "git_blob_sha1": "5ddba30c1fb6447d1b8f822fa16c14a78025f9d3"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/probe_symbol_sizes.py",
+      "bytes": 579,
+      "sha256": "42708e6a71f7c43373e7f1aeb4d5575887430a725be30b4b43a5d84932086c4e",
+      "git_blob_sha1": "e8e5fe869c30ab20f401bd1280a6f6e9257f09ad"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/rebuild_reference.py",
+      "bytes": 5641,
+      "sha256": "f2a2f74a0f93feb67b2779f6ba88d6edfa072a97e6b59f0edf3c72727c997ceb",
+      "git_blob_sha1": "464715e7a4d5b0fa0196097ce20105699bf61e33"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/reference-reconstruction.json",
+      "bytes": 276,
+      "sha256": "a30b854f50334bc24385cb5ee272dce24aa33c526981d7ea8f8a2da2c9d6787c",
+      "git_blob_sha1": "c52ddc7f89ee91f33e598ca3c4e3c45db8c2b238"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/simplify.py",
+      "bytes": 4830,
+      "sha256": "39a0b2059bb78a48753f5c5855e7a41a1e354003c1d10e0b81a2d0fcaa8b4c4d",
+      "git_blob_sha1": "c58ec8a96117d0abfd3df4fff78e94ec6bd62a44"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/snapshot_before_github.py",
+      "bytes": 2129,
+      "sha256": "199c38fa3063ec9be61986df15a663ffec18eb58ec6853817e88026055da900f",
+      "git_blob_sha1": "536d7da0a7540126c024c72009303b5e7dcc3f26"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/test_liniara.py",
+      "bytes": 1101,
+      "sha256": "5303fe2371e0f7de63d8fd71fe8d7ed726551c0c5880d86fea354fd928ddf905",
+      "git_blob_sha1": "c20fe40e3fe856d14fe379b0497c9e5983c2294a"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/TESTBERICHT.txt",
+      "bytes": 2618,
+      "sha256": "4832386a855c6f69530307499a78df0bb8be3c73d487459f0b4c5b0292e2c776",
+      "git_blob_sha1": "38d404af596cc967c96f74697d8fa84705350e39"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/VectorCraft-Symbol-Experiment-0.4.1.spec",
+      "bytes": 862,
+      "sha256": "be698de8a8041dea51b1a065d17e110504456d9bf47f9af3427e2662fa971be1",
+      "git_blob_sha1": "2102a271ab8b1a5216c82acb92648aaccebf4604"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/VectorCraft-Symbol-Experiment-0.4.2.spec",
+      "bytes": 862,
+      "sha256": "af548fd2ce67e0244def2f1b06e4601a830d9f9438e2188b22ceed3b310e1fc8",
+      "git_blob_sha1": "d81d0f896d2f6b63a85d9807e84146068b0bad8e"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/VectorCraft-Symbol-Experiment-0.4.spec",
+      "bytes": 858,
+      "sha256": "a84c2a5d40f31e7a00d9be2d662176f93563fb91771acc50c2a935f414fffc45",
+      "git_blob_sha1": "fcdaf2df47c937d1abc6634491eca3b074a917a0"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/session/VectorCraft-Symbol-Experiment-0.5.spec",
+      "bytes": 858,
+      "sha256": "5b413e6484e41ac64db78ed61c815a2ad41748bbf3a385c0a2d0a4cdd75a0c0d",
+      "git_blob_sha1": "0946d81fc3c3bd249b311969dec74dc2d07851e2"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4/ANLEITUNG.txt",
+      "bytes": 6760,
+      "sha256": "274377425ef8e9835f22c0f014f36cbe17186f8fa69f5300a19e047d98fbd723",
+      "git_blob_sha1": "239129d2415622f8c860f071b97302aa50dad549"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4/engine-test.json",
+      "bytes": 249554,
+      "sha256": "12ba87cce81de303d1ee1ceebab8e1d223425db96d53a2f301519ba6676b481f",
+      "git_blob_sha1": "330287ad659b5955f82608c4ef752905efc01b03"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4/PYTHON-LICENSE.txt",
+      "bytes": 25066,
+      "sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a",
+      "git_blob_sha1": "a76e7e9252ac73b9c98647b15fa1fe6ebd18973e"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4/source/legacy.py",
+      "bytes": 14820,
+      "sha256": "da7fbe80a6cc4c8f7043055fefb8a83d9b30ddec99f315d52ed8953a79885123",
+      "git_blob_sha1": "b7f7dc43bf9625e15c33afba92f4507963264117"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4/source/test_engine.py",
+      "bytes": 3257,
+      "sha256": "2f841f44a097b6f3489e860a7e60a1122028959e7c3d7c0cf160050b70c2223e",
+      "git_blob_sha1": "8edf27048a3e1b846b7637deacdd502030d81b37"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4/source/test_workflow.py",
+      "bytes": 5483,
+      "sha256": "4b8f87a7a2bf34462801b58f2a448f0791df58f9a779a56b1c199d8a8832aa18",
+      "git_blob_sha1": "33ac2b70ed11ce6a8eec8020be1f28aff540c4e0"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4/source/vc_workflow.py",
+      "bytes": 7342,
+      "sha256": "510f41d172f8d8dcc311366afc13864390d27f88287f26a222b533b64ea0d631",
+      "git_blob_sha1": "58370ebd5a6f784612ce15d644632e674f0c5fd8"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4/source/vectorcraft_experiment.py",
+      "bytes": 12975,
+      "sha256": "a4c18a9edf3cb06049fffc2c77d8da0dc7abe2cff08e5f2f344ef5e4074e803a",
+      "git_blob_sha1": "9d328a424bf27910c4557aa42d796f1adc219880"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4/TESTBERICHT.txt",
+      "bytes": 2618,
+      "sha256": "4832386a855c6f69530307499a78df0bb8be3c73d487459f0b4c5b0292e2c776",
+      "git_blob_sha1": "38d404af596cc967c96f74697d8fa84705350e39"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/ANLEITUNG.txt",
+      "bytes": 6760,
+      "sha256": "274377425ef8e9835f22c0f014f36cbe17186f8fa69f5300a19e047d98fbd723",
+      "git_blob_sha1": "239129d2415622f8c860f071b97302aa50dad549"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/engine-test.json",
+      "bytes": 249554,
+      "sha256": "12ba87cce81de303d1ee1ceebab8e1d223425db96d53a2f301519ba6676b481f",
+      "git_blob_sha1": "330287ad659b5955f82608c4ef752905efc01b03"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/PYTHON-LICENSE.txt",
+      "bytes": 25066,
+      "sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a",
+      "git_blob_sha1": "a76e7e9252ac73b9c98647b15fa1fe6ebd18973e"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/source/legacy.py",
+      "bytes": 14820,
+      "sha256": "da7fbe80a6cc4c8f7043055fefb8a83d9b30ddec99f315d52ed8953a79885123",
+      "git_blob_sha1": "b7f7dc43bf9625e15c33afba92f4507963264117"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/source/test_engine.py",
+      "bytes": 3257,
+      "sha256": "2f841f44a097b6f3489e860a7e60a1122028959e7c3d7c0cf160050b70c2223e",
+      "git_blob_sha1": "8edf27048a3e1b846b7637deacdd502030d81b37"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/source/test_workflow.py",
+      "bytes": 5483,
+      "sha256": "4b8f87a7a2bf34462801b58f2a448f0791df58f9a779a56b1c199d8a8832aa18",
+      "git_blob_sha1": "33ac2b70ed11ce6a8eec8020be1f28aff540c4e0"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/source/vc_workflow.py",
+      "bytes": 7342,
+      "sha256": "510f41d172f8d8dcc311366afc13864390d27f88287f26a222b533b64ea0d631",
+      "git_blob_sha1": "58370ebd5a6f784612ce15d644632e674f0c5fd8"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/source/vectorcraft_experiment.py",
+      "bytes": 12975,
+      "sha256": "a4c18a9edf3cb06049fffc2c77d8da0dc7abe2cff08e5f2f344ef5e4074e803a",
+      "git_blob_sha1": "9d328a424bf27910c4557aa42d796f1adc219880"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4-Windows-x64/VectorCraft-Symbol-Experiment-0.4/TESTBERICHT.txt",
+      "bytes": 2618,
+      "sha256": "4832386a855c6f69530307499a78df0bb8be3c73d487459f0b4c5b0292e2c776",
+      "git_blob_sha1": "38d404af596cc967c96f74697d8fa84705350e39"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.1/ANLEITUNG.txt",
+      "bytes": 7181,
+      "sha256": "b737cfd9a0d3a67732634d09742381bbca1001e5bd4ed08cf9c4a80f104786d5",
+      "git_blob_sha1": "dfcea4c3bc41d29d19e8062fc610ff205ca931f1"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.1/engine-test.json",
+      "bytes": 249554,
+      "sha256": "12ba87cce81de303d1ee1ceebab8e1d223425db96d53a2f301519ba6676b481f",
+      "git_blob_sha1": "330287ad659b5955f82608c4ef752905efc01b03"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.1/PYTHON-LICENSE.txt",
+      "bytes": 25066,
+      "sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a",
+      "git_blob_sha1": "a76e7e9252ac73b9c98647b15fa1fe6ebd18973e"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.1/source/legacy.py",
+      "bytes": 14820,
+      "sha256": "da7fbe80a6cc4c8f7043055fefb8a83d9b30ddec99f315d52ed8953a79885123",
+      "git_blob_sha1": "b7f7dc43bf9625e15c33afba92f4507963264117"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.1/source/test_engine.py",
+      "bytes": 3257,
+      "sha256": "2f841f44a097b6f3489e860a7e60a1122028959e7c3d7c0cf160050b70c2223e",
+      "git_blob_sha1": "8edf27048a3e1b846b7637deacdd502030d81b37"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.1/source/test_workflow.py",
+      "bytes": 5483,
+      "sha256": "4b8f87a7a2bf34462801b58f2a448f0791df58f9a779a56b1c199d8a8832aa18",
+      "git_blob_sha1": "33ac2b70ed11ce6a8eec8020be1f28aff540c4e0"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.1/source/vc_workflow.py",
+      "bytes": 7342,
+      "sha256": "510f41d172f8d8dcc311366afc13864390d27f88287f26a222b533b64ea0d631",
+      "git_blob_sha1": "58370ebd5a6f784612ce15d644632e674f0c5fd8"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.1/source/vectorcraft_experiment.py",
+      "bytes": 15143,
+      "sha256": "9ef8e1e794737faa14eb3e87055c797bc4cc3163f7934f998be56d019956c3a3",
+      "git_blob_sha1": "8dc0da812c3ef4f637c15b8cbc7e08651e9b3eb2"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.1/TESTBERICHT.txt",
+      "bytes": 2954,
+      "sha256": "49cd846c6cee0471e2b10ebbe9174847cbf4d72613d200e2ea735caf883043bf",
+      "git_blob_sha1": "c1f8528100ffcec3eaac83ad99cb0ff3fab09ae3"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.2/ANLEITUNG.txt",
+      "bytes": 4012,
+      "sha256": "d8eb49eb0171c7ca3e77ebfca4e8f400a694700a75a2aca5ed0c1a48a64381a5",
+      "git_blob_sha1": "c7d271dbe332b78e1452e96c6297b2d95597b326"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.2/engine-test.json",
+      "bytes": 249836,
+      "sha256": "82857c618feabaaee7fdbc7ef53c3f4ecb21a1eb750be6e3c19dc45842d7c4c5",
+      "git_blob_sha1": "d70ceb68f4db0d8b1d9dadb724e0024b7696bec0"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.2/PYTHON-LICENSE.txt",
+      "bytes": 25066,
+      "sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a",
+      "git_blob_sha1": "a76e7e9252ac73b9c98647b15fa1fe6ebd18973e"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.2/source/legacy.py",
+      "bytes": 14820,
+      "sha256": "da7fbe80a6cc4c8f7043055fefb8a83d9b30ddec99f315d52ed8953a79885123",
+      "git_blob_sha1": "b7f7dc43bf9625e15c33afba92f4507963264117"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.2/source/test_engine.py",
+      "bytes": 3488,
+      "sha256": "7f8cc58ff5488c5ab0eaf3704220ed1595a38ee831998098588b356e1b785211",
+      "git_blob_sha1": "3eaf09e2092913a302c2be6ab5750dd0668f6c5d"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.2/source/test_workflow.py",
+      "bytes": 7087,
+      "sha256": "692c979444d1c0a95f580077ad3df755ce2e69003e3b4911bdefbdba6fd6998d",
+      "git_blob_sha1": "dd2f142b108d88e03b877ff81288147cffdad14d"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.2/source/vc_workflow.py",
+      "bytes": 9563,
+      "sha256": "488e5bbbe8f8d172386a0d8c0b96231fffc4fa3311a22a4cda877b2cba756a9f",
+      "git_blob_sha1": "7d243577fb883076a4b871d0c4499c1202e94b9b"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.2/source/vectorcraft_experiment.py",
+      "bytes": 16626,
+      "sha256": "f43b66bb7f228b7db636ffd4ff135c299919e916f2fab2a16401ca1612176e2b",
+      "git_blob_sha1": "9e185309a5cb91d1cfdb34509f3947f449d86cbc"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.4.2/TESTBERICHT.txt",
+      "bytes": 999,
+      "sha256": "fcbf8c3d596d4ac2436c1c9120b4d4d8aaba3e3bfe69f585e2258c09c1eda6fd",
+      "git_blob_sha1": "ec56b3372773702cb1d683aed5edb93bf31ba7af"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.5/ANLEITUNG.txt",
+      "bytes": 5853,
+      "sha256": "51a735aa4f9c714003aae2e7e0c1b47e4ca4edb177f8b993469db2dd294d0868",
+      "git_blob_sha1": "1abac9a152bcb5c7c9070e2dcb5a003eb239cb93"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.5/engine-test.json",
+      "bytes": 249836,
+      "sha256": "cf5dd5369678a2d84e6215922869479880190a1e96cde994c40eb4f2f86fb444",
+      "git_blob_sha1": "1d0db33250588920948dd4d84289e8306a15db09"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.5/mandala-engine-test.json",
+      "bytes": 71707,
+      "sha256": "3442c56c95f042898bf3ab95d0f11b3fda3030dcbe00cc772a3eba00eadc2d6c",
+      "git_blob_sha1": "c0f6dae58bd8316d3be991c01d4c0134d3d8f3d9"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.5/PYTHON-LICENSE.txt",
+      "bytes": 25066,
+      "sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a",
+      "git_blob_sha1": "a76e7e9252ac73b9c98647b15fa1fe6ebd18973e"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.5/source/check_compact.py",
+      "bytes": 913,
+      "sha256": "600a57d289a12e91960b4e581fad47761b8bc6ffd2ba10d20e69d4ae3c204ff5",
+      "git_blob_sha1": "c24be24e8f7a76d8b18cdabeff8476310dfa4470"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.5/source/check_live_ui.py",
+      "bytes": 2448,
+      "sha256": "d5e5f279b149b2f0a5f1c26457f75b6699f778d9c47005df2f376ce4b551acd8",
+      "git_blob_sha1": "35f66fc7833b5961018275d40499970660578d37"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.5/source/legacy.py",
+      "bytes": 14820,
+      "sha256": "da7fbe80a6cc4c8f7043055fefb8a83d9b30ddec99f315d52ed8953a79885123",
+      "git_blob_sha1": "b7f7dc43bf9625e15c33afba92f4507963264117"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.5/source/mandala.py",
+      "bytes": 7769,
+      "sha256": "c55cee26ce68f71ea7d3881369979e029499f30be6c6bc91e465732faf40af21",
+      "git_blob_sha1": "9c724c94f11339821077be950f9dd93d19120b38"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.5/source/test_engine.py",
+      "bytes": 6308,
+      "sha256": "d68eb0fe6fcaa714289bc8327e6c8c65ed6ca3103c6eec1963b3851aadc8bb9a",
+      "git_blob_sha1": "6c8e78bfed1a8c564747f8c4917e925917ee6fe3"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.5/source/test_mandala.py",
+      "bytes": 5391,
+      "sha256": "0d3e96964e374314a6bd9fb9dc72ff8abb7ce5156e9414335d3e634640557f6f",
+      "git_blob_sha1": "25c647fb7f259f78efb1eb29fb9344bd953b56df"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.5/source/test_workflow.py",
+      "bytes": 7087,
+      "sha256": "692c979444d1c0a95f580077ad3df755ce2e69003e3b4911bdefbdba6fd6998d",
+      "git_blob_sha1": "dd2f142b108d88e03b877ff81288147cffdad14d"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.5/source/vc_workflow.py",
+      "bytes": 9563,
+      "sha256": "488e5bbbe8f8d172386a0d8c0b96231fffc4fa3311a22a4cda877b2cba756a9f",
+      "git_blob_sha1": "7d243577fb883076a4b871d0c4499c1202e94b9b"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.5/source/vectorcraft_experiment.py",
+      "bytes": 26662,
+      "sha256": "4676c525d89d5060f524b6ddf1e3494c9fa3e62dd27c8e52bcfb0457821003ab",
+      "git_blob_sha1": "0b1f42f0df62a2cc958187254e17f2c81ae61dd3"
+    },
+    {
+      "path": "projects/chatgpt-work/archive/2026-10-21/versions/VectorCraft-Symbol-Experiment-0.5/TESTBERICHT.txt",
+      "bytes": 2094,
+      "sha256": "02dec4ae58e006959f889b464222363acc43bf7f5fa0698a7731999a0613f392",
+      "git_blob_sha1": "ff94d5edec3974631fbd7f29c2130919f703b5fd"
+    },
+    {
+      "path": "projects/chatgpt-work/artwork/KI-Mandala-Aurelia.png",
+      "bytes": 633843,
+      "sha256": "765f103331102f5f07e091653cc68234f2c4b3598fa0ae7b14b5eb095720f289",
+      "git_blob_sha1": "5a4b9db88b915da9b8a26c6af2e47e0bbbb0c780"
+    },
+    {
+      "path": "projects/chatgpt-work/artwork/KI-Mandala-Aurelia.svg",
+      "bytes": 402490,
+      "sha256": "3503f098a1ffa26c93db31f9e5131145ffc0fde68b2cf8a720fbb1339a7b6fa6",
+      "git_blob_sha1": "8a6e49038095efeaa5c0babaac653c6fc4928873"
+    },
+    {
+      "path": "projects/chatgpt-work/artwork/KI-Mandala-Aurelia.vectorcraft",
+      "bytes": 1384413,
+      "sha256": "87de981b7b9c9d7ea934a3e23ba7d3e19597c40087e541d5a642a47c6202607c",
+      "git_blob_sha1": "d4dd7fc4d4a13b72303e3ab6a867496a55a3e564"
+    },
+    {
+      "path": "projects/chatgpt-work/artwork/KI-Mandala-Liniara-Farben.png",
+      "bytes": 1275678,
+      "sha256": "44999eba526a494204458c75f76a2f116bcae56d9d48d184372cbe91a0ffa2cd",
+      "git_blob_sha1": "14a9bb2b3c3d262d647b418b52999666aa0ddfaf"
+    },
+    {
+      "path": "projects/chatgpt-work/artwork/KI-Mandala-Liniara-Farben.svg",
+      "bytes": 491939,
+      "sha256": "bcd7e673f22cd550c93be27294926491946a485b483e170f776a7cc5758fcefa",
+      "git_blob_sha1": "30f03428cb95eaaab92559ff689e65790b7c1805"
+    },
+    {
+      "path": "projects/chatgpt-work/artwork/KI-Mandala-Liniara-Farben.vectorcraft",
+      "bytes": 1742441,
+      "sha256": "1d14ba8c44daca5da3596ef80da618b964755295818b8fdcbe88e5bb0777d2bd",
+      "git_blob_sha1": "af1d4ca95f52364c8ced6030522b2123b6bc1501"
+    },
+    {
+      "path": "projects/chatgpt-work/artwork/KI-Mandala-Liniara.png",
+      "bytes": 1105257,
+      "sha256": "f980676e43ec4418d7a3a8a671283f3defd323e32450f9730a50bf22dcff795a",
+      "git_blob_sha1": "e82fb55b43c194b0e40685f0b51fb42ea3a7b378"
+    },
+    {
+      "path": "projects/chatgpt-work/artwork/KI-Mandala-Liniara.svg",
+      "bytes": 491941,
+      "sha256": "3efe81e19e63d27cecec8e36c5d728a40a78566376f44cd77feb7c50320a93d0",
+      "git_blob_sha1": "14f045166044fa08ac97c74bf62d01d08e66b3b8"
+    },
+    {
+      "path": "projects/chatgpt-work/artwork/KI-Mandala-Liniara.vectorcraft",
+      "bytes": 1742497,
+      "sha256": "a78e0f9f2c7fca2c393b4d00b2742d4feeefd21bedf9a8ba304932458f818142",
+      "git_blob_sha1": "6f73be31c2f66c94b9d1a83502526187bb404b70"
+    },
+    {
+      "path": "projects/chatgpt-work/artwork/KI-Mandala-Sonnenrosette.png",
+      "bytes": 53761,
+      "sha256": "ba36b4078c2001064ec51665c3ebdec5321ef5f2b0622c88e6b7b3d8f6ae1581",
+      "git_blob_sha1": "1719308dce2732ea8cd71b72aa0274b03c3b42e7"
+    },
+    {
+      "path": "projects/chatgpt-work/artwork/KI-Mandala-Sonnenrosette.svg",
+      "bytes": 16424,
+      "sha256": "3679220c090c476f56a6b05c325f138ff6c22d27865bd7f9f237f76650a10fef",
+      "git_blob_sha1": "6f311d9c0ea3ca78ea2daedd3fa248424e42cc83"
+    },
+    {
+      "path": "projects/chatgpt-work/artwork/KI-Mandala-Sonnenrosette.vectorcraft",
+      "bytes": 203198,
+      "sha256": "df93767694d4a7a813cb3798b17510bd32a4efc5a578b70cb36be82ed6ed4781",
+      "git_blob_sha1": "827002f9aa63bdda90bc9037fc68b5e61954f109"
+    },
+    {
+      "path": "projects/chatgpt-work/constructions/color_definitions.py",
+      "bytes": 2920,
+      "sha256": "6dc932c8c4636a7d601eb655e6b541fe50821287837fdb059a66488be3bf6dd6",
+      "git_blob_sha1": "260aa07c0ce5948812825e4d24ec9c3e1b59c0d5"
+    },
+    {
+      "path": "projects/chatgpt-work/constructions/construct_rosette.py",
+      "bytes": 3373,
+      "sha256": "cd90b093b609ec042397b3a73e1823664d931c7c983459d8efdee0c9c2ec99cc",
+      "git_blob_sha1": "bb45b9bd7ffdcbf275e1288f76533f6250ab6cdb"
+    },
+    {
+      "path": "projects/chatgpt-work/constructions/create_aurelia.py",
+      "bytes": 5631,
+      "sha256": "bd2013cc4b96b08a44ac573fbd80445609d304d0b6ed7923f980f173c2d367fe",
+      "git_blob_sha1": "acbf6b966535444b479c6b8941fc7c5f6d83ce95"
+    },
+    {
+      "path": "projects/chatgpt-work/constructions/create_liniara.py",
+      "bytes": 7818,
+      "sha256": "0d41a0d8dfd583b0125d829c20ebdfc983916bbaad4d4f62b06c6f0e38dbbcc0",
+      "git_blob_sha1": "4e8d379416af42a7e4cd009697463b9130db47cb"
+    },
+    {
+      "path": "projects/chatgpt-work/constructions/rebuild_reference.py",
+      "bytes": 5641,
+      "sha256": "f2a2f74a0f93feb67b2779f6ba88d6edfa072a97e6b59f0edf3c72727c997ceb",
+      "git_blob_sha1": "464715e7a4d5b0fa0196097ce20105699bf61e33"
+    },
+    {
+      "path": "projects/chatgpt-work/constructions/test_liniara.py",
+      "bytes": 1101,
+      "sha256": "5303fe2371e0f7de63d8fd71fe8d7ed726551c0c5880d86fea354fd928ddf905",
+      "git_blob_sha1": "c20fe40e3fe856d14fe379b0497c9e5983c2294a"
+    },
+    {
+      "path": "projects/chatgpt-work/control-app/legacy.py",
+      "bytes": 14820,
+      "sha256": "da7fbe80a6cc4c8f7043055fefb8a83d9b30ddec99f315d52ed8953a79885123",
+      "git_blob_sha1": "b7f7dc43bf9625e15c33afba92f4507963264117"
+    },
+    {
+      "path": "projects/chatgpt-work/control-app/mandala.py",
+      "bytes": 7769,
+      "sha256": "c55cee26ce68f71ea7d3881369979e029499f30be6c6bc91e465732faf40af21",
+      "git_blob_sha1": "9c724c94f11339821077be950f9dd93d19120b38"
+    },
+    {
+      "path": "projects/chatgpt-work/control-app/test_engine.py",
+      "bytes": 6308,
+      "sha256": "d68eb0fe6fcaa714289bc8327e6c8c65ed6ca3103c6eec1963b3851aadc8bb9a",
+      "git_blob_sha1": "6c8e78bfed1a8c564747f8c4917e925917ee6fe3"
+    },
+    {
+      "path": "projects/chatgpt-work/control-app/test_mandala.py",
+      "bytes": 5391,
+      "sha256": "0d3e96964e374314a6bd9fb9dc72ff8abb7ce5156e9414335d3e634640557f6f",
+      "git_blob_sha1": "25c647fb7f259f78efb1eb29fb9344bd953b56df"
+    },
+    {
+      "path": "projects/chatgpt-work/control-app/test_workflow.py",
+      "bytes": 7087,
+      "sha256": "692c979444d1c0a95f580077ad3df755ce2e69003e3b4911bdefbdba6fd6998d",
+      "git_blob_sha1": "dd2f142b108d88e03b877ff81288147cffdad14d"
+    },
+    {
+      "path": "projects/chatgpt-work/control-app/vc_workflow.py",
+      "bytes": 9563,
+      "sha256": "488e5bbbe8f8d172386a0d8c0b96231fffc4fa3311a22a4cda877b2cba756a9f",
+      "git_blob_sha1": "7d243577fb883076a4b871d0c4499c1202e94b9b"
+    },
+    {
+      "path": "projects/chatgpt-work/control-app/vectorcraft_experiment.py",
+      "bytes": 26662,
+      "sha256": "4676c525d89d5060f524b6ddf1e3494c9fa3e62dd27c8e52bcfb0457821003ab",
+      "git_blob_sha1": "0b1f42f0df62a2cc958187254e17f2c81ae61dd3"
+    },
+    {
+      "path": "projects/chatgpt-work/diagnostics/ai-mandala-new-doc.json",
+      "bytes": 24719,
+      "sha256": "feb773f0a41ad47eeabc4092a98ef5a42172a915d4c00382828140370c259850",
+      "git_blob_sha1": "6119530dcef8a6204fd9a8f7a9192e475cea18f0"
+    },
+    {
+      "path": "projects/chatgpt-work/diagnostics/ai-rosette-state.json",
+      "bytes": 212699,
+      "sha256": "11ec28c26c223e223c182557b2bc460464070a1afcc650442f6a4b2806966475",
+      "git_blob_sha1": "c1378dbfb4c3e8705c4b798d2b39731f69db79b0"
+    },
+    {
+      "path": "projects/chatgpt-work/diagnostics/commands.json",
+      "bytes": 373780,
+      "sha256": "42bbb9315a093e0d454336632f5f453b8e3ed375178b533241916b2c2dc2e780",
+      "git_blob_sha1": "ae0ce89cdb2bc2b554d52d2b4cef5712f96aed43"
+    },
+    {
+      "path": "projects/chatgpt-work/diagnostics/engine-test.json",
+      "bytes": 249836,
+      "sha256": "cf5dd5369678a2d84e6215922869479880190a1e96cde994c40eb4f2f86fb444",
+      "git_blob_sha1": "1d0db33250588920948dd4d84289e8306a15db09"
+    },
+    {
+      "path": "projects/chatgpt-work/diagnostics/liniara-before-color.json",
+      "bytes": 470498,
+      "sha256": "eeaaf5cb833d0ffd875b50958a748aad2fb2fad5a3b048eca2b67b55213d8f7a",
+      "git_blob_sha1": "1ca86f16687902adf09d1c765d4527aeffa05e5b"
+    },
+    {
+      "path": "projects/chatgpt-work/diagnostics/liniara-symbol-test.json",
+      "bytes": 2029,
+      "sha256": "ba0b523e97536c5f3b75906ddddfecce62903b1d841568ed116fccd7c6839515",
+      "git_blob_sha1": "7f988fc7d5234905ff4233b7646a3b166585e315"
+    },
+    {
+      "path": "projects/chatgpt-work/diagnostics/live-before-ai-mandala.json",
+      "bytes": 52485,
+      "sha256": "c411879b769af1e67b24c99c4faea28ca88b9afef5066bfbbcd560937c516dff",
+      "git_blob_sha1": "f247ddda6fac25b5fd5a4b55ecfe2ebb54e3d338"
+    },
+    {
+      "path": "projects/chatgpt-work/diagnostics/mandala-engine-test.json",
+      "bytes": 71707,
+      "sha256": "3442c56c95f042898bf3ab95d0f11b3fda3030dcbe00cc772a3eba00eadc2d6c",
+      "git_blob_sha1": "c0f6dae58bd8316d3be991c01d4c0134d3d8f3d9"
+    },
+    {
+      "path": "projects/chatgpt-work/diagnostics/reference-reconstruction.json",
+      "bytes": 276,
+      "sha256": "a30b854f50334bc24385cb5ee272dce24aa33c526981d7ea8f8a2da2c9d6787c",
+      "git_blob_sha1": "c52ddc7f89ee91f33e598ca3c4e3c45db8c2b238"
+    },
+    {
+      "path": "projects/chatgpt-work/diagnostics/VectorCraft-Aenderungen.json",
+      "bytes": 4304,
+      "sha256": "e0e9b3a762b7b1ed269f54e8e8d3e5b0508d6dc4e9371339f78d1e8d8be3c44b",
+      "git_blob_sha1": "04684d6aeb1b062d77c8f128b95c8ebd03d0e39b"
+    },
+    {
+      "path": "projects/chatgpt-work/diagnostics/VectorCraft-Diagnose-0.4.json",
+      "bytes": 1088,
+      "sha256": "7f0ab60fb832504d6d8306766ce223cb972b827d497ec938a6c9321567c75eec",
+      "git_blob_sha1": "f1078293b33d3d13048a9a87f187abe085f534e9"
+    },
+    {
+      "path": "projects/chatgpt-work/docs/ARCHIVE_CHECKS.json",
+      "bytes": 297,
+      "sha256": "8eba6797e61888ec363bbe223d16c8cd0418a9ec0048fa1c1511fd6473a30b65",
+      "git_blob_sha1": "9b9a052eed51568db253b74d7dc5103078bffecf"
+    },
+    {
+      "path": "projects/chatgpt-work/docs/ARTWORK_CATALOG.md",
+      "bytes": 2069,
+      "sha256": "71f47590db9dbf9237f05127ad3fdc001921a1f3bbebb4e225ab74cae49f2052",
+      "git_blob_sha1": "6606198b5549ca1e591ccd33cceb709eef4c8fab"
+    },
+    {
+      "path": "projects/chatgpt-work/docs/BACKUP_SCOPE.md",
+      "bytes": 3569,
+      "sha256": "604967b1f50a160fc8cb583220f25e7a9dccae956a633153465f27f48b437c96",
+      "git_blob_sha1": "34cbbcd53bf6c7d1a650aba423d606eec325a4fc"
+    },
+    {
+      "path": "projects/chatgpt-work/docs/DIRECT_CONTROL.md",
+      "bytes": 5364,
+      "sha256": "7dedc64d9222ea72ae540833c91f0949002b470f154090c2fe14170099f322e8",
+      "git_blob_sha1": "bc35b6f4751231ca252850591745707fe0d536a4"
+    },
+    {
+      "path": "projects/chatgpt-work/docs/NEXT_STEPS.md",
+      "bytes": 1380,
+      "sha256": "7aba7f4a3edc4f6b2d3cf833924f1abc3587ee7be8d097f5d316c8ddde02235a",
+      "git_blob_sha1": "291c73346dd6621c7008d1fc13a3de219fcdd1ab"
+    },
+    {
+      "path": "projects/chatgpt-work/docs/PROVENANCE.md",
+      "bytes": 2233,
+      "sha256": "dbf34b23566bd036648bee17cfa3ada7250e4e9a218fb99296357a06a08de582",
+      "git_blob_sha1": "7c397ca2d9ed6dff36f92f9068aab1a342934842"
+    },
+    {
+      "path": "projects/chatgpt-work/docs/VERIFICATION.md",
+      "bytes": 2582,
+      "sha256": "143e8ccd606aad24d7967446b9a01b81548b478b17d1d5773527cd70e48641ed",
+      "git_blob_sha1": "150b0652967410537871182b8a7bbd897585b373"
+    },
+    {
+      "path": "projects/chatgpt-work/licenses/LICENSE-APACHE",
+      "bytes": 10351,
+      "sha256": "eb3d7b5485466acbd81f2b496f595ab637d2792e268206b27d99e793bdb67549",
+      "git_blob_sha1": "ade750b16ba50a06c955c07a75f5f82bdd3c5331"
+    },
+    {
+      "path": "projects/chatgpt-work/licenses/LICENSE-MIT",
+      "bytes": 1124,
+      "sha256": "35df9e2dc3b04cabb920bd0e3709569f4338f75d7a85548f5b0d3cc7e57af304",
+      "git_blob_sha1": "5dcfee31e2a8027e61324753d96c02956d86f8be"
+    },
+    {
+      "path": "projects/chatgpt-work/licenses/PyInstaller-COPYING.txt",
+      "bytes": 32604,
+      "sha256": "0598064c7d2718e38d7914a7d08343b2fa008e3bea9ebba2aa7a6ffa5900dd64",
+      "git_blob_sha1": "d6caec5ab5778c36bd7e26d8d7a48eba1ac23dee"
+    },
+    {
+      "path": "projects/chatgpt-work/licenses/PYTHON-LICENSE.txt",
+      "bytes": 25066,
+      "sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a",
+      "git_blob_sha1": "a76e7e9252ac73b9c98647b15fa1fe6ebd18973e"
+    },
+    {
+      "path": "projects/chatgpt-work/licenses/Tk-license.terms",
+      "bytes": 2307,
+      "sha256": "0d1e4405f6273f091732764ed89b57066be63ce64869be6c71ea337dc4f2f9b5",
+      "git_blob_sha1": "393162fe6a21e09b0fbadd5945f5105e54dcac40"
+    },
+    {
+      "path": "projects/chatgpt-work/live-capture/CAPTURE_INDEX.json",
+      "bytes": 26643,
+      "sha256": "a3aa4869f595f3f1c886488b700cf9277fdb36dd6a7e165aa67bf65b89483fa6",
+      "git_blob_sha1": "503f0fe4b8dae3b6c71b5bd5f9f69f1c0a79e106"
+    },
+    {
+      "path": "projects/chatgpt-work/live-capture/document-00.vectorcraft",
+      "bytes": 17659,
+      "sha256": "081af861a8395f0a0ea5af9631f7e5c696864c71faecbe0ba622216569c566f7",
+      "git_blob_sha1": "dfe58fa958b9e76d46a3059c8174dd40dfd41934"
+    },
+    {
+      "path": "projects/chatgpt-work/live-capture/document-01.vectorcraft",
+      "bytes": 54040,
+      "sha256": "6cde79daf57292967b78c4efd34664be27a5274f5aff00aa8c08d91efd0f7d47",
+      "git_blob_sha1": "accb1fd8a314592bb98410d59745fb565d0de210"
+    },
+    {
+      "path": "projects/chatgpt-work/live-capture/document-02.vectorcraft",
+      "bytes": 1422843,
+      "sha256": "807d08ec383976849b289912722e1352e496be877bb563163aec90de37be613c",
+      "git_blob_sha1": "194ee357d89f943b25f737b13343893582ccd57f"
+    },
+    {
+      "path": "projects/chatgpt-work/live-capture/document-03.vectorcraft",
+      "bytes": 467522,
+      "sha256": "e22d15da0b8641c0f73751edc90fd01116d8b9a2d341ee86184824b8b46b5c1b",
+      "git_blob_sha1": "f20e93406c158aa2724fd19e4131c1562358c444"
+    },
+    {
+      "path": "projects/chatgpt-work/live-capture/document-04.vectorcraft",
+      "bytes": 467286,
+      "sha256": "b220169ed0bf6d921fb9899f5957c9394e1b0c5a3083a66897810d21563afa6d",
+      "git_blob_sha1": "5eddf62e8d355d5a2abb836f13d67a382fadb561"
+    },
+    {
+      "path": "projects/chatgpt-work/README.md",
+      "bytes": 1688,
+      "sha256": "bca8161dbbc5a65d8f834f31c5ddddafd97e87055872bf5a52f3c90702fac1d0",
+      "git_blob_sha1": "0ef7d84dd8d012192882b735d48a42a6974ab4a7"
+    },
+    {
+      "path": "projects/chatgpt-work/tools/verify_backup.py",
+      "bytes": 1520,
+      "sha256": "9ceada9e58f19cae4bcb9a4ae2b9e829b9f5d18ddf24bf5b129b5b97451438a2",
+      "git_blob_sha1": "c5a8ee71006b5e96214d698338d82a133329bc25"
+    }
+  ]
+}

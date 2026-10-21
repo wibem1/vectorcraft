@@ -1,0 +1,15 @@
+VectorCraft Symbol-Experiment 0.5 – Prüfbericht
+
+24 automatisierte Tests bestanden: 14 bestehende Symbol-/Zustandstests, 10 neue Mandala-Tests. Geprüft wurden neue verknüpfte Kopien, Ersetzen ausschließlich eigener Instanzen, Vorlagenerhalt, manuelle Änderungen, Dokument-/Definitionswechsel, ungültige Werte, veraltete Auswahl nach Erkennung, Timeout ohne Wiederholung, Schreibfehler, unveränderte Einstellungen ohne Befehl und Beenden ohne Dokumentänderung.
+
+Integration mit installierter VectorCraft-Engine in einem separaten headless MCP-Prozess bestanden: Symbol automatisch erkennen, symbol.edit, Farbe ändern, Auswahl wiederherstellen, symbol.update. Danach Mandala mit vier Kopien erstellen und auf sechs Kopien mit anderem Radius und 30 Grad Motivdrehung ändern. Positionen und Transformationsmatrizen numerisch geprüft. Alte Kopien entfernt, beide vorher vorhandenen Instanzen unverändert erhalten. Fehler in einem command.batch rollt die gesamte Änderung zurück. Ein Rückgängig-Schritt stellt die vorherige Mandala-Anordnung wieder her; anschließende Zustandsprüfung erkennt die ungültige Zuordnung.
+
+Berichte: engine-test.json und mandala-engine-test.json. Tabmetadaten liefert im headless Test ein Adapter. Kein bestehendes Benutzer-Dokument verändert.
+
+GUI-Steuerung geprüft: schnelle Änderungen gebündelt; während eines laufenden Aufrufs geänderte Werte gehen nicht verloren; Live ausschalten verhindert weitere automatische Updates; Beenden sendet keine Zeichenbefehle; vor dem Schließen wird eine wartende Aktualisierung storniert.
+
+Alle drei Reiter und sichtbaren Schaltflächen bei 620 x 480 innerhalb des Fensters; Protokoll weiterhin nutzbar. EXE-Starttest erfolgreich (Exitcode 0).
+
+Kein vollständiger manueller Durchlauf der Desktopoberfläche mit Sichtprüfung aller Instanzen. Zustandsprüfung und Befehl sind nicht atomar; während der Ausführung nicht parallel weiterarbeiten. Dokumentidentität kann ohne stabile UUID nicht vollkommen erkannt werden. Details: ANLEITUNG.txt.
+
+Kein Eingriff in das VectorCraft-Repository.

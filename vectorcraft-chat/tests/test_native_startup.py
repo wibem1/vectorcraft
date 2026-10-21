@@ -54,7 +54,7 @@ class NativeStartupTests(unittest.TestCase):
                 self.assertEqual(len(processes),1)
                 reused=connection.ensure_connection(port,base)
                 self.assertFalse(reused['started']);self.assertEqual(len(processes),1)
-                app.control('engine.execute',{'command':'file.new','params':{}},port)
+                self.assertIsInstance(app.control('document.inspect',{'depth':0},port),dict)
                 self.assertTrue(app.mcp_executable())
                 for prompt in ('Konstruiere ein Dreieck','Drehe es um 30 Grad'):
                     gui.entry.insert('1.0',prompt);gui.send()

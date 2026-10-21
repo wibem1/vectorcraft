@@ -108,6 +108,17 @@ def control(method, params=None, port=7979):
     if not resp.get('ok'): raise RuntimeError(resp.get('error','VectorCraft-Befehl fehlgeschlagen'))
     return resp.get('result')
 
+def ensure_document(port):
+    """Create a blank document only after a verified null inspection, never after an error."""
+    document=control('document.inspect',{'depth':0},port)
+    created=document is None
+    if created:
+        control('engine.execute',{'command':'file.new','params':{}},port)
+        document=control('document.inspect',{'depth':0},port)
+    if not isinstance(document,dict) or not isinstance(document.get('layers'),list):
+        raise ConnectionError('VectorCraft hat kein verwendbares Dokument bestätigt.')
+    return created
+
 def api_chat(api_key, model, messages, max_tokens=1400):
     if not api_key.strip():raise ValueError('Kein OpenRouter-Key vorhanden. Bitte erneut eintragen und speichern.')
     payload={'model':model,'messages':messages,'temperature':0.5,'max_tokens':max_tokens,'usage':{'include':True}}
@@ -384,7 +395,7 @@ class App:
                     self.send_button.config(state='normal');self.last_error=''
                     self.status.set('Verbunden · VectorCraft '+('gestartet' if result['started'] else 'bereits geöffnet'))
                     self.write('system','VectorCraft ist verbunden. Du kannst mit der Konstruktion beginnen.')
-                    event('connection_ready',f'port={port}; started={result["started"]}; commands={len(self.command_ids)}')
+                    event('connection_ready',f'port={port}; started={result["started"]}; document_created={result.get("document_created",False)}; commands={len(self.command_ids)}')
                 elif isinstance(payload,tuple) and payload[0]=='chat':
                     _,text,actions,usage=payload;self.write('assistant',text)
                     self.messages.append({'role':'assistant','content':text});save_json(HISTORY,self.messages)
@@ -427,7 +438,10 @@ class App:
         self.active_job='connect';self.status.set('VectorCraft wird gesucht / verbunden …')
         saved_path=self.settings.get('vectorcraft_app')
         def job():
-            try:return ('connected',ensure_connection(port,APP_DIR,saved_path),port)
+            try:
+                result=ensure_connection(port,APP_DIR,saved_path)
+                result['document_created']=ensure_document(port)
+                return ('connected',result,port)
             except MissingApplication as exc:return ('choose_application',str(exc))
         self.task(job)
     def inspect(self):
@@ -506,6 +520,9 @@ class App:
                     target=control('engine.execute',{'command':'document.node','params':{'id':self.last_triangle_id,'summary':True}},port)
                     target_context='Zuletzt erzeugtes Dreieck (frisch geprüft): '+json.dumps(target,ensure_ascii=False)+'\n'
                 context=target_context+'Dokument (gekürzt): '+json.dumps(doc,ensure_ascii=False)[:2500]+'\nVerfügbare Befehle (exakte IDs/Parameter): '+json.dumps(relevant,ensure_ascii=False)[:11000]
+            except OSError as e:
+                self.command_ids=set()
+                raise ConnectionError('VectorCraft-Verbindung unterbrochen; keine kostenpflichtige Modellanfrage gesendet.') from e
             except Exception as e:
                 self.command_ids=set()
                 event('vectorcraft_error',type(e).__name__+': '+str(e)[:300]);context='KEINE Verbindung zu VectorCraft. Keine ausführbaren Aktionen anbieten. Fehler: '+str(e)[:350]

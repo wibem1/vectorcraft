@@ -127,3 +127,25 @@ class WindowsConnectTimeoutTests(unittest.TestCase):
                 with self.assertRaisesRegex(conn.ConnectionFailure,'belegt oder blockiert'):
                     conn.ensure_connection(port,directory)
                 launch.assert_not_called()
+
+
+class DocumentReadinessTests(unittest.TestCase):
+    def test_existing_document_is_preserved(self):
+        import vectorcraft_chat as app
+        with patch.object(app,'control',return_value={'layers':[],'title':'Existing'}) as control:
+            self.assertFalse(app.ensure_document(7979));self.assertEqual(control.call_count,1)
+    def test_new_document_only_after_null(self):
+        import vectorcraft_chat as app
+        with patch.object(app,'control',side_effect=[None,{}, {'layers':[]}]) as control:
+            self.assertTrue(app.ensure_document(7979))
+            self.assertEqual(control.call_args_list[1].args[1]['command'],'file.new')
+    def test_inspection_failure_never_resets_document(self):
+        import vectorcraft_chat as app
+        with patch.object(app,'control',side_effect=ConnectionError('offline')) as control:
+            with self.assertRaises(ConnectionError):app.ensure_document(7979)
+            self.assertEqual(control.call_count,1)
+    def test_unrecognized_document_never_resets(self):
+        import vectorcraft_chat as app
+        with patch.object(app,'control',return_value={}) as control:
+            with self.assertRaises(ConnectionError):app.ensure_document(7979)
+            self.assertEqual(control.call_count,1)

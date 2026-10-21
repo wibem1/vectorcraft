@@ -61,3 +61,11 @@ Begleitend liegt unter `Tools/cost_audit.py` ein **offline** arbeitender Diagnos
 - GitHub Actions `AI cost audit tests`: **erfolgreich** für den Stand dieses Branches.
 
 **Nicht integriert:** Die tatsächliche Python-Chat-Anwendung v0.1.3 ist weiterhin nicht in diesem Repository enthalten. Die Hilfsfunktionen werden von ihr deshalb noch nicht aufgerufen. Eine reale Einsparung, ein funktionierendes Dreieck und die Dokument-Synchronisierung im Chat sind noch nicht nachgewiesen. Der nächste Schritt muss an diesem Client erfolgen, nicht an einem Ersatz ohne Benutzersitzung.
+
+## Lokale Anbindung – Implementierungsschritt 2
+
+`Tools/vectorcraft_local_bridge.py` implementiert den bereits dokumentierten TCP-Kanal auf `127.0.0.1:7979`: begrenzte Antwortgröße und Zeit, `document.inspect` mit flacher Baumtiefe sowie einzelne `engine.execute`-Aufrufe. **Keine** OpenRouter-Kosten, kein gesamter Befehlsbestand, keine ungefragten Screenshots.
+
+Sicherheits-/Interaktionsregel: Ein fehlgeschlagener oder zeitüberschrittener Zeichenaufruf darf **nicht automatisch wiederholt werden**, denn die Engine kann ihn noch abschließen. Der nächste Schritt muss den tatsächlichen Dokumentzustand neu abfragen. Tests in `Tools/test_vectorcraft_local_bridge.py` decken das Protokoll (mit Mockverbindung), eine Dreieck-Operation, Fehlerbehandlung und Loopback-Beschränkung ab; das ist **noch kein realer Installationstest**.
+
+**Der Python-KI-Chat v0.1.3 bleibt der Integrationsblocker.** In den verfügbaren früheren Arbeitsmaterialien liegen Verbindungstests und eine Diagnose, jedoch kein vollständiger Quelltext des tatsächlich gestarteten OpenRouter-Clients vor. Eine kopierte oder erfundene Neuimplementierung darf seine bisherige Funktionalität nicht ohne Vergleich ersetzen.

@@ -6,6 +6,8 @@ on:
     paths:
       - 'Tools/cost_audit.py'
       - 'Tools/test_cost_audit.py'
+      - 'Tools/ai_client_cost_policy.py'
+      - 'Tools/test_ai_client_cost_policy.py'
       - 'docs/AI-COST-ARCHITECTURE.md'
       - '.github/workflows/ai-cost-audit.yml'
   workflow_dispatch:
@@ -17,4 +19,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Test offline diagnostic cost calculations
-        run: python3 -m unittest discover -s Tools -p 'test_cost_audit.py' -v
+        run: python3 -m unittest discover -s Tools -p 'test_*.py' -v

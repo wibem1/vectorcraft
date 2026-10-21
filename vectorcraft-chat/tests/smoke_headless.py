@@ -108,12 +108,16 @@ def main(binary):
         checked=m.tool("inspect_document",{"depth":5})
         if selection_ids(checked)!=[target]:
             raise RuntimeError(f"Selection mismatch: {selection_ids(checked)}; reply={str(selected)[:250]}")
+        geometry_before=m.tool("run_command",{"command":"document.node","params":{"id":target}})
         m.tool("run_command",{"command":"object.rotate","params":{"angle":30}})
+        geometry_after=m.tool("run_command",{"command":"document.node","params":{"id":target}})
+        if geometry_before == geometry_after:
+            raise RuntimeError("Rotation did not change the target object's model")
         rotated=m.tool("inspect_document",{"depth":5})
         if target not in nodes(rotated):
             raise RuntimeError("Target object disappeared after rotation")
-        print("PASS: created one path, selected same ID, rotate command succeeded, object persisted",flush=True)
-        print("LIMIT: geometric angle and rendered appearance not yet asserted",flush=True)
+        print("PASS: path created, ID selected, object model changed after rotation, ID persisted",flush=True)
+        print("LIMIT: exact geometric angle and rendered appearance not yet asserted",flush=True)
     finally:
         m.close()
 

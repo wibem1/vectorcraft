@@ -115,3 +115,5 @@ TODO vor Implementierung und Build geprüft. Start/Verbindung, Instanzwiederverw
 - Update README to describe automatic startup and the console-free Windows source launcher. No release and no manual user test.
 
 - Commit b839127b liegt zusätzlich auf main; die Teständerung bleibt erhalten. Der Anwendungsquellcode ist gegenüber dem erfolgreich getesteten Stand c97651bb unverändert. Visuelle Korrektur muss im zusätzlich gestarteten Lauf geprüft werden.
+
+- Konkrete Screenshot-Nachprüfung: [Run 39666190973](https://github.com/wibem1/vectorcraft/actions/runs/39666190973), Job `119451754906`, Quellstand b839127b; beim letzten Abruf noch Kompilation. Die vollständigen funktionalen Nachweise von c97651bb und die erfolgreiche Plattformmatrix bleiben davon getrennt dokumentiert. Kein Release.

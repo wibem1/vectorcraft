@@ -23,15 +23,36 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install PyInstaller==6.22.3 Pillow
+      - name: Fingerprint exact native source and runner image
+        id: native-source
+        run: python vectorcraft-chat/packaging/engine_cache.py fingerprint
+      - uses: actions/cache/restore@v4
+        id: native-binaries
+        with:
+          path: native-cache
+          key: chat-native-binaries-v1-${{ runner.os }}-${{ runner.arch }}-${{ steps.native-source.outputs.fingerprint }}
       - uses: dtolnay/rust-toolchain@stable
+        if: steps.native-binaries.outputs.cache-hit != 'true'
         with:
           toolchain: '1.95.0'
       - uses: Swatinem/rust-cache@v2
+        if: steps.native-binaries.outputs.cache-hit != 'true'
         with:
           key: native-chat-platform-v1
           cache-on-failure: true
           cache-workspace-crates: true
       - run: cargo build --locked --release -p vectorcraft -p vectorcraft-cli
+        if: steps.native-binaries.outputs.cache-hit != 'true'
+      - name: Record actual compiled binaries before package diagnostics
+        if: steps.native-binaries.outputs.cache-hit != 'true'
+        run: python vectorcraft-chat/packaging/engine_cache.py save
+      - uses: actions/cache/save@v4
+        if: steps.native-binaries.outputs.cache-hit != 'true'
+        with:
+          path: native-cache
+          key: ${{ steps.native-binaries.outputs.cache-primary-key }}
+      - name: Verify exact native binary digests and prepare package
+        run: python vectorcraft-chat/packaging/engine_cache.py restore
       - name: Build and execute frozen app against bundled actual engine
         run: python vectorcraft-chat/packaging/build_candidate.py
       - name: Preserve packaged execution evidence

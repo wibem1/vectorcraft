@@ -203,3 +203,12 @@ Dateiname behandelt. Korrektur: vorhandenes lizenziertes VectorCraft-ICNS unter
 macOS; frühes Bootstrap-Log vor Import der App; Fehlerdiagnose über zusätzliche
 Konsolen-EXE ausschließlich bei fehlgeschlagenem Windowed-Test. Kein Ersatz
 des verpflichtenden Windowed-Erfolgs. Erneuter echter Paketlauf erforderlich.
+
+CI-Laufzeitkorrektur: Fertige native Engine/CLI werden vor der Paketprüfung
+separat gesichert. Der exakte Cache-Key enthält alle Git-Blobs außerhalb von
+Chat/Workflowdefinitionen, Rust 1.95.0, Runner-Architektur und ImageVersion;
+keine unscharfen Restore-Keys. SHA256-Prüfung aller Binaries vor Wiederverwendung.
+Native Änderungen erzwingen Neubuild. Jeder Paketkandidat führt unabhängig vom
+Cache weiterhin die echte native Engine-Suite aus. Damit sollen reine
+Python-Paketkorrekturen nicht erneut vollständige Rust-Links erfordern.
+Grundlage: https://github.com/actions/cache (getrennte restore/save Actions).

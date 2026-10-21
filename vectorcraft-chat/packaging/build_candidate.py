@@ -35,7 +35,7 @@ if sys.platform == 'darwin':
 executable = binaries/('VectorCraftChat'+suffix)
 evidence = repo/'packaged-evidence'
 evidence.mkdir(parents=True, exist_ok=True)
-manifest = {'source_sha': __import__('os').environ.get('GITHUB_SHA'),
+manifest = {'engine_cache_manifest': json.loads((repo/'native-cache/manifest.json').read_text()) if (repo/'native-cache/manifest.json').exists() else None, 'source_sha': __import__('os').environ.get('GITHUB_SHA'),
             'platform': sys.platform, 'release': False, 'sha256': {}}
 for binary in (executable, binaries/('vectorcraft'+suffix), binaries/('vectorcraft-cli'+suffix)):
     manifest['sha256'][binary.name] = hashlib.file_digest(binary.open('rb'), 'sha256').hexdigest()

@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'vectorcraft-chat/tests/smoke_headless.py'
+      - 'vectorcraft-chat/**'
       - '.github/workflows/vectorcraft-chat-headless.yml'
 jobs:
   headless:
@@ -20,6 +20,17 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Triangle -> select object -> rotate on real engine
+      - name: Chat regression tests
+        run: PYTHONPATH=vectorcraft-chat python -m unittest discover -s vectorcraft-chat/tests -v
+      - name: Real engine exact geometry and interactive follow-up edits
         timeout-minutes: 3
         run: python vectorcraft-chat/tests/smoke_headless.py target/release/vectorcraft-cli
+      - name: Preserve real engine evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vectorcraft-chat-engine-evidence
+          path: |
+            headless-report.json
+            headless-triangle.png
+          if-no-files-found: warn

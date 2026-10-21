@@ -9,12 +9,44 @@ import os
 from pathlib import Path
 import socket
 import subprocess
+import sys
 import tempfile
 import time
 import unittest
 from unittest.mock import patch
 import app_connection as connection
 import vectorcraft_chat as app
+
+
+@contextlib.contextmanager
+def isolated_keychain(base):
+    if sys.platform != 'darwin':
+        yield
+        return
+    path=str(base/'chat-ci.keychain-db')
+    password=os.urandom(24).hex()
+    subprocess.run(['security','create-keychain','-p',password,path],check=True,capture_output=True)
+    try:
+        subprocess.run(['security','unlock-keychain','-p',password,path],check=True,capture_output=True)
+        with patch.dict(os.environ,{'VECTORCRAFT_CHAT_KEYCHAIN':path}):
+            yield
+    finally:
+        subprocess.run(['security','delete-keychain',path],check=True,capture_output=True)
+
+
+def capture_chat(root):
+    root.lift();root.update()
+    time.sleep(0.2);root.update()
+    if sys.platform.startswith('linux'):
+        subprocess.run(['import','-window',str(root.winfo_id()),'native-chat.png'],check=True,timeout=10)
+    else:
+        from PIL import ImageGrab
+        x,y=root.winfo_rootx(),root.winfo_rooty()
+        ImageGrab.grab(bbox=(x,y,x+root.winfo_width(),y+root.winfo_height())).save('native-chat.png')
+
+
+def fail_modal(*args):
+    raise AssertionError('Unexpected error dialog: '+str(args))
 
 
 @unittest.skipUnless(os.environ.get('VC_CHAT_NATIVE_APP'), 'Requires actual native VectorCraft and virtual display')
@@ -24,16 +56,20 @@ class NativeStartupTests(unittest.TestCase):
         processes=[]
         original_popen=subprocess.Popen
         def capture(command,**kwargs):
+            if sys.platform=='win32' and Path(command[0]).stem=='vectorcraft-cli':
+                self.assertTrue(kwargs.get('creationflags',0) & subprocess.CREATE_NO_WINDOW,'MCP bridge must not open a console')
             process=original_popen(command,**kwargs)
             if str(Path(command[0]).resolve())==executable:processes.append(process)
             return process
         with tempfile.TemporaryDirectory() as directory,contextlib.ExitStack() as stack:
             base=Path(directory)
+            stack.enter_context(isolated_keychain(base))
             for key,value in {'APP_DIR':base,'SETTINGS':base/'settings.json','HISTORY':base/'history.json','COSTS':base/'costs.json','KEY_FILE':base/'key'}.items():
                 stack.enter_context(patch.object(app,key,value))
             stack.enter_context(patch.dict(os.environ,{'VECTORCRAFT_APP':executable,'VECTORCRAFT_CONFIG_DIR':str(base/'native-profile'),'VECTORCRAFT_NO_PREFS':'1','OPENROUTER_API_KEY':''}))
             stack.enter_context(patch.object(connection.subprocess,'Popen',side_effect=capture))
             stack.enter_context(patch.object(app.messagebox,'askyesno',return_value=True))
+            stack.enter_context(patch.object(app.messagebox,'showerror',side_effect=fail_modal))
             stack.enter_context(patch.object(app.filedialog,'askopenfilename',side_effect=AssertionError('Installed app must be found without a dialog')))
             with socket.socket() as sock:
                 sock.bind(('127.0.0.1',0));port=sock.getsockname()[1]
@@ -74,6 +110,13 @@ class NativeStartupTests(unittest.TestCase):
                 self.assertEqual(app.control('engine.execute',{'command':'document.node','params':{'id':target,'summary':True}},port),actual)
                 self.assertEqual(gui.session_spend_usd,0)
                 self.assertEqual(app.read_json(app.SETTINGS,{})['vectorcraft_app'],executable)
+                # The OS itself must reject an invalid executable, without a fake child process.
+                invalid=base/('invalid.exe' if sys.platform=='win32' else 'invalid-app')
+                invalid.write_bytes(b'Invalid native executable\n');invalid.chmod(0o755)
+                with socket.socket() as sock:
+                    sock.bind(('127.0.0.1',0));unused=sock.getsockname()[1]
+                with self.assertRaisesRegex(connection.ConnectionFailure,'konnte nicht gestartet'):
+                    connection.ensure_connection(unused,base,str(invalid),timeout=5)
                 # Exercise the actual provider HTTP/JSON code and the native engine together.
                 # Only OpenRouter's remote endpoint is redirected to a local HTTP fixture.
                 # This is explicitly not a paid live OpenRouter completion.
@@ -133,14 +176,14 @@ class NativeStartupTests(unittest.TestCase):
                             gui.export_diagnostic()
                         self.assertNotIn('dummy-native-key',diagnostic.read_text())
                         self.assertEqual(json.loads(diagnostic.read_text())['settings']['model'],model)
+                        app.save_secret('');self.assertEqual(app.load_secret(),'')
                 finally:
                     server.shutdown();server.server_close();thread.join(timeout=5)
-                report={'status':'PASS','transport':'actual native TCP and CLI MCP --connect','provider':'local HTTP fixture using actual OpenRouter request/response code; no paid live completion','native_launches':len(processes),'port':port,'triangle_id':target,'node':actual,'fixture_accounted_cost_usd':gui.session_spend_usd,'actual_provider_charge_usd':0,'provider_http_requests':len(requests)}
+                self.assertIsNone(processes[0].poll(),'Native application must still be running')
+                report={'status':'PASS','platform':sys.platform,'transport':'actual native TCP and CLI MCP --connect','provider':'local HTTP fixture using actual OpenRouter request/response code; no paid live completion','native_launches':len(processes),'port':port,'triangle_id':target,'node':actual,'fixture_accounted_cost_usd':gui.session_spend_usd,'actual_provider_charge_usd':0,'provider_http_requests':len(requests),'os_rejected_invalid_executable':True,'key_store':'isolated actual macOS Keychain' if sys.platform=='darwin' else ('actual Windows DPAPI' if sys.platform=='win32' else 'restricted Linux file'),'secret_roundtrip_and_delete':True}
                 Path('native-startup-report.json').write_text(json.dumps(report,indent=2))
                 # Take the actual chat window for layout inspection; the X display is test-only.
-                root.lift();root.update()
-                time.sleep(0.2);root.update()  # Repaint after the native window exposed Chat.
-                subprocess.run(['import','-window',str(root.winfo_id()),'native-chat.png'],check=True,timeout=10)
+                capture_chat(root)
                 print('PASS NATIVE: Chat auto-start, protocol readiness, single instance, real remote triangle/30-degree rotation/move, provider HTTP fixture, zero external model charge',flush=True)
             finally:
                 root.destroy()

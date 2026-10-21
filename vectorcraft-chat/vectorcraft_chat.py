@@ -28,6 +28,11 @@ JSON muss syntaktisch valide sein (keine Kommentare, keine nachgestellten Kommas
 
 # Secrets stay outside settings.json; on Windows they are DPAPI-encrypted per user.
 KEY_FILE = APP_DIR/'openrouter.key'
+def keychain_args():
+    # An explicit keychain permits isolated native CI without touching the login store.
+    path=os.environ.get('VECTORCRAFT_CHAT_KEYCHAIN','')
+    return [path] if path else []
+
 def save_secret(secret):
     APP_DIR.mkdir(mode=0o700,parents=True,exist_ok=True)
     if sys.platform=='win32':
@@ -39,8 +44,8 @@ def save_secret(secret):
         try: KEY_FILE.write_bytes(ctypes.string_at(dst.pbData,dst.cbData))
         finally: ctypes.windll.kernel32.LocalFree(dst.pbData)
     elif sys.platform=='darwin':
-        if not secret: subprocess.run(['security','delete-generic-password','-s','VectorCraftChat-OpenRouter'],capture_output=True)
-        else: subprocess.run(['security','add-generic-password','-U','-s','VectorCraftChat-OpenRouter','-a',os.getenv('USER','user'),'-w',secret],check=True,capture_output=True)
+        if not secret: subprocess.run(['security','delete-generic-password','-s','VectorCraftChat-OpenRouter']+keychain_args(),capture_output=True)
+        else: subprocess.run(['security','add-generic-password','-U','-s','VectorCraftChat-OpenRouter','-a',os.getenv('USER','user'),'-w',secret]+keychain_args(),check=True,capture_output=True)
     else:
         descriptor=os.open(KEY_FILE,os.O_WRONLY|os.O_CREAT|os.O_TRUNC,0o600)
         with os.fdopen(descriptor,'w',encoding='utf8') as output:
@@ -59,7 +64,7 @@ def load_secret():
             try:return ctypes.string_at(dst.pbData,dst.cbData).decode('utf8')
             finally:ctypes.windll.kernel32.LocalFree(dst.pbData)
         if sys.platform=='darwin':
-            r=subprocess.run(['security','find-generic-password','-s','VectorCraftChat-OpenRouter','-w'],capture_output=True,text=True)
+            r=subprocess.run(['security','find-generic-password','-s','VectorCraftChat-OpenRouter','-w']+keychain_args(),capture_output=True,text=True)
             return r.stdout.strip() if r.returncode==0 else ''
         return KEY_FILE.read_text(encoding='utf8') if KEY_FILE.exists() else ''
     except Exception as exc:
@@ -165,7 +170,8 @@ class MCPClient:
         self.executable=executable; self.port=int(remote_port); self.process=None;self.seq=0;self.headless=headless
     def __enter__(self):
         args=[self.executable,'mcp']+(['--headless'] if self.headless else ['--connect',f'127.0.0.1:{self.port}'])
-        self.process=subprocess.Popen(args,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,bufsize=0)
+        options={'creationflags':subprocess.CREATE_NO_WINDOW} if sys.platform=='win32' else {}
+        self.process=subprocess.Popen(args,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,bufsize=0,**options)
         try:
             self.request('initialize',{'protocolVersion':'2025-06-18','capabilities':{},'clientInfo':{'name':'VectorCraft Chat','version':APP_VERSION}})
             self.process.stdin.write((json.dumps({'jsonrpc':'2.0','method':'notifications/initialized'})+'\n').encode());self.process.stdin.flush()

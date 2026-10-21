@@ -1,5 +1,9 @@
 # VectorCraft Chat – TODO
 
+## Aktiver Schritt: echte native Windows-/macOS-Prüfung
+
+TODO vor Änderung und Build gelesen. Neuer nativer Workflow kompiliert GUI und CLI und führt Start bei geschlossenem Programm, Wiederverwendung, erste Dokumentvorbereitung, Dreieck/ID/30°/Folgeänderung, echten OS-Startfehler, Schlüssel-Rundlauf/Löschen, Provider-HTTP-Fixture und Diagnose aus. Windows-CLI ohne Konsolenfenster; macOS mit isoliertem echtem Test-Keychain. Lokal 58 von 62 Tests bestanden, vier Spezialtests ausdrücklich ausgelagert. Native Ergebnisse stehen aus; Plattform-Checkbox bleibt offen. Keine Veröffentlichung. Details: [Plattformprotokoll](docs/PLATFORMS-2026-10-21.md).
+
 ## Verbindliche Regel für jedes neue Update
 
 **Vor jeder Änderung, jedem Build und jeder Versionsfreigabe ist diese TODO-Liste zu prüfen.**

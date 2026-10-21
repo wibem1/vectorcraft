@@ -1,0 +1,68 @@
+name: VectorCraft Chat native Windows and macOS integration
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'vectorcraft-chat/*.py'
+      - 'vectorcraft-chat/tests/**'
+      - '.github/workflows/vectorcraft-chat-native.yml'
+permissions:
+  contents: read
+jobs:
+  native:
+    name: native (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-15-intel]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Confirm native Tk desktop before compiling
+        run: python -c "import tkinter as t; r=t.Tk(); r.update(); print('Tk desktop',r.winfo_screenwidth(),r.winfo_screenheight()); r.destroy()"
+      - name: Screenshot dependency (tests only)
+        run: python -m pip install Pillow
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: '1.95.0'
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: native-chat-platform-v1
+          cache-on-failure: true
+          cache-workspace-crates: true
+      - name: Compile actual native application and MCP bridge
+        run: cargo build --locked --release -p vectorcraft -p vectorcraft-cli
+      - name: Platform regressions
+        env:
+          PYTHONPATH: vectorcraft-chat
+        run: python -m unittest discover -s vectorcraft-chat/tests -v
+      - name: Actual Windows GUI startup, reuse, edits, DPAPI and provider fixture
+        if: runner.os == 'Windows'
+        timeout-minutes: 5
+        env:
+          PYTHONPATH: vectorcraft-chat
+          VC_CHAT_NATIVE_APP: target/release/vectorcraft.exe
+          RUST_BACKTRACE: '1'
+        run: python -m unittest discover -s vectorcraft-chat/tests -p test_native_startup.py -v
+      - name: Actual macOS GUI startup, reuse, edits, isolated Keychain and provider fixture
+        if: runner.os == 'macOS'
+        timeout-minutes: 5
+        env:
+          PYTHONPATH: vectorcraft-chat
+          VC_CHAT_NATIVE_APP: target/release/vectorcraft
+          RUST_BACKTRACE: '1'
+        run: python -m unittest discover -s vectorcraft-chat/tests -p test_native_startup.py -v
+      - name: Preserve native platform evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vectorcraft-chat-native-${{ matrix.os }}
+          path: |
+            native-startup-report.json
+            native-chat.png
+            native-startup.log
+          if-no-files-found: warn

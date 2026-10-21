@@ -180,3 +180,10 @@ kein Versionssprung. Build und gefrorene Ausführung zunächst **ausstehend**.
 PyInstaller-Aufbau anhand offizieller Dokumentation geprüft:
 https://pyinstaller.org/en/stable/usage.html . Positive Live-Completion und
 providerseitige Kostengarantie bleiben separat offen.
+
+Paketprüfung vor CI-Abschluss: macOS-Lizenzen/Lesemich nach Contents/Resources
+verschoben, damit keine unversiegelten Dateien im Bundle-Wurzelverzeichnis
+liegen (Apple errSecCSUnsealedAppRoot). Zusätzlich strikte codesign-Verifikation
+und SHA256-Manifest der tatsächlich getesteten Chat-/Engine-/CLI-Binaries.
+Dies ist eine vorsorgliche Quellcodekorrektur, kein bereits beobachteter CI-Fehler.
+Referenz: https://developer.apple.com/documentation/security/errseccsunsealedapproot .

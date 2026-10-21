@@ -69,3 +69,15 @@ Begleitend liegt unter `Tools/cost_audit.py` ein **offline** arbeitender Diagnos
 Sicherheits-/Interaktionsregel: Ein fehlgeschlagener oder zeitüberschrittener Zeichenaufruf darf **nicht automatisch wiederholt werden**, denn die Engine kann ihn noch abschließen. Der nächste Schritt muss den tatsächlichen Dokumentzustand neu abfragen. Tests in `Tools/test_vectorcraft_local_bridge.py` decken das Protokoll (mit Mockverbindung), eine Dreieck-Operation, Fehlerbehandlung und Loopback-Beschränkung ab; das ist **noch kein realer Installationstest**.
 
 **Der Python-KI-Chat v0.1.3 bleibt der Integrationsblocker.** In den verfügbaren früheren Arbeitsmaterialien liegen Verbindungstests und eine Diagnose, jedoch kein vollständiger Quelltext des tatsächlich gestarteten OpenRouter-Clients vor. Eine kopierte oder erfundene Neuimplementierung darf seine bisherige Funktionalität nicht ohne Vergleich ersetzen.
+
+## Implementierungsschritt 3 – OpenRouter-Adapter (Experiment, 21.10.2026)
+
+Der separate `Tools/vectorcraft_ai_adapter.py` verbindet bei **einem** Auftrag einen frisch abgerufenen lokalen Dokumentzustand, einen kompakten OpenRouter-Aufruf und (nur nach validierter Antwort/Abrechnung) einen eng begrenzten Zeichnungsbefehl. Die Standardformen sind `shape.polygon`, `shape.rectangle`, `shape.ellipse`, `shape.star`, `shape.line`. Eine 1.026-Befehle-Liste wird nicht übertragen. Für den Dreieckauftrag ist `shape.polygon` mit `sides=3` vorgesehen.
+
+**Keine neue Benutzer-App:** Das ist ein Proof of Concept für die Integration, **kein Update oder Ersatz** des vorhandenen VectorCraft-Chats v0.1.3. Nicht enthalten: grafische Oberfläche, dauerhafte Chatsitzung, Bildbeurteilung, stabile Dokumentgeneration beim manuellen Arbeiten, dynamische Modellpreiserkennung, gesicherter API-Schlüssel-Speicher, breiter Aktionsumfang oder native Windows-Testläufe.
+
+**Kostenbeschränkung:** Der Adapter nimmt `--max-request-usd` als extern bestimmte konservative Preisobergrenze und `--eur-per-usd` als Umrechnung. Solange sich die tatsächliche obere Preisgrenze des Modells nicht verlässlich bestimmen lässt, ist dies *keine* absolute Anbieter-Abrechnungsgarantie. Bei unbekannter Nachbelastung bleibt der Betrag vorsorglich reserviert; es gibt keine automatischen kostenpflichtigen Wiederholungen. Eine weitere Entwicklung muss die Preisobergrenze aus verifizierten Modelltarifen und strikt begrenztem Output ermitteln sowie Anbieter-Ausfälle/Abrechnungsnachläufe behandeln.
+
+**Tests:** `Tools/test_vectorcraft_ai_adapter.py` prüft simuliert, dass der lokale Zustand vor dem Modellaufruf eingelesen wird, keine gesamten Layer übertragen werden, `shape.polygon` für ein Dreieck ausgeführt wird, Aufrufe über Budget vor jeder API-Aktion abgelehnt werden und unzulässige Operationen oder fehlende Abrechnungen keine Zeichnung auslösen.
+
+**Wichtig:** Das Projekt bleibt bis zur Integration in den tatsächlich installierten Python-Chat und zu realen Token-/Konstruktionstests ein Entwicklungsbranch, keine freigegebene Version.

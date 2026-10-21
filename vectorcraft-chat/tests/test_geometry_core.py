@@ -1,7 +1,7 @@
 """Runs without VectorCraft or an API key."""
 import math
 import unittest
-from vectorcraft_chat.geometry_core import triangle_points, verify_selected_target, triangle_tool_arguments
+from geometry_core import triangle_points, verify_selected_target, triangle_tool_arguments
 
 class GeometryTests(unittest.TestCase):
     def test_three_equal_sides(self):

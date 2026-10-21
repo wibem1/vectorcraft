@@ -1,44 +1,19 @@
-# Echte VectorCraft-Engine — automatisierter Headless-Test
+# Actual VectorCraft engine verification
 
-Stand 2026-10-21. **Test eingerichtet, noch kein erfolgreicher GitHub-Actions-Lauf nachgewiesen.**
+Updated 2026-10-21. No release is made by this workflow.
 
-## Implementierung
-- GitHub Actions: [vectorcraft-chat-headless.yml](../../.github/workflows/vectorcraft-chat-headless.yml)
-- Prüfskript: [smoke_headless.py](../tests/smoke_headless.py)
-- GitHub Actions kompiliert `vectorcraft-cli` aus diesem Repository mit Rust 1.95.0 und führt `vectorcraft-cli mcp --headless` aus.
-- JSON-RPC-Verbindung mit `initialize`, `notifications/initialized`, danach `tools/call`.
-- Anhand des echten Dokumentbaums vor/nach `draw_path` wird die neu hinzugekommene Objekt-ID ermittelt.
-- Mit `run_command select.set` wird nur dieses Objekt selektiert; `inspect_document` kontrolliert die Auswahl.
-- `run_command object.rotate {angle:30}` dreht das ausgewählte Objekt; erneute Dokumentinspektion verlangt das Fortbestehen derselben ID.
-- Alle Schritte ohne API-Key und ohne Modellkosten.
+The earlier smoke test **did pass** in Actions run [39620575062](https://github.com/wibem1/vectorcraft/actions/runs/39620575062), original job 119292609606. Its log confirmed object ID 2, successful selection and changed model after rotation. Its explicit limitation was no exact geometric-angle assertion. A real rerun was requested in this development session: job 119298453828 also completed successfully.
 
-## Grenzen
-- Objektmodelländerung wird jetzt verlangt; eine exakte Winkelmessung oder Pixelprüfung steht noch aus.
-- Die echte Engine könnte bei Einzelheiten des Antwortformats von den Annahmen des Smoke-Tests abweichen; solche Fehler sollen in Actions sichtbar werden und **nicht** als App-Erfolg gelten.
-- Das Skript ist unabhängig von der experimentellen Python-Chatoberfläche. Ein erfolgreicher Headless-Test allein gibt die App noch nicht frei.
-- Workflow-Ausführung und Erfolg müssen anhand des tatsächlichen GitHub-Actions-Laufs überprüft werden.
+The extended test replaces that limited test and imports the same `MCPClient`, `create_triangle` and `transform_object` used by the Chat app. It starts `vectorcraft-cli mcp --headless` compiled from the actual Rust repository; no engine simulator is involved.
 
-## Aufruf
-GitHub: *Actions* → *VectorCraft Chat real headless engine* → *Run workflow*, alternativ Änderung der Workflow-/Testdatei auf main. Lokal auf Linux mit kompiliertem Binary:
+Assertions:
 
-```bash
-cargo build --locked --release -p vectorcraft-cli
-python3 vectorcraft-chat/tests/smoke_headless.py target/release/vectorcraft-cli
-```
+1. Create a closed triangle; check the draw reply ID against the before/after actual layer tree and three closed anchors.
+2. Rotate the same ID by 30°; compare reported rotation and bounds with independent analytical calculations in document coordinates.
+3. Move, scale uniformly, rotate by -15°, and move again after explicitly clearing the selection. Assert bounds, triangle topology and object identity throughout.
+4. Render actual PNG bytes through the engine. Upload PNG and the machine-readable node report as `vectorcraft-chat-engine-evidence`.
+5. Drive actual Tk callbacks under a virtual display: create, rotate, request a model-generated move, execute it after clearing the selection, verify geometry. Check selected model, key save/load, diagnostic exclusion of secrets and accounting even when action parsing fails. HTTP responses in this UI test are controlled fixtures.
 
-**Freigabekriterium:** erfolgreicher echter Engine-Test, anschließend Fehlerfälle/Rendering-Prüfung und Integration in den Chat.
+The workflow runs on pushes affecting `vectorcraft-chat/**`, so app changes cannot silently bypass this gate. Full engine and app test results must be checked for the final commit. A successful build alone does not count as successful interaction.
 
-## Prüfung am 21.10.2026
-
-Die GitHub-Connector-Abfrage lieferte für den Workflow-Einrichtungscommit keine Commit-Status-Einträge und keine abrufbaren PR-Workflow-Läufe. **Das ist kein Beleg eines bestandenen oder gescheiterten Push-Workflows.** Eine Workflow-Dispatch-Funktion steht über die hier verbundene GitHub-Schnittstelle nicht zur Verfügung. Daher wird kein erfolgreicher Real-Engine-Test behauptet. Der Smoke-Test wurde um einen Vorher/Nachher-Vergleich des tatsächlichen Objektmodells nach `object.rotate` erweitert. Auch dieser erweiterte Test muss erst in GitHub Actions laufen.
-
-## Fortschritt bei GitHub-Actions-Prüfung, 21.10.2026
-
-- Der verbundene GitHub-Connector lieferte für Commit `178d9d5` keine Commit-Statusmeldungen; seine Workflow-Laufabfrage erfasst ausschließlich PR-Läufe. Daraus ist **kein** Urteil über den Push-Workflow möglich.
-- Der direkte Abruf der GitHub-Actions-API war in dieser Ausführungsumgebung nicht erreichbar; eine Workflow-Dispatch-Aktion ist durch die verbundene GitHub-Schnittstelle nicht verfügbar.
-- Der MCP-Smoke-Test wurde deshalb auf ungepufferte Binär-Pipe-Lesevorgänge mit eigenem Zeilenpuffer umgestellt, da `select` mit `TextIOWrapper.readline` ansonsten falsche Timeouts produzieren kann. Commit `e5e1ed7`.
-- **Ergebnis:** Kein echter Engine-Lauf verifiziert. Der Workflow wird durch Änderungen am Testskript erneut für Push-Ereignisse angefordert, aber ein erfolgreicher Lauf ist nicht belegt. Keine neue App-Freigabe.
-
-## Nächste Korrektur (21.10.2026)
-
-Der Smoke-Test startet nun selbst ein frisches Dokument mit `run_command file.new {}` **vor** der ersten Dokumentinspektion (Commit `67fd4f9`). Damit wird nicht länger stillschweigend vorausgesetzt, dass Headless beim Start ein Dokument geöffnet hat. Der Workflow wird durch den Testdatei-Commit erneut für Push-Ereignisse angesprochen. Ein tatsächliches erfolgreiches Actions-Ergebnis wurde weiterhin nicht beobachtet.
+The repository-wide Rust gate `cargo xtask ci` has not been run locally in this session; no Rust engine source was modified. Headless release compilation is performed in Actions. The separate Chat workflow tests Linux, Windows and macOS and actual public OpenRouter HTTP calls without a paid key.

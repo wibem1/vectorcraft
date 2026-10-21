@@ -25,6 +25,12 @@ jobs:
       - name: Real engine exact geometry and interactive follow-up edits
         timeout-minutes: 3
         run: python vectorcraft-chat/tests/smoke_headless.py target/release/vectorcraft-cli
+      - name: Tk chat callbacks with actual engine (virtual display)
+        timeout-minutes: 3
+        env:
+          PYTHONPATH: vectorcraft-chat
+          VC_CHAT_REAL_CLI: target/release/vectorcraft-cli
+        run: xvfb-run -a python -m unittest discover -s vectorcraft-chat/tests -p test_ui_real_engine.py -v
       - name: Preserve real engine evidence
         if: always()
         uses: actions/upload-artifact@v4

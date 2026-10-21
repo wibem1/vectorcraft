@@ -4,8 +4,8 @@ class Tests(unittest.TestCase):
  def test_chat(self):
   self.assertEqual(parse_actions('Gute Idee.'),('Gute Idee.',[]))
  def test_actions(self):
-  out,a=parse_actions('Text <vc_actions>{"actions":[{"method":"engine.execute","params":{"command":"foo","params":{}}}]}</vc_actions>')
-  self.assertEqual((out,a[0]['params']['command']),('Text','foo'))
+  out,a=parse_actions('Text <vc_actions>{"actions":[{"method":"engine.execute","params":{"command":"object.move","params":{}}}]}</vc_actions>')
+  self.assertEqual((out,a[0]['params']['command']),('Text','object.move'))
  def test_reject(self):
   with self.assertRaises(ValueError):parse_actions('<vc_actions>{"actions":[{"method":"app.quit"}]}</vc_actions>')
  def test_ids(self):
@@ -16,7 +16,7 @@ class Tests(unittest.TestCase):
    c,_=sock.accept();payload=c.recv(4096);req=json.loads(payload);c.sendall((json.dumps({'id':req['id'],'ok':True,'result':{'hello':req['method']}})+'\n').encode());c.close();sock.close()
   t=threading.Thread(target=server);t.start()
   self.assertEqual(control('ui.inspect',{},port),{'hello':'ui.inspect'});t.join()
-if __name__=='__main__':unittest.main()
+
 
 class RegressionTests(unittest.TestCase):
  def test_invalid_json_action_is_safe(self):
@@ -38,9 +38,9 @@ class RegressionTests(unittest.TestCase):
 class Version020Tests(unittest.TestCase):
  def test_triangle_catalog_selection(self):
   from vectorcraft_chat import select_commands
-  catalog=[{'id':'path.make','params':'points'}, {'id':'app.quit'},{'id':'document.inspect'},{'id':'object.delete'}]+[{'id':f'unrelated.{n}'} for n in range(1026)]
+  catalog=[{'id':'path.create','params':'points'}, {'id':'app.quit'},{'id':'document.inspect'},{'id':'object.delete'}]+[{'id':f'unrelated.{n}'} for n in range(1026)]
   ids=[x['id'] for x in select_commands(catalog,'Konstruiere ein Dreieck')]
-  self.assertIn('path.make',ids)
+  self.assertIn('path.create',ids)
   self.assertNotIn('app.quit',ids)
   self.assertLessEqual(len(ids),22)
  def test_truncated_actions(self):
@@ -109,3 +109,5 @@ class FollowupRotationTests(unittest.TestCase):
   doc=parse_mcp_inspection({'content':[{'type':'text','text':'not json'}]})
   self.assertEqual(inspection_selection(doc),[])
   self.assertFalse(document_has_object(doc,123))
+
+if __name__=="__main__":unittest.main()

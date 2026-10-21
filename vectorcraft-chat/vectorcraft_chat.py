@@ -5,10 +5,12 @@ from tkinter import ttk, messagebox, scrolledtext, filedialog
 from pathlib import Path
 from datetime import datetime
 from engine_session import create_triangle, transform_object
+from cost_control import admit, money
 
 APP_DIR = Path.home()/'.vectorcraft-chat'
 SETTINGS = APP_DIR/'settings.json'
 HISTORY = APP_DIR/'history.json'
+COSTS = APP_DIR/'costs.json'
 MAX_OUTPUT = 10000
 APP_VERSION = "0.3.1-dev"
 DIAG_EVENTS = []
@@ -39,7 +41,10 @@ def save_secret(secret):
         if not secret: subprocess.run(['security','delete-generic-password','-s','VectorCraftChat-OpenRouter'],capture_output=True)
         else: subprocess.run(['security','add-generic-password','-U','-s','VectorCraftChat-OpenRouter','-a',os.getenv('USER','user'),'-w',secret],check=True,capture_output=True)
     else:
-        KEY_FILE.write_text(secret,encoding='utf8'); KEY_FILE.chmod(0o600)
+        descriptor=os.open(KEY_FILE,os.O_WRONLY|os.O_CREAT|os.O_TRUNC,0o600)
+        with os.fdopen(descriptor,'w',encoding='utf8') as output:
+            os.fchmod(output.fileno(),0o600)
+            output.write(secret)
         event('security','Linux-Fallback: eingeschränkte Dateiberechtigung, kein OS-Schlüsselspeicher')
 def load_secret():
     try:
@@ -59,13 +64,16 @@ def load_secret():
     except Exception as exc:
         event('key_load_error',type(exc).__name__);return ''
 
-def list_models(api_key):
+def model_catalog(api_key):
     headers={'User-Agent':'VectorCraftChat/'+APP_VERSION}
     if api_key:headers['Authorization']='Bearer '+api_key
     req=urllib.request.Request('https://openrouter.ai/api/v1/models',headers=headers)
     with urllib.request.urlopen(req,timeout=25) as response:data=json.load(response)
     entries=data.get('data',[])
-    return sorted(set(x['id'] for x in entries if isinstance(x,dict) and isinstance(x.get('id'),str)), key=str.casefold)
+    return {x['id']:x for x in entries if isinstance(x,dict) and isinstance(x.get('id'),str)}
+
+def list_models(api_key):
+    return sorted(model_catalog(api_key), key=str.casefold)
 
 def safe_error(err):
     value=re.sub(r'Bearer\s+[^\s\"\']+', 'Bearer [versteckt]', str(err))
@@ -74,11 +82,13 @@ def safe_error(err):
 
 def read_json(path, default):
     try: return json.loads(path.read_text(encoding='utf8'))
-    except (FileNotFoundError, ValueError): return default
+    except (OSError, ValueError): return default
 
 def save_json(path, obj):
-    APP_DIR.mkdir(exist_ok=True)
-    path.write_text(json.dumps(obj,ensure_ascii=False,indent=2),encoding='utf8')
+    path.parent.mkdir(parents=True,exist_ok=True)
+    temporary=path.with_suffix(path.suffix+'.tmp')
+    temporary.write_text(json.dumps(obj,ensure_ascii=False,indent=2,allow_nan=False),encoding='utf8')
+    temporary.replace(path)
 
 def control(method, params=None, port=7979):
     request_id=uuid.uuid4().hex
@@ -99,7 +109,7 @@ def control(method, params=None, port=7979):
 
 def api_chat(api_key, model, messages, max_tokens=1400):
     if not api_key.strip():raise ValueError('Kein OpenRouter-Key vorhanden. Bitte erneut eintragen und speichern.')
-    payload={'model':model,'messages':messages,'temperature':0.5,'max_tokens':max_tokens}
+    payload={'model':model,'messages':messages,'temperature':0.5,'max_tokens':max_tokens,'usage':{'include':True}}
     req=urllib.request.Request('https://openrouter.ai/api/v1/chat/completions',data=json.dumps(payload).encode(),headers={'Authorization':'Bearer '+api_key,'Content-Type':'application/json','HTTP-Referer':'http://localhost','X-Title':'VectorCraft Chat'},method='POST')
     try:
         with urllib.request.urlopen(req,timeout=100) as r: data=json.load(r)
@@ -107,7 +117,10 @@ def api_chat(api_key, model, messages, max_tokens=1400):
         details=e.read(500).decode('utf8','replace')
         if e.code==401: raise RuntimeError('OpenRouter HTTP 401: API-Key fehlt, ist ungültig oder wurde nicht akzeptiert. Bitte Key im Einstellungsfeld prüfen.')
         raise RuntimeError('OpenRouter HTTP '+str(e.code)+': '+details)
-    choice=data['choices'][0]['message'].get('content')
+    if 'error' in data:raise RuntimeError('OpenRouter: '+safe_error(data['error']))
+    choices=data.get('choices')
+    if not isinstance(choices,list) or not choices:raise ValueError('OpenRouter lieferte keine Antwortauswahl')
+    choice=choices[0].get('message',{}).get('content')
     if isinstance(choice,list): choice='\n'.join(str(p.get('text','')) for p in choice if isinstance(p,dict))
     event('api_response',f'content_chars={len(choice or chr(0))- (0 if choice else 1)}; tokens={data.get("usage",{}).get("total_tokens","?")}')
     return choice or '',data.get('usage',{})
@@ -152,7 +165,8 @@ class MCPClient:
         def reader():
             try:
                 while True:
-                    line=self.process.stdout.readline()
+                    line=self.process.stdout.readline(8_000_001)
+                    if len(line)>8_000_000:raise ValueError('MCP-Antwort zu groß')
                     if not line:raise ConnectionError('VectorCraft MCP wurde beendet')
                     result=json.loads(line)
                     if result.get('id')==ident:recv.put((True,result));break
@@ -180,7 +194,7 @@ def rotate_request_degrees(text):
     """Only interpret an explicit request to rotate the previously drawn triangle."""
     import re
     t=text.casefold()
-    if not ('dreieck' in t or 'triangle' in t) or not any(x in t for x in ('dreh', 'rotier')):
+    if not any(x in t for x in ('dreh', 'rotier')) or any(x in t for x in ('kreis','rechteck','ellipse','circle')):
         return None
     m=re.search(r'([+-]?\d+(?:[.,]\d+)?)\s*(?:°|grad)', t)
     if not m:
@@ -224,13 +238,20 @@ def inspection_selection(document):
         elif isinstance(item,dict) and isinstance(item.get('id'),(str,int)):ids.append(item['id'])
     return ids
 
+ALLOWED_COMMANDS = frozenset(('path.create','shape.rectangle','shape.ellipse','shape.polygon',
+    'object.move','object.rotate','object.scale','object.reflect','object.setProps',
+    'select.set','paint.setFill','paint.setStroke','paint.strokeWidth'))
+
 def parse_actions(content):
     start=content.find('<vc_actions>'); end=content.find('</vc_actions>')
     if start<0 and end<0:
         event('action_parser','no action tag; text_len='+str(len(content)))
         return content, []
     if start<0 or end<start: raise ValueError('Unvollständiger Aktionsblock der KI. Nichts wird ausgeführt.')
+    if content.count('<vc_actions>')!=1 or content.count('</vc_actions>')!=1:
+        raise ValueError('Mehrere Aktionsblöcke sind nicht zulässig')
     raw=content[start+12:end].strip()
+    if len(raw)>16000:raise ValueError('Aktionsblock zu groß')
     try: spec=json.loads(raw)
     except json.JSONDecodeError as exc:
         event('invalid_actions',f'Position {exc.pos}: {exc.msg}; raw_length={len(raw)}')
@@ -240,7 +261,12 @@ def parse_actions(content):
     if not isinstance(actions,list) or len(actions)>12: raise ValueError('Ungültige Anzahl Aktionen')
     for item in actions:
         if not isinstance(item,dict) or item.get('method') not in ('engine.execute','document.inspect','ui.render','ui.inspect','mcp.draw_path') or not isinstance(item.get('params',{}),dict): raise ValueError('Ungültige VectorCraft-Aktion')
-        if item['method']=='engine.execute' and (not isinstance(item['params'].get('command'),str) or not isinstance(item['params'].get('params',{}),dict)): raise ValueError('Ungültiger Engine-Befehl')
+        item.setdefault('params',{})
+        if item['method']=='engine.execute':
+            if item['params'].get('command') not in ALLOWED_COMMANDS or not isinstance(item['params'].get('params',{}),dict):
+                raise ValueError('Nicht zugelassener Engine-Befehl')
+        if item['method']=='ui.render' and set(item['params'])-{'scale','artboard','data'}:
+            raise ValueError('Render-Dateizugriffe sind nicht zulässig')
     return (content[:start]+content[end+13:]).strip(),actions
 
 def select_commands(items,request,limit=22):
@@ -252,7 +278,7 @@ def select_commands(items,request,limit=22):
     for it in items:
         if not isinstance(it,dict):continue
         identifier=str(it.get('id') or it.get('command') or '')
-        if not identifier:continue
+        if identifier not in ALLOWED_COMMANDS:continue
         lid=identifier.casefold()
         score=sum(3 for x in keys if x in lid)
         if 'dreieck' in words and any(x in lid for x in ('path','polygon','point','anchor')):score+=12
@@ -263,9 +289,9 @@ def select_commands(items,request,limit=22):
 
 class App:
     def __init__(self,root):
-        self.root=root; root.title('VectorCraft Chat 0.3.1-dev'); root.geometry('540x490');root.minsize(420,360)
+        self.root=root; root.title('VectorCraft Chat '+APP_VERSION); root.geometry('540x490');root.minsize(420,360)
         self.settings=read_json(SETTINGS,{'model':'google/gemini-2.5-flash','port':7979,'max_eur':0.10,'usd_to_eur':0.92});self.messages=read_json(HISTORY,[])
-        self.pending=[];self.last_triangle_id=None;self.command_ids=set();self.busy=False;self.q=queue.Queue();self.session_spend_usd=0.0
+        self.pending=[];self.last_triangle_id=None;self.command_ids=set();self.busy=False;self.q=queue.Queue();self.session_spend_usd=float(money(read_json(COSTS,{}).get('spent_usd',0)))
         self.model=tk.StringVar(value=self.settings.get('model',''))
         self.port=tk.StringVar(value=str(self.settings.get('port',7979)))
         self.key=tk.StringVar(value=os.getenv('OPENROUTER_API_KEY') or load_secret())
@@ -283,7 +309,7 @@ class App:
         ttk.Button(settings,text='Key speichern',command=self.store_key).grid(row=1,column=3,sticky='e',padx=(3,0))
         ttk.Label(settings,text='Port').grid(row=2,column=0,sticky='w',pady=2)
         ttk.Entry(settings,textvariable=self.port,width=7).grid(row=2,column=1,sticky='w',pady=2)
-        ttk.Label(settings,text='Limit €').grid(row=2,column=2,sticky='e',padx=(8,4),pady=2)
+        ttk.Label(settings,text='Budget €').grid(row=2,column=2,sticky='e',padx=(8,4),pady=2)
         ttk.Entry(settings,textvariable=self.budget,width=7).grid(row=2,column=3,sticky='w',pady=2)
         ttk.Button(settings,text='Verbindung prüfen',command=self.inspect).grid(row=3,column=0,columnspan=3,sticky='ew',pady=(3,4))
         ttk.Button(settings,text='Diagnose speichern',command=self.export_diagnostic).grid(row=3,column=3,sticky='e',padx=(3,0))
@@ -321,7 +347,7 @@ class App:
                     self.pending=actions
                     self.total_usage.append({'model':self.model.get(),'usage':usage,'time':datetime.now().isoformat()})
                     if actions:self.exec_button.config(state='normal');self.write('system',f'{len(actions)} Befehle vorgeschlagen. Erst nach Klick auf „ausführen“ werden sie an VectorCraft gesendet.');
-                    self.session_spend_usd+=float(usage.get('cost') or 0)
+                    # Costs are persisted in the worker before parsing; parser errors are charged too.
                     event('action_parser',f'actions={len(actions)}, text_chars={len(text)}')
                     self.status.set('KI · '+str(len(actions))+' Aktionen · Tokens '+str(usage.get('total_tokens','?'))+' · Kosten $'+format(self.session_spend_usd,'.4f'))
                 elif isinstance(payload,tuple) and payload[0]=='models':
@@ -345,13 +371,14 @@ class App:
     def export_diagnostic(self):
         path=filedialog.asksaveasfilename(title='Diagnose speichern',defaultextension='.json',filetypes=[('JSON-Diagnose','*.json')],initialfile='VectorCraft-Chat-Diagnose-'+datetime.now().strftime('%Y%m%d-%H%M%S')+'.json')
         if not path:return
-        doc={'app_version':APP_VERSION,'timestamp':datetime.now().astimezone().isoformat(),'platform':sys.platform,'python':sys.version.split()[0], 'settings':{'model':self.model.get(),'port':self.port.get(),'max_eur':self.budget.get(),'key_present':bool(self.key.get().strip()),'key_saved':bool(load_secret())},'connection_command_count':len(self.command_ids),'models_loaded':len(self.models),'last_error':self.last_error,'events':DIAG_EVENTS[-100:],'usage':self.total_usage[-30:],'pending_action_count':len(self.pending),'session_cost_usd':self.session_spend_usd,'history_messages':len(self.messages),'notes':'Keine API-Keys, keine Prompt-Texte und keine Dokumentinhalte gespeichert. Keine automatische Übertragung.'}
+        doc={'app_version':APP_VERSION,'timestamp':datetime.now().astimezone().isoformat(),'platform':sys.platform,'python':sys.version.split()[0], 'settings':{'model':self.model.get(),'port':self.port.get(),'max_eur':self.budget.get(),'key_present':bool(self.key.get().strip()),'key_saved':bool(load_secret())},'connection_command_count':len(self.command_ids),'models_loaded':len(self.models),'last_error':self.last_error,'events':DIAG_EVENTS[-100:],'usage':self.total_usage[-30:],'pending_action_count':len(self.pending),'accounted_cost_usd':self.session_spend_usd,'cost_policy':'conservative estimate; unresolved usage retains reservation; no provider-enforced EUR cap','history_messages':len(self.messages),'notes':'Keine API-Keys, keine Prompt-Texte und keine Dokumentinhalte gespeichert. Keine automatische Übertragung.'}
         Path(path).write_text(json.dumps(doc,ensure_ascii=False,indent=2),encoding='utf8')
         self.status.set('Diagnose gespeichert: '+Path(path).name)
     def inspect(self):
         self.save_settings()
+        port=int(self.port.get())
         def job():
-            port=int(self.port.get()); doc=control('document.inspect',{'depth':1,'childLimit':10},port);catalog=control('engine.commands',{},port)
+            doc=control('document.inspect',{'depth':1,'childLimit':10},port);catalog=control('engine.commands',{},port)
             ids=self.extract_ids(catalog)
             
             artboards=doc.get('artboards',[]) if isinstance(doc,dict) else []
@@ -377,9 +404,8 @@ class App:
             if budget<=0:raise ValueError('positives Budget erforderlich')
         except ValueError:
             messagebox.showerror('Budget','Bitte ein positives Kostenbudget eingeben.');return
-        # Providerpreise variieren und werden erst nach der Anfrage gemeldet.
-        # We do not claim a hard per-request provider spending cap.
-        if self.session_spend_usd >= budget:
+        local_request=detect_triangle(prompt) or rotate_request_degrees(prompt) is not None
+        if not local_request and self.session_spend_usd*float(self.settings.get('usd_to_eur',0.92)) >= budget:
             messagebox.showwarning('Kosten','Die bisherigen Sitzungskosten erreichen das eingestellte Budget. Für weitere API-Anfragen bitte neues Budget festlegen.');return
         self.pending=[];self.exec_button.config(state='disabled')
         self.save_settings();self.entry.delete('1.0','end');self.write('user',prompt)
@@ -387,6 +413,7 @@ class App:
         if angle is not None:
             if self.last_triangle_id is None:
                 self.write('system','Kein bestätigtes Dreieck aus dieser Sitzung bekannt. Bitte zuerst eines erstellen und ausführen.');return
+            self.messages.append({'role':'user','content':prompt});save_json(HISTORY,self.messages)
             self.pending=[{'method':'mcp.rotate_triangle','params':{'id':self.last_triangle_id,'angle':angle}}]
             self.exec_button.config(state='normal')
             self.write('assistant',f'Ich drehe das zuvor erzeugte Dreieck um {angle:g} Grad. Bitte mit „Befehle ausführen“ bestätigen.')
@@ -397,6 +424,7 @@ class App:
             if not exe:
                 self.write('system','VectorCraft CLI nicht gefunden. Installiere vectorcraft-cli.exe oder setze VECTORCRAFT_CLI. Es wurde nichts gezeichnet.')
                 event('mcp_missing','vectorcraft-cli nicht gefunden');return
+            self.messages.append({'role':'user','content':prompt});save_json(HISTORY,self.messages)
             self.pending=[{'method':'mcp.draw_path','params':{'points':triangle_points(),'closed':True,'fill':'#bcdfea','stroke':'#263e56','strokeWidth':2}}]
             self.exec_button.config(state='normal')
             self.write('assistant','Ich schlage ein gleichseitiges Dreieck vor. Mit „Befehle ausführen“ wird es als editierbarer Vektorpfad in VectorCraft angelegt.')
@@ -404,8 +432,9 @@ class App:
             return
         self.messages.append({'role':'user','content':prompt});save_json(HISTORY,self.messages)
         self.pending=[]
+        chosen_model=self.model.get().strip();chosen_port=int(self.port.get());exchange_rate=self.settings.get('usd_to_eur',0.92)
         def job():
-            port=int(self.port.get())
+            port=chosen_port
             try:
                 event('vectorcraft','document.inspect started')
                 doc=control('document.inspect',{'depth':1,'childLimit':10},port)
@@ -416,16 +445,35 @@ class App:
                 self.command_ids=self.extract_ids(catalog)
                 relevant=select_commands(items,prompt)
                 event('catalog',f'total={len(items)},selected={len(relevant)},ids={",".join(str(x.get("id")) for x in relevant[:12])}')
-                context='Dokument (gekürzt): '+json.dumps(doc,ensure_ascii=False)[:2500]+'\nVerfügbare Befehle (exakte IDs/Parameter): '+json.dumps(relevant,ensure_ascii=False)[:11000]
+                target_context=''
+                if self.last_triangle_id is not None:
+                    target=control('engine.execute',{'command':'document.node','params':{'id':self.last_triangle_id,'summary':True}},port)
+                    target_context='Zuletzt erzeugtes Dreieck (frisch geprüft): '+json.dumps(target,ensure_ascii=False)+'\n'
+                context=target_context+'Dokument (gekürzt): '+json.dumps(doc,ensure_ascii=False)[:2500]+'\nVerfügbare Befehle (exakte IDs/Parameter): '+json.dumps(relevant,ensure_ascii=False)[:11000]
             except Exception as e:
                 event('vectorcraft_error',type(e).__name__+': '+str(e)[:300]);context='KEINE Verbindung zu VectorCraft. Keine ausführbaren Aktionen anbieten. Fehler: '+str(e)[:350]
             history=self.messages[-8:]
             msgs=[{'role':'system','content':SYSTEM+'\n'+context}]+history
-            event('api_request',f'model={self.model.get()}, messages={len(msgs)}, context_chars={len(context)}')
-            content,usage=api_chat(key,self.model.get().strip(),msgs,max_tokens=2000)
+            event('api_request',f'model={chosen_model}, messages={len(msgs)}, context_chars={len(context)}')
+            model=chosen_model
+            catalog=model_catalog(key)
+            if model not in catalog:raise ValueError('Modell nicht im aktuellen OpenRouter-Katalog')
+            reserve=admit(catalog[model],msgs,2000,self.session_spend_usd,budget,exchange_rate)
+            self.session_spend_usd+=reserve
+            save_json(COSTS,{'spent_usd':self.session_spend_usd,'pending_reservation_usd':reserve})
+            event('cost_admission',f'model={model}; reserve_usd={reserve:.6f}')
+            # On timeout/transport error keep the reservation: the provider may have billed.
+            content,usage=api_chat(key,model,msgs,max_tokens=2000)
+            if usage.get('cost') is not None:
+                charged=float(money(usage['cost']))
+                self.session_spend_usd=max(0,self.session_spend_usd-reserve)+charged
+                save_json(COSTS,{'spent_usd':self.session_spend_usd,'pending_reservation_usd':0})
+                event('cost_settled',f'charged_usd={charged:.6f}')
+            else:
+                event('cost_unknown','Provider cost missing; reservation retained')
             answer,actions=parse_actions(content)
             if not actions and any(w in prompt.casefold() for w in ('konstruiere','zeichne','erstelle','erzeuge')):
-                event('no_actions','Auftrag ohne ausführbare Aktion; model='+self.model.get())
+                event('no_actions','Auftrag ohne ausführbare Aktion; model='+chosen_model)
                 answer+='\n\n[Hinweis: Die KI hat keine ausführbare Konstruktion geliefert. Es wurde nichts gezeichnet.]'
             if actions and not self.command_ids:raise ValueError('Es liegt kein bestätigter VectorCraft-Befehlskatalog vor; Aktionen werden nicht übernommen.')
             for action in actions:
@@ -438,9 +486,10 @@ class App:
         if not actions or self.busy:return
         if not messagebox.askyesno('VectorCraft ändern?',f'{len(actions)} vorgeschlagene Aktionen in VectorCraft ausführen?\nVorher bitte das Dokument speichern.'):return
         self.pending=[]
+        port=int(self.port.get())
         def job():
             outcomes=[]
-            before=control('document.inspect',{'depth':0,'childLimit':8},int(self.port.get()))
+            before=control('document.inspect',{'depth':0,'childLimit':8},port)
             event('execution',f'start; actions={len(actions)}')
             for i,a in enumerate(actions,1):
                 if a['method']=='engine.execute' and self.command_ids and a['params']['command'] not in self.command_ids:
@@ -448,7 +497,7 @@ class App:
                 if a['method'] in ('mcp.draw_path','mcp.rotate_triangle'):
                     exe=mcp_executable()
                     if not exe:raise FileNotFoundError('vectorcraft-cli fehlt')
-                    with MCPClient(exe,int(self.port.get())) as client:
+                    with MCPClient(exe,port) as client:
                         if a['method']=='mcp.draw_path':
                             self.last_triangle_id=create_triangle(client,a['params'])
                             result={'id':self.last_triangle_id,'verified':True}
@@ -457,11 +506,16 @@ class App:
                             target=a['params']['id']
                             result=transform_object(client,target,'object.rotate',{'angle':a['params']['angle']})
                             event('triangle_rotated','verified_id='+str(target)+'; angle='+str(a['params']['angle']))
+                elif a['method']=='engine.execute' and a['params']['command'] in ('object.move','object.rotate','object.scale') and self.last_triangle_id is not None:
+                    exe=mcp_executable()
+                    if not exe:raise FileNotFoundError('vectorcraft-cli fehlt')
+                    with MCPClient(exe,port) as client:
+                        result=transform_object(client,self.last_triangle_id,a['params']['command'],a['params'].get('params',{}))
                 else:
-                    result=control(a['method'],a.get('params',{}),int(self.port.get()))
+                    result=control(a['method'],a.get('params',{}),port)
                 event('execution_step',f'index={i}; method={a["method"]}; command={a.get("params",{}).get("command","")}; success=true')
                 outcomes.append(f'{i}. {a["method"]}: '+json.dumps(result,ensure_ascii=False)[:120])
-            after=control('document.inspect',{'depth':0,'childLimit':8},int(self.port.get()))
+            after=control('document.inspect',{'depth':0,'childLimit':8},port)
             changed=before!=after
             event('execution_verified',f'document_changed={changed}')
             return ('executed','Ausgeführt; Dokumentstatus verändert: '+('ja' if changed else 'nicht nachweisbar')+'\n'+'\n'.join(outcomes))

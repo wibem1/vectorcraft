@@ -1,37 +1,29 @@
-# VectorCraft Chat — eigenständige KI-Chatsteuerung
+# VectorCraft Chat
 
-**Entwicklungsstand: 21.10.2026 — v0.1.3, experimentell, nicht funktionsfähig nach Nutzer-Praxistest.**
+Development branch: `main`. Version remains **0.3.1-dev**; no new release.
 
-Ziel: eine kleine **eigenständige Chat-App** für Windows und Mac, mit der man eine Konstruktion in VectorCraft mit einer KI besprechen, ausführen, beurteilen und weiterbearbeiten kann. Nicht bloß ein einmaliger Prompt-zu-Zeichnung-Generator. Die KI muss den aktuellen Dokumentzustand kennen und bereits vorhandene Objekte gezielt verändern können.
+Standalone Python/Tk chat for the local VectorCraft control port (default 7979). Full application source, OS launchers, regression tests and the real-engine integration test are now in this directory.
 
-## Aktueller Stand (bestätigt und nicht bestätigt)
-- Lokale VectorCraft-Verbindung über `127.0.0.1:7979` im Nutzertest erfolgreich; Dokumenttitel „Vorlagenrekonstruktion“.
-- OpenRouter-Anfrage erfolgt mit gespeichertem API-Key; letzte Diagnose hat Kosten, aber keine ausführbare Aktion vermerkt.
-- Der Chat und das UI existieren als Python-Prototyp v0.1.3; die GUI hatte zuvor unbenutzbare Größen-/Layoutprobleme.
-- API-Key-Speicherung, Modellliste und Diagnoseexport wurden implementiert, **nicht vollständig im Betrieb bestätigt**.
-- Kein erfolgreicher Ende-zu-Ende-Test von „Konstruiere ein Dreieck“ bis zur sichtbaren Zeichnung nachgewiesen.
-- Das Kostenlimit 0,10 € ist **nicht** technisch durchgesetzt.
-- Der Quellcode von v0.1.3 liegt als separates ZIP aus dem Chat vor; diese Dokumentationsübernahme bedeutet nicht, dass der Quellcode bereits in diesem Verzeichnis eingecheckt wurde.
+## Run
 
-## Geplanter technischer Aufbau
-Chat/UI → Dialog- und Aktionsplanung → ausgewählte validierte native VectorCraft-Kommandos → lokale Steuerungsschnittstelle.
-Das Chatmodell soll das Dokument zunächst in kompakter Form inspizieren; bei Bedarf einzelne Objekte oder Commands nachladen. Nicht die vollständige Liste aller 1.026 verfügbaren Commands regelmäßig in den Prompt aufnehmen.
+Python 3 with Tkinter and an installed `vectorcraft-cli` are required. Set `VECTORCRAFT_CLI` if the CLI is not on PATH or in the standard Windows installation directory. Start VectorCraft with `--control 7979`, then use `START-Windows.cmd`, `START-Mac.command`, or `python vectorcraft_chat.py`.
 
-**Kein automatisch unkontrolliertes Ausführen:** Änderungen validieren, den aktuellen Dokumentzustand prüfen, gezielt ausführen und Rückmeldung/Fehler protokollieren. Dialog darf auch ohne Aktion stattfinden.
+A triangle request is planned locally with no model cost. Confirm its execution in the chat. Its ID is obtained from the actual engine reply and checked against the document tree and three closed anchors. Follow-up rotation uses that same ID and verifies the resulting angle. General model-generated moves, rotations and scales also reselect and verify the recorded triangle.
 
-## Fehlerprioritäten
-1. Funktionierenden Dreieck-Ende-zu-Ende-Test erstellen.
-2. KI-Antwort von ausführbarer, schemavalidierter Aktionsstruktur trennen; ungültige JSON-Antworten sicher behandeln.
-3. Vollständige Diagnosen für Anfrage-, Antwort-, Parser-, Validierungs- und Ausführungsschritte (ohne Schlüssel, sensible Promptinhalte standardmäßig ausschließen).
-4. Dynamische Modellliste samt Auswahl zuverlässig laden.
-5. Kostenlimit verbindlich prüfen; keine bloße Budgetanzeige.
-6. Bearbeitung bestehender Objekte und Abgleich bei manuellen Änderungen.
+## OpenRouter and costs
 
-## Upstream VectorCraft
-Repository-Hauptteil enthält die VectorCraft-Anwendung. Lokaler Steuerungskanal `vectorcraft --control 7979`, JSON-Zeilenanfragen, siehe [docs/control-protocol.md](../docs/control-protocol.md); MCP-Dokumentation [docs/mcp.md](../docs/mcp.md). Diese Chat-App ist ein **separates Projekt im Unterverzeichnis**; Änderungen sollen VectorCraft selbst nicht beschädigen.
+The model list and prices are loaded dynamically from OpenRouter. API keys are kept outside settings and diagnostics: Windows DPAPI, macOS Keychain, or a Linux file restricted to its owner. The selected model is submitted explicitly; tests inspect the request payload.
 
-## Teststatus
-Die für v0.1.3 gemeldeten 8 automatisierten Tests sind **kein** erfolgreicher End-to-End-Nachweis. Nutzer-Praxistest: App funktioniert nicht. Details in [Diagnose](docs/DIAGNOSE-2026-10-21.md).
+Before a paid text request, current model pricing, prompt size, output cap (2,000 tokens), accumulated spending and the configured USD/EUR factor are checked. Unknown prices or unsupported extra fees block the request. A conservative reservation is saved **before** sending; actual reported costs replace it before action parsing. Missing billing, connection errors and timeouts retain the reservation. Restarting or opening a new chat does not reset costs. The default conversion factor is 0.92 EUR/USD, a configurable estimate in settings, not a live exchange quote.
 
-## Referenz
-GitHub ist ab diesem Commit die Dokumentationsbasis. Der v0.1.3-Quellcode muss noch vollständig ergänzt und gegen das im Chat vorhandene ZIP abgeglichen werden.
+**The local budget is a conservative admission check, not a guaranteed provider-side euro charge cap.** Pricing changes, tokenizer and billing behavior remain external. No successful paid OpenRouter completion is claimed without an actual authorized test key. CI checks the real public model API and rejection of an invalid key; completion payloads and errors use controlled fixtures.
+
+## Test evidence
+
+See [session log](docs/SESSION-2026-10-21.md) and [real-engine test](docs/HEADLESS-ENGINE-TEST.md).
+
+- Regression: `PYTHONPATH=vectorcraft-chat python -m unittest discover -s vectorcraft-chat/tests -v` from repo root.
+- Actual engine: `python vectorcraft-chat/tests/smoke_headless.py target/release/vectorcraft-cli` after release compilation.
+- Tk callbacks + real engine: run `test_ui_real_engine.py` under Xvfb with `VC_CHAT_REAL_CLI` pointing to the compiled binary.
+
+The UI integration test uses the actual engine for edits and controlled HTTP replies for the model. This distinction is intentional and recorded in logs. Source-package historical notes live in `docs/source-package/`.

@@ -1,18 +1,30 @@
-name: VectorCraft Chat geometry core
+name: VectorCraft Chat regression and provider checks
 on:
   push:
     paths:
-      - 'vectorcraft-chat/geometry_core.py'
-      - 'vectorcraft-chat/tests/**'
-      - 'vectorcraft-chat/__init__.py'
+      - 'vectorcraft-chat/**'
       - '.github/workflows/vectorcraft-chat-core.yml'
   workflow_dispatch:
 jobs:
-  geometry:
-    runs-on: ubuntu-latest
+  chat:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: PYTHONPATH=vectorcraft-chat python -m unittest discover -s vectorcraft-chat/tests -v
+      - name: App, key store, model, diagnostic and cost regressions
+        env:
+          PYTHONPATH: vectorcraft-chat
+        run: python -m unittest discover -s vectorcraft-chat/tests -v
+      - name: Real public OpenRouter models and unauthorized response (no paid key)
+        if: runner.os == 'Linux'
+        env:
+          PYTHONPATH: vectorcraft-chat
+          VC_CHAT_LIVE_HTTP: '1'
+        run: python -m unittest discover -s vectorcraft-chat/tests -p test_cost_provider.py -v

@@ -1,0 +1,237 @@
+{
+  "run_id": 39682760797,
+  "source_sha": "6ba2c2c159d5cdd3f64ef3f03215a425652670d7",
+  "release": false,
+  "status": "PASS",
+  "platforms": {
+    "windows-latest": {
+      "status": "PASS",
+      "uploaded_binaries_match_test_manifest": true,
+      "license_notices_present": true,
+      "executable_modes_checked": false,
+      "candidate_inner_zip_sha256": "09ba822d5f0c8202d9a7bedf3b74095ca5c5c8c2b57dda6b1f50be8b243c045d",
+      "reports": {
+        "packaged-check": {
+          "status": "PASS",
+          "frozen": true,
+          "executable": "D:\\a\\vectorcraft\\vectorcraft\\candidate\\VectorCraftChat\\VectorCraftChat.exe",
+          "engine": "D:\\a\\vectorcraft\\vectorcraft\\candidate\\VectorCraftChat\\vectorcraft.exe",
+          "cli": "D:\\a\\vectorcraft\\vectorcraft\\candidate\\VectorCraftChat\\vectorcraft-cli.exe",
+          "tests_run": 1,
+          "skipped": 0
+        },
+        "packaged-network": {
+          "status": "PASS",
+          "public_models": 468,
+          "unauthorized_http": 401,
+          "automatic_bundled_discovery": true,
+          "valid_key_used": false,
+          "positive_live_completion": false,
+          "actual_provider_charge_usd": 0
+        },
+        "native-startup-report": {
+          "status": "PASS",
+          "platform": "win32",
+          "transport": "actual native TCP and CLI MCP --connect",
+          "provider": "local HTTP fixture using actual OpenRouter request/response code; no paid live completion",
+          "native_launches": 1,
+          "port": 51251,
+          "triangle_id": 2,
+          "node": {
+            "anchors": 3,
+            "bounds": {
+              "height": 181.86550109604903,
+              "width": 157.50057608466068,
+              "x": 277.62471195766966,
+              "y": 154.55049945197547
+            },
+            "closed": true,
+            "fill": "#bcdfea",
+            "id": 2,
+            "kind": "Path",
+            "locked": false,
+            "name": "<Path>",
+            "rotation": 29.999999999999996,
+            "stroke": "#263e56",
+            "strokeOptions": {
+              "align": "center",
+              "alignDashes": false,
+              "arrowAlign": "extend",
+              "cap": "butt",
+              "dash": null,
+              "dashOffset": 0,
+              "endArrow": null,
+              "gradientMode": "within",
+              "join": "miter",
+              "miterLimit": 10,
+              "profile": "uniform",
+              "startArrow": null,
+              "widthPoints": null
+            },
+            "strokeWidth": 2,
+            "visible": true
+          },
+          "fixture_accounted_cost_usd": 0.0002,
+          "actual_provider_charge_usd": 0,
+          "provider_http_requests": 3,
+          "os_rejected_invalid_executable": true,
+          "key_store": "actual Windows DPAPI",
+          "secret_roundtrip_and_delete": true
+        },
+        "bundle-manifest": {
+          "engine_cache_manifest": {
+            "fingerprint": "98d2f1b779c4c8f9d2805e9602819d1d1ffb7b77f5923c7bcf8ef976d49b96e1",
+            "sha256": {
+              "vectorcraft.exe": "b844dc3971fc196cdf2bbdc03968ee8cd01bd459903ae3dc67b90c1cc99e0ee7",
+              "vectorcraft-cli.exe": "3354cf024a5f932f16bbd0860d02ae04a1823dc032c0698f8511a5fd724185ef"
+            }
+          },
+          "source_sha": "6ba2c2c159d5cdd3f64ef3f03215a425652670d7",
+          "platform": "win32",
+          "release": false,
+          "sha256": {
+            "VectorCraftChat.exe": "e8c23d947e57ca5394e608234150024b7217062ef33adad37f564817893cbbca",
+            "vectorcraft.exe": "b844dc3971fc196cdf2bbdc03968ee8cd01bd459903ae3dc67b90c1cc99e0ee7",
+            "vectorcraft-cli.exe": "3354cf024a5f932f16bbd0860d02ae04a1823dc032c0698f8511a5fd724185ef"
+          }
+        }
+      }
+    },
+    "macos-15-intel": {
+      "status": "PASS",
+      "uploaded_binaries_match_test_manifest": true,
+      "license_notices_present": true,
+      "executable_modes_checked": true,
+      "candidate_inner_zip_sha256": "ce66b8a6204acbfa76e1786f6ee1665a1456ef0d3cdc0a2d2c1e11f6274db64b",
+      "reports": {
+        "packaged-check": {
+          "status": "PASS",
+          "frozen": true,
+          "executable": "/Users/runner/work/vectorcraft/vectorcraft/candidate/VectorCraftChat.app/Contents/MacOS/VectorCraftChat",
+          "engine": "/Users/runner/work/vectorcraft/vectorcraft/candidate/VectorCraftChat.app/Contents/MacOS/vectorcraft",
+          "cli": "/Users/runner/work/vectorcraft/vectorcraft/candidate/VectorCraftChat.app/Contents/MacOS/vectorcraft-cli",
+          "tests_run": 1,
+          "skipped": 0
+        },
+        "packaged-network": {
+          "status": "PASS",
+          "public_models": 468,
+          "unauthorized_http": 401,
+          "automatic_bundled_discovery": true,
+          "valid_key_used": false,
+          "positive_live_completion": false,
+          "actual_provider_charge_usd": 0
+        },
+        "native-startup-report": {
+          "status": "PASS",
+          "platform": "darwin",
+          "transport": "actual native TCP and CLI MCP --connect",
+          "provider": "local HTTP fixture using actual OpenRouter request/response code; no paid live completion",
+          "native_launches": 1,
+          "port": 49237,
+          "triangle_id": 2,
+          "node": {
+            "anchors": 3,
+            "bounds": {
+              "height": 181.86550109604903,
+              "width": 157.50057608466068,
+              "x": 277.62471195766966,
+              "y": 154.55049945197547
+            },
+            "closed": true,
+            "fill": "#bcdfea",
+            "id": 2,
+            "kind": "Path",
+            "locked": false,
+            "name": "<Path>",
+            "rotation": 29.999999999999996,
+            "stroke": "#263e56",
+            "strokeOptions": {
+              "align": "center",
+              "alignDashes": false,
+              "arrowAlign": "extend",
+              "cap": "butt",
+              "dash": null,
+              "dashOffset": 0,
+              "endArrow": null,
+              "gradientMode": "within",
+              "join": "miter",
+              "miterLimit": 10,
+              "profile": "uniform",
+              "startArrow": null,
+              "widthPoints": null
+            },
+            "strokeWidth": 2,
+            "visible": true
+          },
+          "fixture_accounted_cost_usd": 0.0002,
+          "actual_provider_charge_usd": 0,
+          "provider_http_requests": 3,
+          "os_rejected_invalid_executable": true,
+          "key_store": "isolated actual macOS Keychain",
+          "secret_roundtrip_and_delete": true
+        },
+        "bundle-manifest": {
+          "engine_cache_manifest": {
+            "fingerprint": "db8e91560b0423325111dec949dc00e459150bc83b6bbb562c656a3a982c59e1",
+            "sha256": {
+              "vectorcraft": "b80a2d1ff28a85494593bfbeec47a20f4dd561e6189db41c56dab3017c8a66cd",
+              "vectorcraft-cli": "38230c94c230a11264904f8a7c00dd9f48f2f2c42a35c121aeb8ac8197ce7574"
+            }
+          },
+          "source_sha": "6ba2c2c159d5cdd3f64ef3f03215a425652670d7",
+          "platform": "darwin",
+          "release": false,
+          "sha256": {
+            "VectorCraftChat": "3ee307114f47ad52d8f86daba8ef769ee7575915635131079ff738eb16aa71a5",
+            "vectorcraft": "1313fdb4d26433dc6175d570f3986630fae4d19838d64c61e7d1e80d610cfd69",
+            "vectorcraft-cli": "bfebf890e2f3287f6ef4fd0b240391290cd2c373c67d8acd8f1d2879403f6ff8"
+          }
+        }
+      }
+    }
+  },
+  "verification": {
+    "audit_run_id": 39687971880,
+    "audit_job_id": 119526766785,
+    "audit_status": "SUCCESS",
+    "full_build_logs_read": true,
+    "artifacts_downloaded_in_actions": true,
+    "binary_sha256_verified_from_uploaded_archives": true,
+    "macos_executable_modes_verified": true,
+    "windows_artifacts_also_locally_downloaded_and_sha256_verified": true,
+    "macos_local_download_unavailable": "local execution environment disconnected; Actions audit used",
+    "positive_live_completion": false,
+    "release_published": false,
+    "full_frozen_test_logs_read": true,
+    "log_audit_run_id": 39688117575,
+    "log_audit_job_id": 119527252289
+  },
+  "artifacts": {
+    "windows_evidence": {
+      "id": 12385688598,
+      "sha256": "7c043047fd73f498f76291b97614efef48988de79e2e4c8ed89224c76fdff2a3"
+    },
+    "windows_candidate": {
+      "id": 12385539120,
+      "sha256": "77977a98ed30e99ee5776e828e8b333c652f171b71a9e24ea25812c2d9a8600f"
+    },
+    "macos_evidence": {
+      "id": 12387476056,
+      "sha256": "26792b5901ee765fd3dec1318207c3163a6e3406f9e4b45f93b646eadf1eecbd"
+    },
+    "macos_candidate": {
+      "id": 12385928869,
+      "sha256": "2daf6f6bed7aafec9702f7f36fb1459ed2cbed3634f0d163e5eed692641f7771"
+    }
+  },
+  "limits": [
+    "CI candidate only; no new version, tag or release",
+    "Positive completion is local HTTP fixture; valid live OpenRouter key unavailable",
+    "Local admission control is not a guaranteed provider-enforced EUR 0.10 cap",
+    "Windows x64 and macOS Intel CI; Apple Silicon and clean user machines not executed",
+    "Native screenshot can be obscured; separate desktop layout evidence applies",
+    "Binary cache save/verify exercised; subsequent-run cache-hit speed not measured",
+    "Local cargo xtask ci unavailable because Cargo absent; no full workspace gate claimed"
+  ]
+}

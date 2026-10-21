@@ -1,8 +1,8 @@
 # VectorCraft Chat – TODO
 
-## Abgeschlossener Schritt: echte native Windows-/macOS-Prüfung
+## Aktueller Abschluss: echte Engine und eigenständige Testpakete
 
-TODO vor Änderung, Build und Abschluss geprüft. Native Windows-/macOS-Integration, Linux-Regressionen, echte DPAPI-/Keychain-CRUD und getrennte Desktop-Layoutprüfung erfolgreich; vollständige Logs, Berichte und Bilder geprüft. Positiver Live-OpenRouter-Test bleibt mangels CI-Schlüssel offen. Keine Veröffentlichung. Details: [Plattformprotokoll](docs/PLATFORMS-2026-10-21.md).
+TODO vor Änderung, Build und Abschluss geprüft. Headless und native Quelltests erneut erfolgreich; zusätzlich eigenständige Windows-/macOS-Intel-Testpakete samt echter Engine/CLI, gefrorener nativer Testsuite, HTTPS, Schlüsselablage und Archivabgleich erfolgreich. Keine Veröffentlichung, Version 0.3.1-dev. Positiver Live-Auftrag und garantierter Provider-Kostendeckel bleiben offen. Details: [Paketprotokoll](docs/PACKAGES-2026-10-21.md). Die folgenden älteren Abschnitte halten den jeweiligen historischen Zwischenstand fest.
 
 ## Verbindliche Regel für jedes neue Update
 
@@ -33,7 +33,7 @@ TODO vor Änderung, Build und Abschluss geprüft. Native Windows-/macOS-Integrat
 
 ## Weitere offene Hauptaufgaben
 
-- [ ] Vollständigen Chat-App-Quellcode samt Builds im Repository sichern.
+- [x] Vollständigen Chat-App-Quellcode und Buildskripte im Repository sichern; getestete portable Windows-/macOS-Intel-Builds als Actions-Artefakte (kein signierter Installer/Release).
 - [x] Echten Headless-Engine-Test für Dreieck → Objekt-ID → Drehung in GitHub Actions erfolgreich ausführen und Logs prüfen.
 - [ ] Freie KI-Konstruktionsaufträge robust und schemavalidiert in native VectorCraft-Aktionen überführen.
 - [x] Interaktive Nachbearbeitung und Erhalt manueller Änderungen nachweisen (geprüfte Dreieck-/Transformationsfolge; freie Konstruktionen bleiben separat offen).
@@ -239,3 +239,14 @@ Ausführungsrechte und Lizenzhinweise vorhanden. Gefrorene native Tests,
 Pfaderkennung, 468 echte öffentliche Modelle und HTTP 401 auf beiden Plattformen
 PASS. Audit gibt ergänzend die vollständigen gefrorenen Selbsttest-Logs aus,
 damit diese trotz ausgefallener lokaler Umgebung direkt gelesen werden können.
+
+
+## Verifizierter Paketabschluss
+
+TODO vor Abschluss erneut geprüft. Quelle `6ba2c2c1`: Paketlauf [39682760797](https://github.com/wibem1/vectorcraft/actions/runs/39682760797) **Windows und macOS Intel SUCCESS**. Echte gefrorene Windowed-App mit gebündelter Engine und CLI: jeweils ein nativer Start, Dreieck ID 2, drei geschlossene Anker, 30°, Folgebewegung (17,-11), Instanz-/Dokumenterhalt, echter OS-Startfehler, DPAPI bzw. isolierter Keychain, Modellwahl, redigierte Diagnose, Fixture-Kostenbuchung. Keine Engine-Mocks. Pro Paket ein nativer Test ausgeführt, keiner übersprungen. Zusätzliche echte öffentliche HTTPS-Prüfungen: 468 Modelle und HTTP 401 mit ungültigem Key; keine positive Live-Completion und 0 USD externe Modellkosten.
+
+Windows-Gesamtartefakte lokal heruntergeladen und SHA256 geprüft; alle drei archivierten Executables gegen Testmanifest bestätigt. Nach Verlust der lokalen Umgebung [unabhängiger Actions-Archivabgleich 39687971880](https://github.com/wibem1/vectorcraft/actions/runs/39687971880) erfolgreich: beide hochgeladenen ZIPs heruntergeladen, Binary-SHA256, macOS-Ausführungsrechte, Lizenzhinweise und Berichte geprüft. Dauerhafter [vollständiger JSON-Bericht](docs/test-results/2026-10-21-frozen-candidates.json). Keine Behauptung eines lokalen Mac-Gesamtarchiv-Downloads.
+
+Version bleibt **0.3.1-dev**, kein Tag, kein Release. Offen: gültiger positiver OpenRouter-Live-Auftrag, allgemeine freie Konstruktionen, garantierte providerseitige 0,10-€-Grenze, signierte Installer/Notarisierung, Apple Silicon und Ausführung auf einer sauberen Nutzerinstallation. Keine manuellen App-Tests angefordert. Cargo-Workspace-Gate lokal nicht ausführbar (Cargo fehlte; später lokale Umgebung offline); Rust unverändert. Echte native Builds und Tests in Actions sind erfolgreich.
+
+Vollständige gefrorene Selbsttest-Logs zusätzlich im erfolgreichen Audit 39688117575 / 119527252289 gelesen; Windows 17,731 s, Mac 53,169 s, jeweils PASS NATIVE und OK. Packaging-Lint 39688117539 / 119527252153 SUCCESS.

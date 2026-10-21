@@ -8,7 +8,7 @@ Standalone Python/Tk chat for the local VectorCraft control port (default 7979).
 
 Python 3 with Tkinter, the native VectorCraft application and `vectorcraft-cli` are required. Open `START-Windows.vbs` (without a console), `START-Mac.command`, or run `python vectorcraft_chat.py`. Chat probes the local control protocol and reuses a running instance, or starts VectorCraft itself with `--control 7979`. Construction remains disabled until the application and document are ready. If discovery fails, select the installed executable once; its path is saved. Existing documents are preserved. Use **VectorCraft starten / verbinden** to retry after a connection error.
 
-Set `VECTORCRAFT_APP` for a nonstandard native installation and `VECTORCRAFT_CLI` if the CLI cannot be found beside it or on PATH. These are source launchers; installable application packages remain open work. Automatic native startup verification is recorded in the [startup log](docs/STARTUP-2026-10-21.md).
+Set `VECTORCRAFT_APP` for a nonstandard native installation and `VECTORCRAFT_CLI` if the CLI cannot be found beside it or on PATH. These are source launchers. Tested portable Windows/macOS Intel candidates including Python/Tk, engine and CLI are linked below; signed installers remain open work. Automatic native startup verification is recorded in the [startup log](docs/STARTUP-2026-10-21.md).
 
 A first blank document is created only after native UI state confirms that no document is open and no file is being opened. Existing documents are preserved.
 
@@ -39,13 +39,13 @@ Application source `1df86ea1`: [Windows and macOS native integration PASS](https
 
 [Windows/macOS initial App layout PASS](https://github.com/wibem1/vectorcraft/actions/runs/39677833630): unobscured screenshots visually inspected with the production theme; key masked and main controls visible. These separate initial-state snapshots make no engine/provider calls. Combined native-flow captures are partly obscured by the native window. Positive provider completions in native tests are local HTTP fixtures; [live probe](https://github.com/wibem1/vectorcraft/actions/runs/39673176326) reports NOT_CONFIGURED because the repository has no test key. This is not a paid live completion success.
 
-Test hosts: Windows Server 2025 x64 with DX12 software rendering, macOS 15.7.9 Intel with Metal, Linux/Xvfb with OpenGL/Vulkan. Installable Chat packages, positive live completion, general constructions and a provider-enforced EUR cap remain open. The current macOS GUI package ships its CLI separately; install both for source use. See [platform log](docs/PLATFORMS-2026-10-21.md) and [complete evidence](docs/test-results/2026-10-21-native-platforms.json). No release; version remains 0.3.1-dev.
+Test hosts: Windows Server 2025 x64 with DX12 software rendering, macOS 15.7.9 Intel with Metal, Linux/Xvfb with OpenGL/Vulkan. Signed installers, positive live completion, general constructions and a provider-enforced EUR cap remain open. Tested portable Chat candidates are linked below. The current macOS GUI package ships its CLI separately; install both for source use. See [platform log](docs/PLATFORMS-2026-10-21.md) and [complete evidence](docs/test-results/2026-10-21-native-platforms.json). No release; version remains 0.3.1-dev.
 
-## Standalone candidate builds in progress
+## Verified standalone CI candidates
 
-The [frozen package workflow](../.github/workflows/vectorcraft-chat-packages.yml)
-bundles Python/Tk, Chat, the actual native engine and its CLI on Windows x64 and
-macOS Intel. Candidates must pass the real native suite from their own frozen
-process, automatic binary discovery, actual public OpenRouter HTTPS and HTTP 401
-before ZIP upload. No release or general installation approval is implied.
-Current build results and limitations: [package log](docs/PACKAGES-2026-10-21.md).
+The [frozen package workflow](https://github.com/wibem1/vectorcraft/actions/runs/39682760797) **passed on Windows x64 and macOS Intel**, source `6ba2c2c1`. Python/Tk, Chat, the actual native engine and its CLI are included. Both actual windowed executables ran the real native triangle/ID/30-degree/follow-up suite, secret store CRUD, model selection, diagnostic redaction and cost accounting. Each also passed automatic bundled binary discovery, the actual public OpenRouter HTTPS catalog (468 models) and actual HTTP 401 with an invalid key. Positive completions remain a local HTTP fixture; external model charge was zero.
+
+- [Windows candidate ZIP artifact](https://github.com/wibem1/vectorcraft/actions/runs/39682760797/artifacts/12385539120): extract the complete folder; entry is `VectorCraftChat.exe`.
+- [macOS Intel candidate ZIP artifact](https://github.com/wibem1/vectorcraft/actions/runs/39682760797/artifacts/12385928869): preserve the complete `VectorCraftChat.app`; engine and CLI are inside it.
+
+These are tested CI candidates, not a release or general installation approval. Windows is unsigned; macOS has an ad hoc signature verified in CI, without Developer ID/notarization. Actions artifacts expire; source/build scripts and [full verification JSON](docs/test-results/2026-10-21-frozen-candidates.json) remain in Git. The independent [uploaded archive audit](https://github.com/wibem1/vectorcraft/actions/runs/39687971880) also passed: every shipped executable matches its tested SHA256, macOS execute permissions and license notices are present. See the [step-by-step package log](docs/PACKAGES-2026-10-21.md). Version remains **0.3.1-dev**, no release.

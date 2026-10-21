@@ -51,3 +51,13 @@ Diese USD-Abrechnung ist **kein Eurobetrag**. Für ein hartes Eurobudget muss ei
 Den tatsächlich gestarteten Python-Chat-Client v0.1.3 samt OpenRouter-Request-Aufbau, Prompt-Generierung, Live-Zustandserfassung und Kostenprüfung im Repository lokalisieren. Danach zuerst einen reproduzierbaren Vorher/Nachher-Test für die Dreieckanfrage hinzufügen und genau diese Schicht korrigieren. Der Rust-MCP-Server stellt die notwendigen selektiven Lesewege bereits weitgehend bereit; eine komplette zweite Geometrie-Engine ist nicht erforderlich.
 
 Begleitend liegt unter `Tools/cost_audit.py` ein **offline** arbeitender Diagnoseauswerter, der unveränderte Anbieter-Tokendaten aggregiert. Er führt **keine** API-Aufrufe aus und behauptet keine bereits erzielte Einsparung.
+
+## Implementierungsstand 21.10.2026 – Selektions- und Budgetmodul
+
+- `Tools/ai_client_cost_policy.py`: reine Client-Hilfsfunktionen mit vier expliziten MCP-Werkzeugprofilen (draw/edit/visual/discover); keine ungeprüfte Weitergabe aller Befehle.
+- `compact_document`: überträgt nur explizit zugelassene Kurzfelder statt automatisch vollständige Objektbäume. Ist die Zusammenfassung zu groß, wird abgebrochen und eine gezieltere Abfrage verlangt.
+- `CostGate`: konservatives Vorabreservieren und Abrechnen in Euro mit vom Client **explizit bereitzustellendem** Wechselkurs und Kostendeckel. Bei unbekannten Preisen kein automatisches Senden.
+- `Tools/test_ai_client_cost_policy.py`: Tests für kleines Werkzeugset, bedarfsgerechte Bildwerkzeuge, große Dokumente und Budgetüberschreitung.
+- GitHub Actions `AI cost audit tests`: **erfolgreich** für den Stand dieses Branches.
+
+**Nicht integriert:** Die tatsächliche Python-Chat-Anwendung v0.1.3 ist weiterhin nicht in diesem Repository enthalten. Die Hilfsfunktionen werden von ihr deshalb noch nicht aufgerufen. Eine reale Einsparung, ein funktionierendes Dreieck und die Dokument-Synchronisierung im Chat sind noch nicht nachgewiesen. Der nächste Schritt muss an diesem Client erfolgen, nicht an einem Ersatz ohne Benutzersitzung.

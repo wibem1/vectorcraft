@@ -1,5 +1,9 @@
 # VectorCraft Chat – TODO
 
+## CI-Nachtrag zu VCCHAT.35–38 (22.10.2026)
+
+Der korrigierte Anwendungsstand `01e4af9d569030824399e48b9447f4103d1618e7` hat die Regressionen und Provider-Prüfungen [39724328678](https://github.com/wibem1/vectorcraft/actions/runs/39724328678) mit SUCCESS bestanden. Der Paketworkflow [39724328765](https://github.com/wibem1/vectorcraft/actions/runs/39724328765) meldet **Windows und macOS Intel SUCCESS**; Joblogs 119645071696 und 119645071711 gelesen, beide gefrorenen Kandidaten hochgeladen (Artefakte 12402891072 und 12402263480). Separate Headless- und native Plattformläufe 39724328635 / 39724328586 waren bei der Prüfung noch in_progress und werden ausdrücklich nicht als abgeschlossen gewertet. Neue freie KI-Komposition und positiver Live-OpenRouter-Auftrag weiterhin ungeprüft. **Keine Freigabe.**
+
 ## Fortsetzung VCCHAT.35–37 (22.10.2026)
 
 TODO vor Änderungen geprüft. Eine nachgewiesene Zielverwechslungsgefahr bei freien KI-Folgeaktionen wurde korrigiert: Eine explizite Objekt-ID in `object.move`, `object.rotate` oder `object.scale` darf nicht durch die ID des zuletzt erstellten Dreiecks ersetzt werden. Für Kompatibilität bleibt die bisherige Dreieck-Folgeaktion ohne explizite Ziel-ID erhalten. Die Weiterleitung wird in `uses_verified_triangle_target` isoliert und durch drei Regressionstests für explizite, implizite und andere Befehle geprüft.

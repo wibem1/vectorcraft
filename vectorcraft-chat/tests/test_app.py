@@ -110,4 +110,21 @@ class FollowupRotationTests(unittest.TestCase):
   self.assertEqual(inspection_selection(doc),[])
   self.assertFalse(document_has_object(doc,123))
 
+class ExplicitTargetRegressionTests(unittest.TestCase):
+ def test_explicit_target_is_not_redirected_to_last_triangle(self):
+  from vectorcraft_chat import uses_verified_triangle_target
+  action={'method':'engine.execute','params':{'command':'object.move','params':{'id':93,'dx':17,'dy':-11}}}
+  self.assertFalse(uses_verified_triangle_target(action,2))
+  action['params']['params']['id']=2
+  self.assertTrue(uses_verified_triangle_target(action,2))
+ def test_legacy_triangle_transform_without_id(self):
+  from vectorcraft_chat import uses_verified_triangle_target
+  action={'method':'engine.execute','params':{'command':'object.rotate','params':{'angle':30}}}
+  self.assertTrue(uses_verified_triangle_target(action,2))
+  self.assertFalse(uses_verified_triangle_target(action,None))
+ def test_other_commands_not_redirected(self):
+  from vectorcraft_chat import uses_verified_triangle_target
+  action={'method':'engine.execute','params':{'command':'path.create','params':{}}}
+  self.assertFalse(uses_verified_triangle_target(action,2))
+
 if __name__=="__main__":unittest.main()

@@ -1,5 +1,9 @@
 # VectorCraft Chat – TODO
 
+## VCCHAT.52 – Veröffentlichung am unveränderten aktuellen Anwendungsstand
+
+Archiv-Audit 39750572322 bestanden; Release-Erstellung am historischen Build-Commit meldet HTTP 403 trotz contents:write. Veröffentlichung markiert nun den aktuellen Publikationscommit. Vorher wird per GitHub-Compare zwingend geprüft, dass seit dem getesteten Build ausschließlich Publikationsworkflow, TODO und Versionshinweise geändert wurden. Binaries und Build-Quellstand bleiben unverändert. Keine Berechtigungen angehoben. Ein erneuter HTTP-Fehler wird als Publikationsblocker behandelt.
+
 ## VCCHAT.51 – Paketprüfung maßgeblich für Korrekturfreigabe
 
 TODO geprüft. Paketlauf 39749645269 ist auf Windows und macOS Intel tatsächlich SUCCESS, Regressionen 39749644906 auf allen drei Plattformen SUCCESS. Beide eingefrorenen Pakete führen dieselbe vollständige native Testsuite gegen ihre tatsächlichen Engine-/CLI-Binaries aus; neue multimodale Preisregression enthalten. Rust-Engine unverändert, exakter Cache-Hash und Binary-SHA256 werden geprüft. Die zusätzlichen Quellbuilds 39749645011/39749644996 kompilieren die unveränderte Engine nochmals und laufen weiter; kein Fehler bekannt, kein Erfolg behauptet. Um das geprüfte Korrekturpaket nicht auf redundante Neuübersetzungen warten zu lassen, ist die Publikation an die tatsächlichen Paket-/Regressionsergebnisse plus Archiv-Audit gebunden. Kein fehlgeschlagener Test umgangen und keine Simulation als Ersatz eingesetzt.

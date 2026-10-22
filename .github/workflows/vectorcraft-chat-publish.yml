@@ -99,13 +99,16 @@ jobs:
           script: |
             const fs = require('fs');
             const tag='vectorcraft-chat-v0.3.2-preview.1';
+            const {data:diff}=await github.rest.repos.compareCommitsWithBasehead({...context.repo,basehead:'3999cfb35844239d1fbf3eb6d65f4c789411ebcf...'+context.sha});
+            const metadata=new Set(['.github/workflows/vectorcraft-chat-publish.yml','vectorcraft-chat/TODO.md','vectorcraft-chat/docs/RELEASE-0.3.2-preview.1.md']);
+            if(diff.files.some(f=>!metadata.has(f.filename))) throw new Error('Publication commit changes tested application');
             let release;
             try {
               release=(await github.rest.repos.getReleaseByTag({...context.repo,tag})).data;
               if (!release.draft) { core.info('Release already published; leaving assets unchanged'); return; }
             } catch (e) { if(e.status!==404) throw e; }
             if (!release) release=(await github.rest.repos.createRelease({
-              ...context.repo, tag_name:tag, target_commitish:'3999cfb35844239d1fbf3eb6d65f4c789411ebcf',
+              ...context.repo, tag_name:tag, target_commitish:context.sha,
               name:'VectorCraft Chat 0.3.2 Preview 1 — Windows und macOS',
               body:fs.readFileSync('vectorcraft-chat/docs/RELEASE-0.3.2-preview.1.md','utf8'),
               draft:true, prerelease:true

@@ -31,6 +31,7 @@ jobs:
           if not key:
               path.write_text(json.dumps(report,indent=2))
               print('NOT_CONFIGURED: no repository OPENROUTER_API_KEY; no completion sent, no live success claimed')
+              raise RuntimeError('Release gate blocked: OPENROUTER_API_KEY is not configured')
           else:
               try:
                   catalog=app.model_catalog(key)

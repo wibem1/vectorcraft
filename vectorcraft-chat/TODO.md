@@ -1,5 +1,12 @@
 # VectorCraft Chat – TODO
 
+## VCCHAT.45 – präzise Aufträge und Mehrfachobjektprüfung (22.10.2026)
+
+TODO vor Änderung geprüft. Lokale Dreieck-/Dreh-Abkürzungen erkennen nur vollständig passende einfache Aufträge; Größen-, Farb-, Mehrfachobjekt- und explizite ID-Aufträge werden nicht mehr stillschweigend überschrieben. Allgemeine MCP-Pfade werden vor der Mutation validiert und danach über neue Objekt-ID, Ankerzahl und Geschlossenheit verifiziert. Native Suite erweitert um geschlossenen Vierpunktpfad und offenen Fünfpunktpfad, explizite Ziel-ID, echte unabhängige Zwischenbearbeitung und unveränderte andere Objekte. Die Suite läuft auch in beiden eingefrorenen Paketen.
+
+Budgeteingabe über 0,10 € gesperrt. Oberfläche benennt ausdrücklich eine konservative Vorabprüfung ohne providerseitige Euro-Garantie; der ältere TODO-Punkt zur garantierten Obergrenze ist damit keine erfüllte Garantie. Ein positiver Live-OpenRouter-Ende-zu-Ende-Test bleibt Freigabebedingung. Lokal 70 Tests entdeckt, 66 bestanden, 4 native/Live-Spezialtests nicht lokal ausgeführt. Cargo ist lokal nicht installiert; Workspace-Gate nicht ausgeführt, Rust unverändert. Aktuelle native CI-Ergebnisse ausstehend. Keine Veröffentlichung.
+
+
 ## VCCHAT.41–43 – explizite Objekt-IDs (22.10.2026)
 
 TODO vor Änderungen geprüft. Engine-Transformationen mit expliziter Objekt-ID werden jetzt über die verifizierende native MCP-Routine `transform_object` ausgeführt; dabei wird die ausdrücklich benannte Objekt-ID benutzt und vor und nach der Änderung geprüft. Die `id` wird nur als Zielangabe verwendet, nicht als Transformationsparameter. Ergänzende Regressionen für explizite Ziel-IDs, bisherige Dreieck-Kompatibilität und fremde Befehle wurden hinzugefügt. Quellstand `92b9b676`. Erneute CI-Prüfung läuft bzw. ist ausstehend, daher **keine neue Freigabe**. Weiter offen: freie allgemeine Konstruktionen, positiver Live-OpenRouter-Auftrag, garantierter providerseitiger 0,10-€-Deckel.

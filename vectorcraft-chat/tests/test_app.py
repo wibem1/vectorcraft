@@ -134,3 +134,23 @@ class ExplicitTargetRegressionTests(unittest.TestCase):
   self.assertFalse(uses_verified_triangle_target(action,2))
 
 if __name__=="__main__":unittest.main()
+
+class QualifiedRequestTests(unittest.TestCase):
+ def test_local_shortcuts_do_not_discard_constraints(self):
+  from vectorcraft_chat import detect_triangle, rotate_request_degrees
+  for request in ('Konstruiere ein Dreieck und einen Kreis', 'Zeichne ein rotes Dreieck', 'Erstelle drei Dreiecke', 'Konstruiere ein Dreieck mit Seiten 3, 4, 5', 'Mach kein Dreieck'):
+   self.assertFalse(detect_triangle(request), request)
+  for request in ('Drehe Objekt 93 um 30 Grad', 'Drehe das zweite Dreieck um 30 Grad', 'Drehe es um 30 Grad und verschiebe es', 'Drehe alle Objekte um 30 Grad'):
+   self.assertIsNone(rotate_request_degrees(request), request)
+ def test_budget_above_ten_cents_rejected(self):
+  from vectorcraft_chat import validated_options
+  with self.assertRaises(ValueError): validated_options('7979', '0.11')
+
+class PathValidationTests(unittest.TestCase):
+ def test_invalid_path_rejected_before_execution(self):
+  for params in ({'points':[[0,0],[1,float('nan')]]}, {'points':[[0,0],[1,1]],'closed':True}, {'points':[[0,0],[1,1]],'file':'x'}, {'points':[[0,0],[1,1]],'strokeWidth':-1}):
+   with self.assertRaises(ValueError):
+    parse_actions('<vc_actions>'+json.dumps({'actions':[{'method':'mcp.draw_path','params':params}]})+'</vc_actions>')
+ def test_general_path_accepted(self):
+  _, actions=parse_actions('<vc_actions>'+json.dumps({'actions':[{'method':'mcp.draw_path','params':{'points':[[0,0],[1,0],[1,1],[0,1]],'closed':True}}]})+'</vc_actions>')
+  self.assertEqual(len(actions),1)

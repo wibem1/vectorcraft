@@ -4,7 +4,7 @@ import json, os, queue, socket, threading, urllib.request, urllib.error, tkinter
 from tkinter import ttk, messagebox, scrolledtext, filedialog
 from pathlib import Path
 from datetime import datetime
-from engine_session import create_triangle, transform_object
+from engine_session import create_path, transform_object, validate_path
 from cost_control import admit, money
 from app_connection import ensure_connection, MissingApplication, command_ids, normalize_executable
 
@@ -24,7 +24,7 @@ SYSTEM = '''Du bist ein konstruktiver, deutschsprachiger Gesprächspartner und Z
 Der aktuelle VectorCraft-Dokumentzustand und die zulässigen Befehle werden mitgegeben. Erfinde keine Befehlsnamen und keine Parameter. Kommandos wie path.rect ergeben KEIN Dreieck: verwende Pfaderstellung mit echten Eckpunkten anhand vorhandener dokumentierter Befehle. Wenn keine passenden Befehle bekannt sind, erkläre die konkrete Einschränkung.
 Wenn der Nutzer eine einfache Figur wie ein Dreieck verlangt, konstruiere sie selbstständig. Die Antwort ist erst dann eine erledigte Konstruktion, wenn du ausführbare native Befehle vorschlägst. Bei bloßer Diskussion antworte normal. Bei Ausführungsauftrag gib eine kurze Erklärung und am Ende NUR einen korrekt abgeschlossenen Block dieses Formats aus:
 <vc_actions>{"actions":[{"method":"engine.execute","params":{"command":"EXAKTE_COMMAND_ID","params":{}}}]}</vc_actions>
-JSON muss syntaktisch valide sein (keine Kommentare, keine nachgestellten Kommas, keine Markdown-Codezäune). Maximal 12 Aktionen. Zulässige Methoden: engine.execute, document.inspect, ui.render, ui.inspect. Keine destruktiven, Reset-, Datei-Schreib- oder frei erfundenen Aktionen. Alle Änderungen müssen von der Person bestätigt werden.'''
+JSON muss syntaktisch valide sein (keine Kommentare, keine nachgestellten Kommas, keine Markdown-Codezäune). Maximal 12 Aktionen. Zulässige Methoden: engine.execute, document.inspect, ui.render, ui.inspect, mcp.draw_path. mcp.draw_path hat params {"points":[[x,y],...],"closed":true,"fill":"#RRGGBB","stroke":"#RRGGBB","strokeWidth":2}; 2 bis 512 Punkte, geschlossen mindestens 3. Folgeänderungen object.move/rotate/scale müssen in params.params die bestätigte ganzzahlige Objekt-ID als id enthalten. Jede Ziel-ID aus dem aktuellen Dokument verwenden; keine fremden Objekte auswählen. Keine destruktiven, Reset-, Datei-Schreib- oder frei erfundenen Aktionen. Alle Änderungen müssen von der Person bestätigt werden.'''
 
 # Secrets stay outside settings.json; on Windows they are DPAPI-encrypted per user.
 KEY_FILE = APP_DIR/'openrouter.key'
@@ -218,20 +218,25 @@ def triangle_points(cx=300,cy=260,radius=105):
     return [[round(cx+radius*math.cos(-math.pi/2+2*math.pi*i/3),3),round(cy+radius*math.sin(-math.pi/2+2*math.pi*i/3),3)] for i in range(3)]
 
 def detect_triangle(text):
-    t=text.casefold()
-    return ('dreieck' in t or 'triangle' in t) and any(w in t for w in ('konstrui','zeichne','erzeuge','erstelle','mach'))
+    """Only an unqualified single triangle may use the local default geometry."""
+    return re.fullmatch(
+        r'(?:bitte\s+)?(?:konstruiere|zeichne|erzeuge|erstelle|mache?|draw|create)'
+        r'\s+(?:mir\s+)?(?:ein(?:es)?|das|a)?\s*(?:gleichseitiges?\s+)?'
+        r'(?:dreieck|triangle)(?:\s+bitte)?[.!]?\s*', text.casefold().strip()) is not None
+
 
 def rotate_request_degrees(text):
-    """Only interpret an explicit request to rotate the previously drawn triangle."""
-    import re
-    t=text.casefold()
-    if not any(x in t for x in ('dreh', 'rotier')) or any(x in t for x in ('kreis','rechteck','ellipse','circle')):
+    """Match only a simple last-triangle reference, never an explicit other target."""
+    match = re.fullmatch(
+        r'(?:bitte\s+)?(?:drehe?|rotiere?)\s+'
+        r'(?:es|das(?:\s+(?:zuvor erzeugte|gleiche))?\s+dreieck|dieses\s+dreieck)'
+        r'\s+(?:um\s+)?([+-]?\d+(?:[.,]\d+)?)\s*(?:°|grad)'
+        r'(?:\s+bitte)?[.!]?\s*', text.casefold().strip())
+    if not match:
         return None
-    m=re.search(r'([+-]?\d+(?:[.,]\d+)?)\s*(?:°|grad)', t)
-    if not m:
+    angle=float(match.group(1).replace(',','.'))
+    if not -3600 <= angle <= 3600:
         return None
-    angle=float(m.group(1).replace(',','.'))
-    if not -3600 <= angle <= 3600: raise ValueError('Drehwinkel außerhalb des erlaubten Bereichs')
     return angle
 
 def parse_mcp_inspection(result):
@@ -296,6 +301,8 @@ def parse_actions(content):
         if item['method']=='engine.execute':
             if item['params'].get('command') not in ALLOWED_COMMANDS or not isinstance(item['params'].get('params',{}),dict):
                 raise ValueError('Nicht zugelassener Engine-Befehl')
+        if item['method']=='mcp.draw_path':
+            validate_path(item['params'])
         if item['method']=='ui.render' and set(item['params'])-{'scale','artboard','data'}:
             raise ValueError('Render-Dateizugriffe sind nicht zulässig')
     return (content[:start]+content[end+13:]).strip(),actions
@@ -334,8 +341,8 @@ def uses_verified_triangle_target(action, last_triangle_id):
 def validated_options(port, budget):
     number=int(port)
     amount=money(str(budget).replace(',','.'))
-    if not 1 <= number <= 65535 or amount<=0:
-        raise ValueError('Port 1–65535 und positives endliches Budget erforderlich')
+    if not 1 <= number <= 65535 or not 0 < amount <= money('0.10'):
+        raise ValueError('Port 1–65535 und Budget größer 0 bis höchstens 0,10 € erforderlich')
     return number,float(amount)
 
 def stored_spend():
@@ -369,7 +376,7 @@ class App:
         ttk.Button(settings,text='Key speichern',command=self.store_key).grid(row=1,column=3,sticky='e',padx=(3,0))
         ttk.Label(settings,text='Port').grid(row=2,column=0,sticky='w',pady=2)
         ttk.Entry(settings,textvariable=self.port,width=7).grid(row=2,column=1,sticky='w',pady=2)
-        ttk.Label(settings,text='Budget €').grid(row=2,column=2,sticky='e',padx=(8,4),pady=2)
+        ttk.Label(settings,text='Schätzbudget €').grid(row=2,column=2,sticky='e',padx=(8,4),pady=2)
         ttk.Entry(settings,textvariable=self.budget,width=7).grid(row=2,column=3,sticky='w',pady=2)
         self.connect_button=ttk.Button(settings,text='VectorCraft starten / verbinden',command=self.connect)
         self.connect_button.grid(row=3,column=0,columnspan=3,sticky='ew',pady=(3,4))
@@ -387,6 +394,7 @@ class App:
         root.after(100,self.pump)
         root.protocol('WM_DELETE_WINDOW',self.close)
         self.send_button.config(state='disabled')
+        self.write('system','Kosten: konservative Vorabprüfung bis 0,10 €; keine garantierte providerseitige Euro-Obergrenze.')
         if auto_connect:root.after(200,self.connect)
     def write(self,role,text):
         self.chat.configure(state='normal');self.chat.insert('end', {'user':'Du','assistant':'KI','system':'VectorCraft'}.get(role,role)+': ',role);self.chat.insert('end',text+'\n\n');self.chat.configure(state='disabled');self.chat.see('end')
@@ -498,7 +506,7 @@ class App:
         try:
             validated_port,budget=validated_options(self.port.get(),self.budget.get())
         except ValueError:
-            messagebox.showerror('Einstellungen','Bitte Port 1–65535 und ein positives endliches Kostenbudget eingeben.');return
+            messagebox.showerror('Einstellungen','Bitte Port 1–65535 und ein Schätzbudget größer 0 bis höchstens 0,10 € eingeben.');return
         local_request=detect_triangle(prompt) or rotate_request_degrees(prompt) is not None
         if not local_request and self.cost_error:
             self.write('system',self.cost_error);return
@@ -603,9 +611,11 @@ class App:
                     if not exe:raise FileNotFoundError('vectorcraft-cli fehlt')
                     with MCPClient(exe,port) as client:
                         if a['method']=='mcp.draw_path':
-                            self.last_triangle_id=create_triangle(client,a['params'])
-                            result={'id':self.last_triangle_id,'verified':True}
-                            event('triangle_created','verified_id='+str(self.last_triangle_id))
+                            target=create_path(client,a['params'])
+                            if len(a['params']['points']) == 3 and a['params'].get('closed') is True:
+                                self.last_triangle_id=target
+                            result={'id':target,'verified':True}
+                            event('path_created','verified_id='+str(target))
                         else:
                             target=a['params']['id']
                             result=transform_object(client,target,'object.rotate',{'angle':a['params']['angle']})

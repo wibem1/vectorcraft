@@ -103,6 +103,33 @@ class NativeStartupTests(unittest.TestCase):
                     self.assertFalse(gui.pending)
                     if prompt.startswith('Konstruiere'):target=gui.last_triangle_id
                     else:self.assertEqual(gui.last_triangle_id,target)
+                def inspect_node(ident):
+                    return app.control('engine.execute',{'command':'document.node','params':{'id':ident,'summary':True}},port)
+                triangle_before=inspect_node(target)
+                paths=[{'points':[[20,20],[80,20],[80,70],[20,70]],'closed':True,'fill':'#00aa44'},
+                       {'points':[[100,20],[120,40],[140,20],[160,40],[180,20]],'closed':False,'stroke':'#113355'}]
+                from engine_session import object_ids
+                before_ids=object_ids(app.control('document.inspect',{'depth':64},port))
+                _,gui.pending=app.parse_actions('<vc_actions>'+json.dumps({'actions':[{'method':'mcp.draw_path','params':p} for p in paths]})+'</vc_actions>')
+                gui.execute();wait(lambda:not gui.busy and gui.q.empty())
+                added=object_ids(app.control('document.inspect',{'depth':64},port))-before_ids
+                self.assertEqual(len(added),2)
+                self.assertEqual(inspect_node(target),triangle_before)
+                rectangle=next(i for i in added if inspect_node(i).get('anchors')==4)
+                line=next(i for i in added if inspect_node(i).get('anchors')==5)
+                line_before=inspect_node(line)
+                # Actual independent engine edit between chat turns, no simulation.
+                app.control('engine.execute',{'command':'select.set','params':{'ids':[rectangle]}},port)
+                app.control('engine.execute',{'command':'object.move','params':{'dx':7,'dy':9}},port)
+                manually_edited=inspect_node(rectangle)
+                gui.pending=[{'method':'engine.execute','params':{'command':'object.move','params':{'id':rectangle,'dx':13,'dy':-4}}}]
+                gui.execute();wait(lambda:not gui.busy and gui.q.empty())
+                edited=inspect_node(rectangle)
+                self.assertAlmostEqual(edited['bounds']['x']-manually_edited['bounds']['x'],13)
+                self.assertAlmostEqual(edited['bounds']['y']-manually_edited['bounds']['y'],-4)
+                self.assertEqual(inspect_node(line),line_before)
+                self.assertEqual(inspect_node(target),triangle_before)
+                self.assertEqual(gui.last_triangle_id,target)
                 actual=app.control('engine.execute',{'command':'document.node','params':{'id':target,'summary':True}},port)
                 self.assertAlmostEqual(actual['rotation'],30)
                 self.assertEqual(actual['anchors'],3);self.assertTrue(actual['closed'])
@@ -180,7 +207,7 @@ class NativeStartupTests(unittest.TestCase):
                 finally:
                     server.shutdown();server.server_close();thread.join(timeout=5)
                 self.assertIsNone(processes[0].poll(),'Native application must still be running')
-                report={'status':'PASS','platform':sys.platform,'transport':'actual native TCP and CLI MCP --connect','provider':'local HTTP fixture using actual OpenRouter request/response code; no paid live completion','native_launches':len(processes),'port':port,'triangle_id':target,'node':actual,'fixture_accounted_cost_usd':gui.session_spend_usd,'actual_provider_charge_usd':0,'provider_http_requests':len(requests),'os_rejected_invalid_executable':True,'key_store':'isolated actual macOS Keychain' if sys.platform=='darwin' else ('actual Windows DPAPI' if sys.platform=='win32' else 'restricted Linux file'),'secret_roundtrip_and_delete':True}
+                report={'status':'PASS','platform':sys.platform,'transport':'actual native TCP and CLI MCP --connect','provider':'local HTTP fixture using actual OpenRouter request/response code; no paid live completion','native_launches':len(processes),'port':port,'triangle_id':target,'node':actual,'fixture_accounted_cost_usd':gui.session_spend_usd,'actual_provider_charge_usd':0,'provider_http_requests':len(requests),'multi_object_paths_and_explicit_target':True,'manual_edit_preserved':True,'unrelated_objects_preserved':True,'os_rejected_invalid_executable':True,'key_store':'isolated actual macOS Keychain' if sys.platform=='darwin' else ('actual Windows DPAPI' if sys.platform=='win32' else 'restricted Linux file'),'secret_roundtrip_and_delete':True}
                 Path('native-startup-report.json').write_text(json.dumps(report,indent=2))
                 # Take the actual chat window for layout inspection; the X display is test-only.
                 capture_chat(root)

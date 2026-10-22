@@ -159,9 +159,11 @@ class NativeStartupTests(unittest.TestCase):
                         self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
                     def do_GET(self):
                         requests.append(('GET',self.path,None,self.headers.get('Authorization')))
-                        self.reply({'data':[{'id':model,'context_length':200000,'pricing':{'prompt':'0.0000001','completion':'0.0000002'}}]})
+                        self.reply({'data':[{'id':model,'context_length':200000,'architecture':{'input_modalities':['text','image'],'output_modalities':['text']},'pricing':{'prompt':'0.0000001','completion':'0.0000002','image':'0.001','audio':'0.001','input_audio_cache':'0.0001','web_search':'0.014','internal_reasoning':'0.0000002'}}]})
                     def do_POST(self):
                         payload=json.loads(self.rfile.read(int(self.headers['Content-Length'])))
+                        if payload.get('plugins') != [{'id':'web','enabled':False}]:
+                            self.send_error(400,'Web plugin must be disabled');return
                         requests.append(('POST',self.path,payload,self.headers.get('Authorization')))
                         self.reply({'choices':[{'message':{'content':answer}}],'usage':{'cost':0.0002,'total_tokens':40}})
                 server=http.server.ThreadingHTTPServer(('127.0.0.1',0),Provider)
@@ -208,7 +210,7 @@ class NativeStartupTests(unittest.TestCase):
                 finally:
                     server.shutdown();server.server_close();thread.join(timeout=5)
                 self.assertIsNone(processes[0].poll(),'Native application must still be running')
-                report={'status':'PASS','platform':sys.platform,'transport':'actual native TCP and CLI MCP --connect','provider':'local HTTP fixture using actual OpenRouter request/response code; no paid live completion','native_launches':len(processes),'port':port,'triangle_id':target,'node':actual,'fixture_accounted_cost_usd':gui.session_spend_usd,'actual_provider_charge_usd':0,'provider_http_requests':len(requests),'multi_object_paths_and_explicit_target':True,'manual_edit_preserved':True,'unrelated_objects_preserved':True,'os_rejected_invalid_executable':True,'key_store':'isolated actual macOS Keychain' if sys.platform=='darwin' else ('actual Windows DPAPI' if sys.platform=='win32' else 'restricted Linux file'),'secret_roundtrip_and_delete':True}
+                report={'status':'PASS','platform':sys.platform,'transport':'actual native TCP and CLI MCP --connect','provider':'local HTTP fixture using actual OpenRouter request/response code; no paid live completion','native_launches':len(processes),'port':port,'triangle_id':target,'node':actual,'fixture_accounted_cost_usd':gui.session_spend_usd,'actual_provider_charge_usd':0,'provider_http_requests':len(requests),'text_request_with_nonzero_image_rate':True,'multi_object_paths_and_explicit_target':True,'manual_edit_preserved':True,'unrelated_objects_preserved':True,'os_rejected_invalid_executable':True,'key_store':'isolated actual macOS Keychain' if sys.platform=='darwin' else ('actual Windows DPAPI' if sys.platform=='win32' else 'restricted Linux file'),'secret_roundtrip_and_delete':True}
                 Path('native-startup-report.json').write_text(json.dumps(report,indent=2))
                 # Take the actual chat window for layout inspection; the X display is test-only.
                 capture_chat(root)

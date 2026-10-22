@@ -24,6 +24,7 @@ class ProviderTests(unittest.TestCase):
             self.assertEqual(payload['model'],'chosen/model')
             self.assertEqual(payload['max_tokens'],123)
             self.assertEqual(payload['usage'],{'include':True})
+            self.assertEqual(payload['plugins'],[{'id':'web','enabled':False}])
             return Response({'choices':[{'message':{'content':'Hallo'}}],'usage':{'cost':0.001}})
         with patch('urllib.request.urlopen',side_effect=request):
             text,usage=app.api_chat('dummy-test-key','chosen/model',[{'role':'user','content':'Hallo'}],123)
@@ -142,3 +143,45 @@ class DisconnectedProviderGuardTests(unittest.TestCase):
                     self.assertEqual(gui.session_spend_usd,0)
                     self.assertEqual(gui.command_ids,set())
                     self.assertTrue(all(call.args[0]!=app.COSTS for call in save.call_args_list))
+
+
+class MultimodalPriceRegressionTests(unittest.TestCase):
+    def model(self, output=None):
+        return {'context_length':200000,'architecture':{'input_modalities':['text','image'], 'output_modalities': output or ['text']},'pricing':{'prompt':'0.0000001','completion':'0.0000002','image':'0.001'}}
+
+    def test_unused_image_rate_does_not_block_text(self):
+        model=self.model()
+        messages=[{'role':'user','content':'Zeichne einen Kreis'}]
+        plain=dict(model,pricing={k:v for k,v in model['pricing'].items() if k!='image'})
+        self.assertEqual(estimate(model,messages,2000),estimate(plain,messages,2000))
+        self.assertGreater(admit(model,messages,2000,0,0.1,0.92),0)
+
+    def test_image_output_or_unknown_output_remains_blocked(self):
+        for output in (['text','image'],['image'],None):
+            model=self.model();model['architecture']['output_modalities']=output
+            with self.assertRaises(ValueError):estimate(model,[{'content':'Hallo'}],2000)
+
+    def test_image_input_unknown_fee_and_invalid_rate_remain_blocked(self):
+        with self.assertRaises(ValueError):estimate(self.model(),[{'content':[{'type':'image_url','image_url':{'url':'x'}}]}],2000)
+        for key,value in (('image','nan'),('image','-1'),('unexpected_fee','0.001')):
+            model=self.model();model['pricing'][key]=value
+            with self.assertRaises(ValueError):estimate(model,[{'content':'Hallo'}],2000)
+
+    def test_text_cost_limit_still_enforced(self):
+        model=self.model();model['pricing']['completion']='1'
+        with self.assertRaisesRegex(ValueError,'überschritten'):
+            admit(model,[{'content':'Hallo'}],2000,0,0.1,0.92)
+
+    def test_actual_reported_gemini_catalog_all_price_fields(self):
+        model=self.model()
+        model['id']='google/gemini-3.8-flash'
+        model['pricing']={'prompt':'0.000000825','completion':'0.000004125','image':'0.000000825','audio':'0.000000825','input_audio_cache':'0.0000000825','web_search':'0.014','internal_reasoning':'0.000004125','input_cache_read':'0.0000000825','input_cache_write':'0.0000000416666666666667'}
+        self.assertGreater(admit(model,[{'content':'Zeichne einen Kreis'}],2000,0,0.1,0.92),0)
+        model['id']+=':online'
+        with self.assertRaises(ValueError): estimate(model,[{'content':'Hallo'}],2000)
+
+    def test_reasoning_is_reserved(self):
+        model=self.model();messages=[{'content':'Hallo'}]
+        before=estimate(model,messages,2000)
+        model['pricing']['internal_reasoning']='0.00001'
+        self.assertGreater(estimate(model,messages,2000),before)

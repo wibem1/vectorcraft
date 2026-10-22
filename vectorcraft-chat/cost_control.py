@@ -15,13 +15,30 @@ def money(value):
 
 
 def estimate(model, messages, output_tokens):
+    # Image input rates are irrelevant only when both actual input and possible
+    # output are confirmed text. Never waive unknown fees or image generation.
+    if not all(isinstance(m.get('content'), str) for m in messages):
+        raise ValueError('Kostenprüfung unterstützt ausschließlich Text')
+    text_output = model.get('architecture', {}).get('output_modalities') == ['text']
     pricing = model.get('pricing', {})
     if not all(key in pricing for key in ('prompt', 'completion')):
         raise ValueError('Keine bestätigten Modellpreise: Anfrage gesperrt')
     prompt, completion = money(pricing['prompt']), money(pricing['completion'])
+    # Reserve a separate full output allowance for internal reasoning as well.
+    # Deliberately conservative even when the provider includes it in completion.
+    completion += money(pricing.get('internal_reasoning', 0))
+    if ':online' in model.get('id', ''):
+        raise ValueError('Online-Modelle werden für lokale Konstruktionen nicht unterstützt')
     for key, value in pricing.items():
+        # Validate even unused rates, so invalid catalog values still fail closed.
+        amount = money(value)
+        if key in ('image', 'audio', 'input_audio_cache') and text_output:
+            continue
+        # api_chat explicitly disables web plugin and never requests server tools.
+        if key == 'web_search':
+            continue
         # Cache discounts cannot increase the uncached estimate. All other fees fail closed.
-        if key not in ('prompt', 'completion', 'request', 'input_cache_read', 'input_cache_write') and money(value):
+        if key not in ('prompt', 'completion', 'request', 'input_cache_read', 'input_cache_write', 'internal_reasoning') and amount:
             raise ValueError('Zusatzpreis nicht unterstützt: '+key)
     if money(pricing.get('input_cache_write', 0)) > prompt:
         raise ValueError('Cache-Aufschlag nicht unterstützt')

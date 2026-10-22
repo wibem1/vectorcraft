@@ -13,7 +13,7 @@ SETTINGS = APP_DIR/'settings.json'
 HISTORY = APP_DIR/'history.json'
 COSTS = APP_DIR/'costs.json'
 MAX_OUTPUT = 10000
-APP_VERSION = "0.3.1-dev"
+APP_VERSION = "0.3.2-preview.1"
 DIAG_EVENTS = []
 
 def event(kind, info):
@@ -134,7 +134,7 @@ def ensure_document(port):
 
 def api_chat(api_key, model, messages, max_tokens=1400):
     if not api_key.strip():raise ValueError('Kein OpenRouter-Key vorhanden. Bitte erneut eintragen und speichern.')
-    payload={'model':model,'messages':messages,'temperature':0.5,'max_tokens':max_tokens,'usage':{'include':True}}
+    payload={'model':model,'messages':messages,'temperature':0.5,'max_tokens':max_tokens,'usage':{'include':True},'plugins':[{'id':'web','enabled':False}]}
     req=urllib.request.Request('https://openrouter.ai/api/v1/chat/completions',data=json.dumps(payload).encode(),headers={'Authorization':'Bearer '+api_key,'Content-Type':'application/json','HTTP-Referer':'http://localhost','X-Title':'VectorCraft Chat'},method='POST')
     try:
         with urllib.request.urlopen(req,timeout=100) as r: data=json.load(r)
@@ -566,7 +566,7 @@ class App:
                 raise ConnectionError('VectorCraft-Dokument oder Befehle nicht bestätigt; keine kostenpflichtige Modellanfrage gesendet. '+safe_error(e)) from e
             history=self.messages[-8:]
             msgs=[{'role':'system','content':SYSTEM+'\n'+context}]+history
-            event('api_request',f'model={chosen_model}, messages={len(msgs)}, context_chars={len(context)}')
+            event('api_preflight',f'model={chosen_model}, messages={len(msgs)}, context_chars={len(context)}')
             model=chosen_model
             catalog=model_catalog(key)
             if model not in catalog:raise ValueError('Modell nicht im aktuellen OpenRouter-Katalog')
@@ -575,6 +575,7 @@ class App:
             save_json(COSTS,{'spent_usd':self.session_spend_usd,'pending_reservation_usd':reserve})
             event('cost_admission',f'model={model}; reserve_usd={reserve:.6f}')
             # On timeout/transport error keep the reservation: the provider may have billed.
+            event('api_request',f'model={model}; max_tokens=2000')
             content,usage=api_chat(key,model,msgs,max_tokens=2000)
             if usage.get('cost') is not None:
                 charged=float(money(usage['cost']))

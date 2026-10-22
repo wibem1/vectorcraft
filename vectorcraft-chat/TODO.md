@@ -1,5 +1,13 @@
 # VectorCraft Chat – TODO
 
+## VCCHAT.47 – nachgewiesener Freigabeblocker
+
+Der tatsächlich neu gestartete [Live-Lauf 39726464472](https://github.com/wibem1/vectorcraft/actions/runs/39726464472), Job 119651382410, ist mit `NOT_CONFIGURED` fehlgeschlagen: Repository-Secret `OPENROUTER_API_KEY` fehlt. Vollständiges Protokoll gelesen; 0 Completion-Anfragen. Dieser fehlende Pflichtnachweis wird jetzt als Fehler statt als grüner Job markiert. Ein gültiger Testschlüssel muss über die GitHub-Secret-Verwaltung verfügbar gemacht werden; keine Schlüssel im Chat, Repository oder Diagnoseprotokoll speichern. Der bisherige Live-Probeauftrag verlangt nur „OK“ und ersetzt auch mit Schlüssel noch keinen vollständigen natürlichen Konstruktionsauftrag über die native Engine.
+
+Anwendungsstand `a38c87aa17b0f674cfc0970eb125920cde3f8aa9`: lokal 67 Tests bestanden, 4 Spezialtests übersprungen. Echte Actions-Läufe ausgelöst: [Headless 39726542201](https://github.com/wibem1/vectorcraft/actions/runs/39726542201), [native Windows/macOS 39726542081](https://github.com/wibem1/vectorcraft/actions/runs/39726542081), [Pakete 39726542072](https://github.com/wibem1/vectorcraft/actions/runs/39726542072), [Regressionen 39726542048](https://github.com/wibem1/vectorcraft/actions/runs/39726542048). Zum dokumentierten Abruf noch laufend/wartend; ausdrücklich kein bestandener Plattformnachweis für diesen Stand. Historischer Headless-Lauf 39725452448 für 92b9b676 ist SUCCESS, darf nicht auf diese Änderungen übertragen werden.
+
+[Maschinenlesbarer Nachweis](docs/test-results/2026-10-22-release-blocker.json). Allgemeine freie Konstruktionen und komplexe Live-Aufträge bleiben ungeprüft. Keine neue Version, kein Release, keine freigegebenen Downloadpakete. Kostenobergrenze bleibt eine konservative lokale Schätzung; keine providerseitige Garantie. Keine manuellen App-Tests angefordert.
+
 ## VCCHAT.45–46 – präzise Aufträge und Mehrfachobjektprüfung (22.10.2026)
 
 TODO vor Änderung geprüft. Lokale Dreieck-/Dreh-Abkürzungen erkennen nur vollständig passende einfache Aufträge; Größen-, Farb-, Mehrfachobjekt- und explizite ID-Aufträge werden nicht mehr stillschweigend überschrieben. Allgemeine MCP-Pfade werden vor der Mutation validiert und danach über neue Objekt-ID, Ankerzahl und Geschlossenheit verifiziert. Native Suite erweitert um geschlossenen Vierpunktpfad und offenen Fünfpunktpfad, explizite Ziel-ID, echte unabhängige Zwischenbearbeitung und unveränderte andere Objekte. Die Suite läuft auch in beiden eingefrorenen Paketen.

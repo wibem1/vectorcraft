@@ -1,0 +1,57 @@
+{
+  "checked_at": "2026-10-22T05:11:50Z",
+  "source_commit": "a38c87aa17b0f674cfc0970eb125920cde3f8aa9",
+  "release_authorized": false,
+  "local_tests": {
+    "discovered": 71,
+    "passed": 67,
+    "skipped": 4,
+    "details": "Native GUI/CLI and actual HTTP tests are separate CI jobs; no simulation substituted.",
+    "cargo_gate": "not run: cargo unavailable"
+  },
+  "live_openrouter": {
+    "run": 39726464472,
+    "job": 119651382410,
+    "conclusion": "failure",
+    "status": "NOT_CONFIGURED",
+    "requests": 0,
+    "reason": "Repository secret OPENROUTER_API_KEY is not configured",
+    "evidence": [
+      "2026-10-22T05:10:18.0424572Z RuntimeError: Release gate blocked: OPENROUTER_API_KEY is not configured",
+      "2026-10-22T05:10:18.0425069Z NOT_CONFIGURED: no repository OPENROUTER_API_KEY; no completion sent, no live success claimed",
+      "2026-10-22T05:10:18.0633934Z ##[error]Process completed with exit code 1."
+    ]
+  },
+  "current_workflows": [
+    {
+      "run": 39726542201,
+      "name": "VectorCraft Chat real headless engine",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "run": 39726542081,
+      "name": "VectorCraft Chat native Windows and macOS integration",
+      "status": "queued",
+      "conclusion": null
+    },
+    {
+      "run": 39726542072,
+      "name": "VectorCraft Chat frozen candidates with real engine",
+      "status": "pending",
+      "conclusion": null
+    },
+    {
+      "run": 39726542048,
+      "name": "VectorCraft Chat regression and provider checks",
+      "status": "queued",
+      "conclusion": null
+    }
+  ],
+  "remaining": [
+    "Positive live provider-to-native-engine construction has not been verified; existing live probe only requests OK, not a complete construction.",
+    "Current Windows/macOS native and frozen-package runs not completed at snapshot.",
+    "General natural-language reliability and complex constructions are not certified by fixtures.",
+    "A provider-enforced EUR charge cap is not implemented; UI explicitly states estimate only."
+  ]
+}

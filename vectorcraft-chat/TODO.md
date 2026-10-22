@@ -1,5 +1,11 @@
 # VectorCraft Chat – TODO
 
+## Fortsetzung VCCHAT.35–37 (22.10.2026)
+
+TODO vor Änderungen geprüft. Eine nachgewiesene Zielverwechslungsgefahr bei freien KI-Folgeaktionen wurde korrigiert: Eine explizite Objekt-ID in `object.move`, `object.rotate` oder `object.scale` darf nicht durch die ID des zuletzt erstellten Dreiecks ersetzt werden. Für Kompatibilität bleibt die bisherige Dreieck-Folgeaktion ohne explizite Ziel-ID erhalten. Die Weiterleitung wird in `uses_verified_triangle_target` isoliert und durch drei Regressionstests für explizite, implizite und andere Befehle geprüft.
+
+Die Änderungen sind zunächst **nicht als native Integration bestanden** zu werten, bevor aktuelle Actions-Logs vorliegen. Allgemeine freie Konstruktionen, positiver Live-OpenRouter-Auftrag und providerseitig garantierter 0,10-€-Deckel bleiben offen. Keine Release-Freigabe.
+
 ## Aktueller Abschluss: echte Engine und eigenständige Testpakete
 
 TODO vor Änderung, Build und Abschluss geprüft. Headless und native Quelltests erneut erfolgreich; zusätzlich eigenständige Windows-/macOS-Intel-Testpakete samt echter Engine/CLI, gefrorener nativer Testsuite, HTTPS, Schlüsselablage und Archivabgleich erfolgreich. Keine Veröffentlichung, Version 0.3.1-dev. Positiver Live-Auftrag und garantierter Provider-Kostendeckel bleiben offen. Details: [Paketprotokoll](docs/PACKAGES-2026-10-21.md). Die folgenden älteren Abschnitte halten den jeweiligen historischen Zwischenstand fest.

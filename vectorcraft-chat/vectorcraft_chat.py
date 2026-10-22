@@ -318,6 +318,19 @@ def select_commands(items,request,limit=22):
     scored.sort(key=lambda x:(-x[0],x[1]))
     return [x[2] for x in scored[:limit]]
 
+def uses_verified_triangle_target(action, last_triangle_id):
+    """Never redirect an explicitly targeted edit to an unrelated triangle."""
+    if last_triangle_id is None or action.get('method') != 'engine.execute':
+        return False
+    outer = action.get('params', {})
+    if outer.get('command') not in ('object.move', 'object.rotate', 'object.scale'):
+        return False
+    inner = outer.get('params', {})
+    if not isinstance(inner, dict):
+        return False
+    explicit_id = inner.get('id')
+    return explicit_id is None or explicit_id == last_triangle_id
+
 def validated_options(port, budget):
     number=int(port)
     amount=money(str(budget).replace(',','.'))
@@ -597,7 +610,7 @@ class App:
                             target=a['params']['id']
                             result=transform_object(client,target,'object.rotate',{'angle':a['params']['angle']})
                             event('triangle_rotated','verified_id='+str(target)+'; angle='+str(a['params']['angle']))
-                elif a['method']=='engine.execute' and a['params']['command'] in ('object.move','object.rotate','object.scale') and self.last_triangle_id is not None and not ('id' in a['params'].get('params',{}) and a['params']['params']['id'] != self.last_triangle_id):
+                elif uses_verified_triangle_target(a, self.last_triangle_id):
                     exe=mcp_executable()
                     if not exe:raise FileNotFoundError('vectorcraft-cli fehlt')
                     with MCPClient(exe,port) as client:

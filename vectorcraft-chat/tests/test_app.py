@@ -128,7 +128,7 @@ class ExplicitTargetRegressionTests(unittest.TestCase):
   self.assertFalse(uses_verified_triangle_target(action,2))
   action['params']['params']['id']=2
   self.assertTrue(uses_verified_triangle_target(action,2))
-  def test_other_commands_not_redirected(self):
+ def test_other_commands_not_redirected(self):
   from vectorcraft_chat import uses_verified_triangle_target
   action={'method':'engine.execute','params':{'command':'path.create','params':{}}}
   self.assertFalse(uses_verified_triangle_target(action,2))

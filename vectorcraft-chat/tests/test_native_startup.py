@@ -150,6 +150,7 @@ class NativeStartupTests(unittest.TestCase):
                 requests=[]
                 model='fixture/native-integration'
                 answer='Verschieben <vc_actions>{"actions":[{"method":"engine.execute","params":{"command":"object.move","params":{"dx":17,"dy":-11}}}]}</vc_actions>'
+                answer=answer.replace('\"dx\":','\"id\":'+str(target)+',\"dx\":')
                 class Provider(http.server.BaseHTTPRequestHandler):
                     def log_message(self,*args):pass
                     def reply(self,value):

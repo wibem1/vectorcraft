@@ -4,7 +4,7 @@ class Tests(unittest.TestCase):
  def test_chat(self):
   self.assertEqual(parse_actions('Gute Idee.'),('Gute Idee.',[]))
  def test_actions(self):
-  out,a=parse_actions('Text <vc_actions>{"actions":[{"method":"engine.execute","params":{"command":"object.move","params":{}}}]}</vc_actions>')
+  out,a=parse_actions('Text <vc_actions>{"actions":[{"method":"engine.execute","params":{"command":"object.move","params":{"id":2}}}]}</vc_actions>')
   self.assertEqual((out,a[0]['params']['command']),('Text','object.move'))
  def test_reject(self):
   with self.assertRaises(ValueError):parse_actions('<vc_actions>{"actions":[{"method":"app.quit"}]}</vc_actions>')
@@ -154,3 +154,9 @@ class PathValidationTests(unittest.TestCase):
  def test_general_path_accepted(self):
   _, actions=parse_actions('<vc_actions>'+json.dumps({'actions':[{'method':'mcp.draw_path','params':{'points':[[0,0],[1,0],[1,1],[0,1]],'closed':True}}]})+'</vc_actions>')
   self.assertEqual(len(actions),1)
+
+class ModelTargetTests(unittest.TestCase):
+ def test_missing_or_noninteger_target_rejected(self):
+  for params in ({'dx':1}, {'id':True,'dx':1}, {'id':'93','dx':1}):
+   with self.assertRaisesRegex(ValueError,'Objekt-ID'):
+    parse_actions('<vc_actions>'+json.dumps({'actions':[{'method':'engine.execute','params':{'command':'object.move','params':params}}]})+'</vc_actions>')

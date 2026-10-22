@@ -301,6 +301,9 @@ def parse_actions(content):
         if item['method']=='engine.execute':
             if item['params'].get('command') not in ALLOWED_COMMANDS or not isinstance(item['params'].get('params',{}),dict):
                 raise ValueError('Nicht zugelassener Engine-Befehl')
+            if item['params']['command'] in ('object.move','object.rotate','object.scale'):
+                if type(item['params'].get('params',{}).get('id')) is not int:
+                    raise ValueError('Folgeänderung benötigt eine ausdrückliche ganzzahlige Objekt-ID')
         if item['method']=='mcp.draw_path':
             validate_path(item['params'])
         if item['method']=='ui.render' and set(item['params'])-{'scale','artboard','data'}:

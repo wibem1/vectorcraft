@@ -58,6 +58,7 @@ class ActualEngineUITests(unittest.TestCase):
                     gui.refresh_models();wait();self.assertEqual(gui.models,['test/model'])
                     gui.model.set('test/model')
                     answer='Verschieben <vc_actions>{"actions":[{"method":"engine.execute","params":{"command":"object.move","params":{"dx":10,"dy":5}}}]}</vc_actions>'
+                    answer=answer.replace('\"dx\":','\"id\":'+str(target)+',\"dx\":')
                     before=node(client,target)['bounds']
                     with patch.object(app,'api_chat',return_value=(answer,{'cost':0.0002,'total_tokens':40})) as http:
                         send('Verschiebe das Dreieck etwas nach rechts')

@@ -1,5 +1,9 @@
 # VectorCraft Chat – TODO
 
+## VCCHAT.41–43 – explizite Objekt-IDs (22.10.2026)
+
+TODO vor Änderungen geprüft. Engine-Transformationen mit expliziter Objekt-ID werden jetzt über die verifizierende native MCP-Routine `transform_object` ausgeführt; dabei wird die ausdrücklich benannte Objekt-ID benutzt und vor und nach der Änderung geprüft. Die `id` wird nur als Zielangabe verwendet, nicht als Transformationsparameter. Ergänzende Regressionen für explizite Ziel-IDs, bisherige Dreieck-Kompatibilität und fremde Befehle wurden hinzugefügt. Quellstand `92b9b676`. Erneute CI-Prüfung läuft bzw. ist ausstehend, daher **keine neue Freigabe**. Weiter offen: freie allgemeine Konstruktionen, positiver Live-OpenRouter-Auftrag, garantierter providerseitiger 0,10-€-Deckel.
+
 ## CI-Nachtrag zu VCCHAT.35–38 (22.10.2026)
 
 Der korrigierte Anwendungsstand `01e4af9d569030824399e48b9447f4103d1618e7` hat die Regressionen und Provider-Prüfungen [39724328678](https://github.com/wibem1/vectorcraft/actions/runs/39724328678) mit SUCCESS bestanden. Der Paketworkflow [39724328765](https://github.com/wibem1/vectorcraft/actions/runs/39724328765) meldet **Windows und macOS Intel SUCCESS**; Joblogs 119645071696 und 119645071711 gelesen, beide gefrorenen Kandidaten hochgeladen (Artefakte 12402891072 und 12402263480). Separate Headless- und native Plattformläufe 39724328635 / 39724328586 waren bei der Prüfung noch in_progress und werden ausdrücklich nicht als abgeschlossen gewertet. Neue freie KI-Komposition und positiver Live-OpenRouter-Auftrag weiterhin ungeprüft. **Keine Freigabe.**

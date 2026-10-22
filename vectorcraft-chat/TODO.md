@@ -1,5 +1,11 @@
 # VectorCraft Chat – TODO
 
+## VCCHAT.48 – ausdrückliche Nutzerfreigabe am 22.10.2026
+
+TODO vor Veröffentlichung geprüft. Der Projektinhaber hat nach Mitteilung des fehlenden OpenRouter-Live-Nachweises ausdrücklich „freigeben!“ angeordnet. Die getesteten unveränderten Pakete des Quellstands a38c87aa17b0f674cfc0970eb125920cde3f8aa9 werden deshalb als 0.3.1 Preview 1 veröffentlicht. Native Windows-/macOS-Intel-Tests, Paketlauf, Headless und Regressionen sind inzwischen SUCCESS. Der Publikationsworkflow prüft alle vier exakten Quellstands-Läufe und die Binär-Hashes, nativen Berichte und Mehrfachobjekt-/Zwischenbearbeitungsnachweise der Archive vor Veröffentlichung erneut. Keine Engine-Simulation.
+
+Die fehlende Live-Completion wird damit nicht zu einem Testerfolg umgedeutet. Keine garantierte Euro-Kostengrenze, kein Apple-Silicon-Nativnachweis, keine Signierung/Notarisierung. Interne App-Anzeige bleibt bei 0.3.1-dev, um genau die geprüften Binaries auszuliefern. Siehe [Versionshinweise](docs/RELEASE-0.3.1-preview.1.md). Frühere Freigabesperren sind historisch; die Nutzerfreigabe gilt ausschließlich für diese Vorabversion. Veröffentlichungserfolg erst nach bestätigtem Actions-Lauf.
+
 ## VCCHAT.47 – nachgewiesener Freigabeblocker
 
 Der tatsächlich neu gestartete [Live-Lauf 39726464472](https://github.com/wibem1/vectorcraft/actions/runs/39726464472), Job 119651382410, ist mit `NOT_CONFIGURED` fehlgeschlagen: Repository-Secret `OPENROUTER_API_KEY` fehlt. Vollständiges Protokoll gelesen; 0 Completion-Anfragen. Dieser fehlende Pflichtnachweis wird jetzt als Fehler statt als grüner Job markiert. Ein gültiger Testschlüssel muss über die GitHub-Secret-Verwaltung verfügbar gemacht werden; keine Schlüssel im Chat, Repository oder Diagnoseprotokoll speichern. Der bisherige Live-Probeauftrag verlangt nur „OK“ und ersetzt auch mit Schlüssel noch keinen vollständigen natürlichen Konstruktionsauftrag über die native Engine.

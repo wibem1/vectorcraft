@@ -1,0 +1,109 @@
+name: VectorCraft Chat publish approved preview
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/vectorcraft-chat-publish.yml'
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: vectorcraft-chat-approved-preview
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require completed successful source test runs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            for (const run_id of [39726542072,39726542081,39726542048,39726542201]) {
+              const {data:r} = await github.rest.actions.getWorkflowRun({...context.repo,run_id});
+              if (r.head_sha !== "a38c87aa17b0f674cfc0970eb125920cde3f8aa9" || r.conclusion !== "success") throw new Error(`Unverified source run ${run_id}`);
+            }
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: '39726542072'
+          path: audit
+      - name: Verify actual uploaded ZIP binaries and frozen reports
+        shell: python
+        run: |
+          import hashlib, json, pathlib, zipfile
+          report = {'run_id': 39726542072, 'source_sha': 'a38c87aa17b0f674cfc0970eb125920cde3f8aa9', 'release': False, 'status': 'PASS', 'platforms': {}}
+          import shutil
+          output=pathlib.Path('release-assets'); output.mkdir(exist_ok=True)
+          for platform in ('windows-latest', 'macos-15-intel'):
+              evidence = pathlib.Path('audit')/('packaged-evidence-'+platform)
+              reports = {name: json.loads((evidence/(name+'.json')).read_text()) for name in ('packaged-check', 'packaged-network', 'native-startup-report', 'bundle-manifest')}
+              frozen, network, native, manifest = (reports[name] for name in ('packaged-check', 'packaged-network', 'native-startup-report', 'bundle-manifest'))
+              assert frozen['status'] == network['status'] == native['status'] == 'PASS'
+              assert frozen['frozen'] and frozen['tests_run'] == 1 and frozen['skipped'] == 0
+              assert manifest['source_sha'] == report['source_sha'] and not manifest['release']
+              assert network['public_models'] > 10 and network['unauthorized_http'] == 401
+              assert network['automatic_bundled_discovery'] and not network['valid_key_used'] and not network['positive_live_completion']
+              assert native['native_launches'] == 1 and native['secret_roundtrip_and_delete']
+              assert native['multi_object_paths_and_explicit_target'] and native['manual_edit_preserved'] and native['unrelated_objects_preserved']
+              assert native['node']['id'] == native['triangle_id'] and native['node']['anchors'] == 3 and native['node']['closed']
+              assert abs(native['node']['rotation']-30) < 1e-8
+              assert native['actual_provider_charge_usd'] == network['actual_provider_charge_usd'] == 0
+              folder = pathlib.Path('audit')/('tested-chat-candidate-'+platform)
+              archives = list(folder.glob('*.zip'))
+              assert len(archives) == 1
+              archive = archives[0]
+              mac = platform.startswith('macos')
+              prefix = 'VectorCraftChat.app/Contents/MacOS/' if mac else 'VectorCraftChat/'
+              documents = 'VectorCraftChat.app/Contents/Resources/ChatDocs/' if mac else prefix
+              with zipfile.ZipFile(archive) as package:
+                  for name, expected in manifest['sha256'].items():
+                      info = package.getinfo(prefix+name)
+                      assert hashlib.sha256(package.read(info)).hexdigest() == expected, name
+                      if mac:
+                          assert (info.external_attr >> 16) & 0o111, name
+                  for name in ('LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'CANDIDATE.md'):
+                      assert documents+name in package.namelist(), name
+              filename='VectorCraft-Chat-0.3.1-preview.1-'+('macOS-Intel' if mac else 'Windows-x64')+'.zip'
+              shutil.copyfile(archive,output/filename)
+              print('BEGIN_FROZEN_TEST_LOG '+platform)
+              print((evidence/'packaged-check.log').read_text())
+              print('END_FROZEN_TEST_LOG '+platform)
+              report['platforms'][platform] = {'status': 'PASS', 'uploaded_binaries_match_test_manifest': True, 'license_notices_present': True, 'executable_modes_checked': mac, 'candidate_inner_zip_sha256': hashlib.sha256(archive.read_bytes()).hexdigest(), 'reports': reports}
+          pathlib.Path('candidate-audit.json').write_text(json.dumps(report, indent=2))
+          shutil.copyfile('candidate-audit.json',output/'test-results.json')
+          (output/'SHA256SUMS.txt').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n' for p in sorted(output.glob('*.zip'))))
+          print('BEGIN_VECTORCRAFT_PACKAGE_AUDIT_JSON')
+          print(json.dumps(report))
+          print('END_VECTORCRAFT_PACKAGE_AUDIT_JSON')
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-uploaded-candidate-audit
+          path: candidate-audit.json
+          if-no-files-found: error
+      - name: Publish exact verified packages approved by owner
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const tag='vectorcraft-chat-v0.3.1-preview.1';
+            let release;
+            try {
+              release=(await github.rest.repos.getReleaseByTag({...context.repo,tag})).data;
+              if (!release.draft) { core.info('Release already published; leaving assets unchanged'); return; }
+            } catch (e) { if(e.status!==404) throw e; }
+            if (!release) release=(await github.rest.repos.createRelease({
+              ...context.repo, tag_name:tag, target_commitish:'a38c87aa17b0f674cfc0970eb125920cde3f8aa9',
+              name:'VectorCraft Chat 0.3.1 Preview 1 — Windows und macOS',
+              body:fs.readFileSync('vectorcraft-chat/docs/RELEASE-0.3.1-preview.1.md','utf8'),
+              draft:true, prerelease:true
+            })).data;
+            const existing=(await github.rest.repos.listReleaseAssets({...context.repo,release_id:release.id})).data;
+            for (const name of fs.readdirSync('release-assets')) {
+              if(existing.some(a=>a.name===name)) throw new Error('Draft already has asset; inspect before retry: '+name);
+              await github.rest.repos.uploadReleaseAsset({ ...context.repo, release_id:release.id, name,
+                data:fs.readFileSync('release-assets/'+name) });
+            }
+            await github.rest.repos.updateRelease({...context.repo,release_id:release.id,draft:false,prerelease:true});
+            core.info('Published '+release.html_url);

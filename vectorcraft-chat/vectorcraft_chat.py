@@ -597,7 +597,7 @@ class App:
                             target=a['params']['id']
                             result=transform_object(client,target,'object.rotate',{'angle':a['params']['angle']})
                             event('triangle_rotated','verified_id='+str(target)+'; angle='+str(a['params']['angle']))
-                elif a['method']=='engine.execute' and a['params']['command'] in ('object.move','object.rotate','object.scale') and self.last_triangle_id is not None:
+                elif a['method']=='engine.execute' and a['params']['command'] in ('object.move','object.rotate','object.scale') and self.last_triangle_id is not None and not ('id' in a['params'].get('params',{}) and a['params']['params']['id'] != self.last_triangle_id):
                     exe=mcp_executable()
                     if not exe:raise FileNotFoundError('vectorcraft-cli fehlt')
                     with MCPClient(exe,port) as client:

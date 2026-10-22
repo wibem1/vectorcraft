@@ -610,11 +610,13 @@ class App:
                             target=a['params']['id']
                             result=transform_object(client,target,'object.rotate',{'angle':a['params']['angle']})
                             event('triangle_rotated','verified_id='+str(target)+'; angle='+str(a['params']['angle']))
-                elif uses_verified_triangle_target(a, self.last_triangle_id):
+                elif a['method']=='engine.execute' and a['params']['command'] in ('object.move','object.rotate','object.scale') and (uses_verified_triangle_target(a, self.last_triangle_id) or type(a['params'].get('params',{}).get('id')) is int):
+                    params=dict(a['params'].get('params',{}))
+                    target=params.pop('id',self.last_triangle_id)
                     exe=mcp_executable()
                     if not exe:raise FileNotFoundError('vectorcraft-cli fehlt')
                     with MCPClient(exe,port) as client:
-                        result=transform_object(client,self.last_triangle_id,a['params']['command'],a['params'].get('params',{}))
+                        result=transform_object(client,target,a['params']['command'],params)
                 else:
                     # Explicit IDs must remain authoritative; never silently target the previous triangle.
                     result=control(a['method'],a.get('params',{}),port)

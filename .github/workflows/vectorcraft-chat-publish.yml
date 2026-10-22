@@ -13,27 +13,37 @@ concurrency:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@v4
       - name: Require completed successful source test runs
         uses: actions/github-script@v7
         with:
           script: |
-            for (const run_id of [39726542072,39726542081,39726542048,39726542201]) {
-              const {data:r} = await github.rest.actions.getWorkflowRun({...context.repo,run_id});
-              if (r.head_sha !== "a38c87aa17b0f674cfc0970eb125920cde3f8aa9" || r.conclusion !== "success") throw new Error(`Unverified source run ${run_id}`);
+            const deadline=Date.now()+45*60*1000;
+            for (const run_id of [39749645269,39749645011,39749644906,39749644996]) {
+              while (true) {
+                const {data:r}=await github.rest.actions.getWorkflowRun({...context.repo,run_id});
+                if(r.head_sha!=='3999cfb35844239d1fbf3eb6d65f4c789411ebcf') throw new Error('Wrong source');
+                if(r.status==='completed') {
+                  if(r.conclusion!=='success') throw new Error(`Source gate failed ${run_id}: ${r.conclusion}`);
+                  break;
+                }
+                if(Date.now()>deadline) throw new Error('Source verification deadline expired');
+                core.info(`Waiting for source gate ${run_id}`);
+                await new Promise(resolve=>setTimeout(resolve,30000));
+              }
             }
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: '39726542072'
+          run-id: '39749645269'
           path: audit
       - name: Verify actual uploaded ZIP binaries and frozen reports
         shell: python
         run: |
           import hashlib, json, pathlib, zipfile
-          report = {'run_id': 39726542072, 'source_sha': 'a38c87aa17b0f674cfc0970eb125920cde3f8aa9', 'release': False, 'status': 'PASS', 'platforms': {}}
+          report = {'run_id': 39749645269, 'source_sha': '3999cfb35844239d1fbf3eb6d65f4c789411ebcf', 'release': False, 'status': 'PASS', 'platforms': {}}
           import shutil
           output=pathlib.Path('release-assets'); output.mkdir(exist_ok=True)
           for platform in ('windows-latest', 'macos-15-intel'):
@@ -46,6 +56,7 @@ jobs:
               assert network['public_models'] > 10 and network['unauthorized_http'] == 401
               assert network['automatic_bundled_discovery'] and not network['valid_key_used'] and not network['positive_live_completion']
               assert native['native_launches'] == 1 and native['secret_roundtrip_and_delete']
+              assert native['text_request_with_nonzero_image_rate']
               assert native['multi_object_paths_and_explicit_target'] and native['manual_edit_preserved'] and native['unrelated_objects_preserved']
               assert native['node']['id'] == native['triangle_id'] and native['node']['anchors'] == 3 and native['node']['closed']
               assert abs(native['node']['rotation']-30) < 1e-8
@@ -65,7 +76,7 @@ jobs:
                           assert (info.external_attr >> 16) & 0o111, name
                   for name in ('LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'CANDIDATE.md'):
                       assert documents+name in package.namelist(), name
-              filename='VectorCraft-Chat-0.3.1-preview.1-'+('macOS-Intel' if mac else 'Windows-x64')+'.zip'
+              filename='VectorCraft-Chat-0.3.2-preview.1-'+('macOS-Intel' if mac else 'Windows-x64')+'.zip'
               shutil.copyfile(archive,output/filename)
               print('BEGIN_FROZEN_TEST_LOG '+platform)
               print((evidence/'packaged-check.log').read_text())
@@ -87,16 +98,16 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const tag='vectorcraft-chat-v0.3.1-preview.1';
+            const tag='vectorcraft-chat-v0.3.2-preview.1';
             let release;
             try {
               release=(await github.rest.repos.getReleaseByTag({...context.repo,tag})).data;
               if (!release.draft) { core.info('Release already published; leaving assets unchanged'); return; }
             } catch (e) { if(e.status!==404) throw e; }
             if (!release) release=(await github.rest.repos.createRelease({
-              ...context.repo, tag_name:tag, target_commitish:'a38c87aa17b0f674cfc0970eb125920cde3f8aa9',
-              name:'VectorCraft Chat 0.3.1 Preview 1 — Windows und macOS',
-              body:fs.readFileSync('vectorcraft-chat/docs/RELEASE-0.3.1-preview.1.md','utf8'),
+              ...context.repo, tag_name:tag, target_commitish:'3999cfb35844239d1fbf3eb6d65f4c789411ebcf',
+              name:'VectorCraft Chat 0.3.2 Preview 1 — Windows und macOS',
+              body:fs.readFileSync('vectorcraft-chat/docs/RELEASE-0.3.2-preview.1.md','utf8'),
               draft:true, prerelease:true
             })).data;
             const existing=(await github.rest.repos.listReleaseAssets({...context.repo,release_id:release.id})).data;

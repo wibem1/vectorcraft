@@ -616,6 +616,7 @@ class App:
                     with MCPClient(exe,port) as client:
                         result=transform_object(client,self.last_triangle_id,a['params']['command'],a['params'].get('params',{}))
                 else:
+                    # Explicit IDs must remain authoritative; never silently target the previous triangle.
                     result=control(a['method'],a.get('params',{}),port)
                 event('execution_step',f'index={i}; method={a["method"]}; command={a.get("params",{}).get("command","")}; success=true')
                 outcomes.append(f'{i}. {a["method"]}: '+json.dumps(result,ensure_ascii=False)[:120])

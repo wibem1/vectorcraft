@@ -288,7 +288,9 @@ def parse_actions(content):
     if start<0 and end<0:
         event('action_parser','no action tag; text_len='+str(len(content)))
         return content, []
-    if start<0 or end<start: raise ValueError('Unvollständiger Aktionsblock der KI. Nichts wird ausgeführt.')
+    if start<0 or end<start:
+        event('incomplete_actions',f'opening_tag={start>=0}; closing_tag={end>=0}; content_chars={len(content)}')
+        raise ValueError('Unvollständiger Aktionsblock der KI. Nichts wird ausgeführt.')
     if content.count('<vc_actions>')!=1 or content.count('</vc_actions>')!=1:
         raise ValueError('Mehrere Aktionsblöcke sind nicht zulässig')
     raw=content[start+12:end].strip()

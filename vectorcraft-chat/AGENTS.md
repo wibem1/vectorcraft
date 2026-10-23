@@ -10,3 +10,6 @@
 - Bei Fehlern nur eine Ursache isolieren, ohne gleichzeitig Funktionen zu erweitern. Nach zwei erfolglosen gezielten Versuchen zunächst Analyse statt weiterer Reparaturvarianten.
 - Ein neuer Chat / Work-Auftrag bestätigt zuerst Quellstand, bekannte Nachweise, Blocker und den nächsten einzelnen Schritt; bereits geklärte Fragen nicht ohne neuen Beleg erneut untersuchen.
 - Schließe jeden abgeschlossenen Schritt mit einer knappen Aktualisierung von `PROJECT_STATE.md` ab. Keine umfangreichen Tätigkeitsberichte und keine Parallelaufträge.
+
+## Projektübergreifender Standard
+Vor jedem neuen Entwicklungsauftrag zusätzlich die zentralen Regeln lesen: https://github.com/wibem1/AI-Development-Standards/blob/main/DEVELOPMENT_STANDARDS.md . Diese ergänzen bestehende VectorCraft-Engine-Regeln, ersetzen sie nicht.

@@ -1,5 +1,9 @@
 # VectorCraft Chat — verbindlicher Projektstand
 
+## Historischer Nachweis vom 14.10.2026 (am 23.10. anhand Gesprächsexports abgeglichen)
+
+Der konkrete, quellenbasierte Bericht liegt in [docs/REFERENCE-2026-10-14.md](docs/REFERENCE-2026-10-14.md). Wichtigste Klarstellung: **ChatGPT erstellte die Steuerprogramme, ausgeführt wurden sie lokal vom Nutzer; die lokale TCP/JSON-Kommunikation war erfolgreich. Ein eigener direkter ChatGPT-Netzwerkzugang auf Port 7979 ist nicht belegt.** Zeichentest v5 und Agententest v7 verwendeten vorbereitete Befehle; die frei interpretierende KI-Steuerung blieb unbewiesen. Mandala-Live-Repeat-Geometrie funktionierte, interaktive Repeat-Containerbearbeitung war offen. Die Originalreferenz liegt weiterhin nicht im GitHub-Repository. Diese Ergänzung ist Dokumentation, kein neuer Live-Test und keine neue Release-Freigabe.
+
 ## Verbindliche Strategieentscheidung — 23.10.2026
 **Beschlossen:** Die bisherige komplexe VectorCraft-Chat-App wird **nicht** als Reparaturprojekt fortgeführt. Stattdessen kontrollierter, kleiner Neustart ausgehend von dem historisch erfolgreich erprobten direkten Python-Steuerprogramm. Dies ist eine Strategieentscheidung, noch **keine** implementierte oder getestete Änderung.
 

@@ -13,3 +13,6 @@
 
 ## Projektübergreifender Standard
 Vor jedem neuen Entwicklungsauftrag zusätzlich die zentralen Regeln lesen: https://github.com/wibem1/AI-Development-Standards/blob/main/DEVELOPMENT_STANDARDS.md . Diese ergänzen bestehende VectorCraft-Engine-Regeln, ersetzen sie nicht.
+
+## Verbindliche Aufgabenquelle
+**Vor jeder Entwicklung `CURRENT_TASK.md` lesen.** Nur der dort freigegebene Auftrag darf ausgeführt werden. Ist er blockiert, stoppen und den Blocker benennen; nicht zur historischen `TODO.md` als Arbeitsauftrag wechseln. Andere Schritte benötigen eine neue Freigabe.

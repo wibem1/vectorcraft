@@ -8,6 +8,15 @@ class Tests(unittest.TestCase):
   self.assertEqual((out,a[0]['params']['command']),('Text','object.move'))
  def test_reject(self):
   with self.assertRaises(ValueError):parse_actions('<vc_actions>{"actions":[{"method":"app.quit"}]}</vc_actions>')
+
+ def test_partial_actions_rejected(self):
+  with self.assertRaisesRegex(ValueError,'Unvollständiger Aktionsblock'):
+   parse_actions('<vc_actions>{"actions":[{"method":"engine.execute"')
+ def test_action_reply_survives_complete_block(self):
+  txt='Vorschlag <vc_actions>{"actions":[{"method":"engine.execute","params":{"command":"shape.rectangle","params":{"x":5,"y":7,"width":30,"height":15}}}]}</vc_actions>'
+  answer,actions=parse_actions(txt)
+  self.assertEqual(answer,'Vorschlag')
+  self.assertEqual(actions[0]['params']['command'],'shape.rectangle')
  def test_ids(self):
   self.assertEqual(App.extract_ids({'commands':[{'id':'a'},{'id':'b'}]}),{'a','b'})
  def test_protocol(self):

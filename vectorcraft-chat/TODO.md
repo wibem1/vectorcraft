@@ -297,3 +297,9 @@ Windows-Gesamtartefakte lokal heruntergeladen und SHA256 geprüft; alle drei arc
 Version bleibt **0.3.1-dev**, kein Tag, kein Release. Offen: gültiger positiver OpenRouter-Live-Auftrag, allgemeine freie Konstruktionen, garantierte providerseitige 0,10-€-Grenze, signierte Installer/Notarisierung, Apple Silicon und Ausführung auf einer sauberen Nutzerinstallation. Keine manuellen App-Tests angefordert. Cargo-Workspace-Gate lokal nicht ausführbar (Cargo fehlte; später lokale Umgebung offline); Rust unverändert. Echte native Builds und Tests in Actions sind erfolgreich.
 
 Vollständige gefrorene Selbsttest-Logs zusätzlich im erfolgreichen Audit 39688117575 / 119527252289 gelesen; Windows 17,731 s, Mac 53,169 s, jeweils PASS NATIVE und OK. Packaging-Lint 39688117539 / 119527252153 SUCCESS.
+
+## 23.10.2026 – Nutzerdiagnose: abgeschnittener Aktionsblock (noch nicht freigegeben)
+
+TODO vor Änderung geprüft. Windows 0.3.2-preview.1: echte Verbindung Port 7979, Dokument automatisch erstellt, OpenRouter-Completion mit 194 Zeichen und 0,008992 USD abgerechnet; danach Fehler „Unvollständiger Aktionsblock der KI“. Kein Objekt ausgeführt. Die Diagnose protokollierte bisher nicht `finish_reason`, daher Ursache Tokenlimit **nicht bewiesen**.
+
+Änderungen: `api_chat` protokolliert und liefert `finish_reason`; Ausgabelimit von 2.000 auf 4.000 erhöht, zusammen mit der konservativen Preisvorabprüfung; bei `length` bzw. `max_tokens` wird die Antwort als abgeschnitten markiert und keine Aktion ausgeführt. Keine automatische erneute bezahlte Anfrage. Regressionen für offene und geschlossene Aktionsblöcke ergänzt. Live-Konstruktionsantwort mit gültigem Key und neue eingefrorene Windows-/Mac-Binaries **noch nicht nachgewiesen**; alte Preview nicht als korrigiert kennzeichnen. Neue Freigabe erst nach aktuellem Paketlauf und echtem KI-Test.

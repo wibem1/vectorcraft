@@ -1,5 +1,9 @@
 # VectorCraft Chat – TODO
 
+## VCCHAT.56 – aktuelle Paketarchive unabhängig prüfen
+
+TODO vor Änderung geprüft. Builds für Quellstand 9659e6ab sind tatsächlich gestartet: Pakete 39971064930, native Plattformen 39971064931, Regressionen 39971064996 und Headless 39971065092. Linux-/Windows-Regressionen bereits erfolgreich; übrige Jobs noch laufend/wartend. Archiv-Audit auf exakt diesen Paketlauf umgestellt, mit zwingendem Warten auf erfolgreichen Abschluss und Quellstandsvergleich. Neue Provider-Konstruktion/Folgeänderung sowie bestehende Mehrfachobjekt-/Zwischenbearbeitungsnachweise verpflichtend. Dies ist keine Veröffentlichung und kein vorweggenommener Testerfolg.
+
 ## VCCHAT.55 – Actions erneut freigegeben
 
 TODO vor Änderung geprüft. Nutzer meldet Actions wieder freigegeben; die öffentliche Actions-Seite zeigt den zuvor sichtbaren Deaktivierungshinweis nicht mehr. Aktueller Anwendungsstand unverändert. Core-, Headless-, native Windows-/Mac- und Paketprüfung werden mit diesem Commit erneut angefordert. Ergebnisse erst nach bestätigten aktuellen Läufen; keine Veröffentlichung vor bestandenen Tests.

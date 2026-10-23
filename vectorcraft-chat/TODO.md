@@ -1,5 +1,16 @@
 # VectorCraft Chat – TODO
 
+## VCCHAT.53 – durchgängige Completion-Prüfung (23.10.2026)
+
+TODO vor jeder Änderung geprüft. Diagnose vom 23.10.2026 gelesen: Verbindung 7979 funktionierte; 194 Antwortzeichen, fehlender Abschluss, Abbruchgrund damals nicht erfasst. Tokenlimit als historische Ursache bleibt unbewiesen. Im Korrekturstand 1e1942c wurde ein weiterer reproduzierbarer Blocker gefunden: App fordert 4.000 Tokens, Kostenprüfung akzeptierte maximal 2.000. Gemeinsame Konstante korrigiert beide Wege. Version 0.3.3-dev, keine Veröffentlichung.
+
+Parser weist doppelte JSON-Schlüssel, nicht endliche Werte, leere Aktionsblöcke und unbekannte Hüllfelder zurück. Nur regulär abgeschlossene Provider-Antworten werden übernommen; Kosten werden vorher verbucht, ohne automatische Wiederholung. Transformationsparameter werden vor Annahme validiert; sämtliche Transformationsziele vor der ersten Mutation nochmals im echten Dokument gelesen. copy/absolute/selektionsumleitende Parameter sind für verifizierte Transformationen nicht zulässig.
+
+Lokale Regression: 86 entdeckt, 82 bestanden, 4 separate native/Live-Tests übersprungen. Neuer Test führt App.send einschließlich echter Kostenaufnahme, Abrechnung und Parser zusammen aus; der frühere 4.000/2.000-Fehler hätte damit nicht bestanden. Native Suite erweitert um HTTP-Provider-Fixture → Fünfeck → echte Engine → 30-Grad-Folgeänderung derselben ID, plus vorhandene Mehrfachobjekt-/Zwischenbearbeitungsprüfungen. Diese ist ausdrücklich kein echter OpenRouter-Modellnachweis. Native und eingefrorene Windows-/Mac-Tests für diesen Stand ausstehend. Cargo lokal nicht installiert; cargo xtask ci konnte nicht ausgeführt werden, Rust unverändert.
+
+Der frühere Live-Job 119651382410 wurde tatsächlich erneut angefordert, um die Verfügbarkeit des CI-Testschlüssels zu prüfen; sein OK-Probeauftrag ersetzt keinen Konstruktionsnachweis. Freigabeblocker bleiben: erfolgreicher aktueller Plattform-/Paketlauf und echter OpenRouter-Konstruktionsauftrag. Keine Rohdiagnose oder privaten Prompt-/Schlüsseldaten im Repository.
+
+
 ## VCCHAT.52 – Veröffentlichung am unveränderten aktuellen Anwendungsstand
 
 Archiv-Audit 39750572322 bestanden; Release-Erstellung am historischen Build-Commit meldet HTTP 403 trotz contents:write. Veröffentlichung markiert nun den aktuellen Publikationscommit. Vorher wird per GitHub-Compare zwingend geprüft, dass seit dem getesteten Build ausschließlich Publikationsworkflow, TODO und Versionshinweise geändert wurden. Binaries und Build-Quellstand bleiben unverändert. Keine Berechtigungen angehoben. Ein erneuter HTTP-Fehler wird als Publikationsblocker behandelt.

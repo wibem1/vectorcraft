@@ -3,6 +3,8 @@ import json
 import math
 from decimal import Decimal, InvalidOperation
 
+MAX_COMPLETION_TOKENS = 4000
+
 
 def money(value):
     try:
@@ -42,7 +44,7 @@ def estimate(model, messages, output_tokens):
             raise ValueError('Zusatzpreis nicht unterstützt: '+key)
     if money(pricing.get('input_cache_write', 0)) > prompt:
         raise ValueError('Cache-Aufschlag nicht unterstützt')
-    if type(output_tokens) is not int or not 1 <= output_tokens <= 2000:
+    if type(output_tokens) is not int or not 1 <= output_tokens <= MAX_COMPLETION_TOKENS:
         raise ValueError('Ungültiges Ausgabelimit')
     if not all(isinstance(m.get('content'), str) for m in messages):
         raise ValueError('Kostenprüfung unterstützt ausschließlich Text')

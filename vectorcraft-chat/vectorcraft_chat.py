@@ -5,7 +5,7 @@ from tkinter import ttk, messagebox, scrolledtext, filedialog
 from pathlib import Path
 from datetime import datetime
 from engine_session import create_path, transform_object, validate_path
-from cost_control import admit, money
+from cost_control import admit, money, MAX_COMPLETION_TOKENS
 from app_connection import ensure_connection, MissingApplication, command_ids, normalize_executable
 
 APP_DIR = Path.home()/'.vectorcraft-chat'
@@ -13,7 +13,7 @@ SETTINGS = APP_DIR/'settings.json'
 HISTORY = APP_DIR/'history.json'
 COSTS = APP_DIR/'costs.json'
 MAX_OUTPUT = 10000
-APP_VERSION = "0.3.2-preview.1"
+APP_VERSION = "0.3.3-dev"
 DIAG_EVENTS = []
 
 def event(kind, info):
@@ -24,7 +24,7 @@ SYSTEM = '''Du bist ein konstruktiver, deutschsprachiger Gesprächspartner und Z
 Der aktuelle VectorCraft-Dokumentzustand und die zulässigen Befehle werden mitgegeben. Erfinde keine Befehlsnamen und keine Parameter. Kommandos wie path.rect ergeben KEIN Dreieck: verwende Pfaderstellung mit echten Eckpunkten anhand vorhandener dokumentierter Befehle. Wenn keine passenden Befehle bekannt sind, erkläre die konkrete Einschränkung.
 Wenn der Nutzer eine einfache Figur wie ein Dreieck verlangt, konstruiere sie selbstständig. Die Antwort ist erst dann eine erledigte Konstruktion, wenn du ausführbare native Befehle vorschlägst. Bei bloßer Diskussion antworte normal. Bei Ausführungsauftrag gib eine kurze Erklärung und am Ende NUR einen korrekt abgeschlossenen Block dieses Formats aus:
 <vc_actions>{"actions":[{"method":"engine.execute","params":{"command":"EXAKTE_COMMAND_ID","params":{}}}]}</vc_actions>
-JSON muss syntaktisch valide sein (keine Kommentare, keine nachgestellten Kommas, keine Markdown-Codezäune). Maximal 12 Aktionen. Zulässige Methoden: engine.execute, document.inspect, ui.render, ui.inspect, mcp.draw_path. mcp.draw_path hat params {"points":[[x,y],...],"closed":true,"fill":"#RRGGBB","stroke":"#RRGGBB","strokeWidth":2}; 2 bis 512 Punkte, geschlossen mindestens 3. Folgeänderungen object.move/rotate/scale müssen in params.params die bestätigte ganzzahlige Objekt-ID als id enthalten. Jede Ziel-ID aus dem aktuellen Dokument verwenden; keine fremden Objekte auswählen. Keine destruktiven, Reset-, Datei-Schreib- oder frei erfundenen Aktionen. Alle Änderungen müssen von der Person bestätigt werden.'''
+JSON muss syntaktisch valide sein (keine Kommentare, keine nachgestellten Kommas, keine Markdown-Codezäune). Maximal 12 Aktionen. Zulässige Methoden: engine.execute, document.inspect, ui.render, ui.inspect, mcp.draw_path. mcp.draw_path hat params {"points":[[x,y],...],"closed":true,"fill":"#RRGGBB","stroke":"#RRGGBB","strokeWidth":2}; 2 bis 512 Punkte, geschlossen mindestens 3. Folgeänderungen object.move/rotate/scale müssen in params.params die bestätigte ganzzahlige Objekt-ID als id enthalten. Transformationen: object.move {id,dx,dy}, object.rotate {id,angle,origin?}, object.scale {id,sx,sy?,origin?}, Skalierung in Prozent. Kein copy, absolute oder ids. Jede Ziel-ID aus dem aktuellen Dokument verwenden; keine fremden Objekte auswählen. Keine destruktiven, Reset-, Datei-Schreib- oder frei erfundenen Aktionen. Alle Änderungen müssen von der Person bestätigt werden.'''
 
 # Secrets stay outside settings.json; on Windows they are DPAPI-encrypted per user.
 KEY_FILE = APP_DIR/'openrouter.key'
@@ -145,9 +145,13 @@ def api_chat(api_key, model, messages, max_tokens=1400):
     if 'error' in data:raise RuntimeError('OpenRouter: '+safe_error(data['error']))
     choices=data.get('choices')
     if not isinstance(choices,list) or not choices:raise ValueError('OpenRouter lieferte keine Antwortauswahl')
+    if not isinstance(choices[0],dict) or not isinstance(choices[0].get('message'),dict):
+        raise ValueError('OpenRouter lieferte keine gültige Nachricht')
     finish_reason=choices[0].get('finish_reason')
     choice=choices[0].get('message',{}).get('content')
     if isinstance(choice,list): choice='\n'.join(str(p.get('text','')) for p in choice if isinstance(p,dict))
+    if choice is not None and not isinstance(choice,str):
+        raise ValueError('OpenRouter lieferte keinen Antworttext')
     event('api_response',f'content_chars={len(choice or "")}; tokens={data.get("usage",{}).get("total_tokens","?")}; finish_reason={finish_reason}')
     usage=data.get('usage',{}) or {}
     if not isinstance(usage,dict): usage={}
@@ -283,7 +287,39 @@ ALLOWED_COMMANDS = frozenset(('path.create','shape.rectangle','shape.ellipse','s
     'object.move','object.rotate','object.scale','object.reflect','object.setProps',
     'select.set','paint.setFill','paint.setStroke','paint.strokeWidth'))
 
+def unique_json_object(pairs):
+    value={}
+    for key,item in pairs:
+        if key in value:raise ValueError('Doppelter JSON-Schlüssel: '+key)
+        value[key]=item
+    return value
+
+
+def reject_json_constant(value):
+    raise ValueError('Nicht endlicher JSON-Wert: '+value)
+
+
+def validate_transform(command, params):
+    """Verified transforms support one existing object, never copy or selection overrides."""
+    import math
+    required={'object.move':{'dx','dy'},'object.rotate':{'angle'},'object.scale':{'sx'}}[command]
+    optional={'object.move':set(),'object.rotate':{'origin'},'object.scale':{'sy','origin'}}[command]
+    if type(params.get('id')) is not int or params['id']<=0:
+        raise ValueError('Ungültige Objekt-ID')
+    if not required <= params.keys() or set(params)-required-optional-{'id'}:
+        raise ValueError('Ungültige Transformationsparameter für '+command)
+    for key,value in params.items():
+        if key=='id':continue
+        values=value if key=='origin' and isinstance(value,list) and len(value)==2 else [value]
+        if key=='origin' and values is not value:raise ValueError('origin benötigt zwei Koordinaten')
+        if any(type(v) not in (int,float) or not math.isfinite(v) or abs(v)>1000000 for v in values):
+            raise ValueError('Ungültiger Transformationswert')
+        if key in ('sx','sy') and value==0:raise ValueError('Skalierung darf nicht null sein')
+
+
 def parse_actions(content):
+    if not isinstance(content,str) or len(content)>64000:
+        raise ValueError('Ungültiger oder zu großer Antworttext')
     start=content.find('<vc_actions>'); end=content.find('</vc_actions>')
     if start<0 and end<0:
         event('action_parser','no action tag; text_len='+str(len(content)))
@@ -295,22 +331,25 @@ def parse_actions(content):
         raise ValueError('Mehrere Aktionsblöcke sind nicht zulässig')
     raw=content[start+12:end].strip()
     if len(raw)>16000:raise ValueError('Aktionsblock zu groß')
-    try: spec=json.loads(raw)
+    try: spec=json.loads(raw, object_pairs_hook=unique_json_object, parse_constant=reject_json_constant)
     except json.JSONDecodeError as exc:
         event('invalid_actions',f'Position {exc.pos}: {exc.msg}; raw_length={len(raw)}')
         raise ValueError('Die KI hat ungültige Befehlsdaten zurückgegeben. Es wurde NICHTS ausgeführt. Bitte erneut versuchen oder anderes Modell wählen.') from exc
-    if not isinstance(spec,dict):raise ValueError('Aktionsblock muss ein JSON-Objekt sein')
-    actions=spec.get('actions',[])
-    if not isinstance(actions,list) or len(actions)>12: raise ValueError('Ungültige Anzahl Aktionen')
+    if not isinstance(spec,dict) or set(spec)!={'actions'}:raise ValueError('Aktionsblock benötigt ausschließlich actions')
+    actions=spec['actions']
+    if not isinstance(actions,list) or not 1 <= len(actions)<=12: raise ValueError('Ungültige Anzahl Aktionen')
     for item in actions:
         if not isinstance(item,dict) or item.get('method') not in ('engine.execute','document.inspect','ui.render','ui.inspect','mcp.draw_path') or not isinstance(item.get('params',{}),dict): raise ValueError('Ungültige VectorCraft-Aktion')
+        if set(item)-{'method','params'}:raise ValueError('Unbekannte Aktionsfelder')
         item.setdefault('params',{})
         if item['method']=='engine.execute':
+            if set(item['params'])-{'command','params'}:raise ValueError('Unbekannte Befehlsfelder')
             if item['params'].get('command') not in ALLOWED_COMMANDS or not isinstance(item['params'].get('params',{}),dict):
                 raise ValueError('Nicht zugelassener Engine-Befehl')
             if item['params']['command'] in ('object.move','object.rotate','object.scale'):
                 if type(item['params'].get('params',{}).get('id')) is not int:
                     raise ValueError('Folgeänderung benötigt eine ausdrückliche ganzzahlige Objekt-ID')
+                validate_transform(item['params']['command'],item['params']['params'])
         if item['method']=='mcp.draw_path':
             validate_path(item['params'])
         if item['method']=='ui.render' and set(item['params'])-{'scale','artboard','data'}:
@@ -577,7 +616,7 @@ class App:
             model=chosen_model
             catalog=model_catalog(key)
             if model not in catalog:raise ValueError('Modell nicht im aktuellen OpenRouter-Katalog')
-            output_limit=4000
+            output_limit=MAX_COMPLETION_TOKENS
             reserve=admit(catalog[model],msgs,output_limit,self.session_spend_usd,budget,exchange_rate)
             self.session_spend_usd+=reserve
             save_json(COSTS,{'spent_usd':self.session_spend_usd,'pending_reservation_usd':reserve})
@@ -595,6 +634,8 @@ class App:
             if usage.get('_finish_reason') in ('length','max_tokens'):
                 event('action_truncated',f'finish_reason={usage.get("_finish_reason")}; content_chars={len(content)}')
                 raise ValueError('Die KI-Antwort wurde am Tokenlimit abgeschnitten. Keine Aktion ausgeführt und keine automatische kostenpflichtige Wiederholung. Bitte kürzeren Auftrag oder anderes Modell verwenden.')
+            if usage.get('_finish_reason') != 'stop':
+                raise ValueError('KI-Antwort nicht regulär abgeschlossen; keine Aktion und keine automatische Wiederholung.')
             answer,actions=parse_actions(content)
             if not actions and any(w in prompt.casefold() for w in ('konstruiere','zeichne','erstelle','erzeuge')):
                 event('no_actions','Auftrag ohne ausführbare Aktion; model='+chosen_model)
@@ -618,6 +659,14 @@ class App:
             outcomes=[]
             before=control('document.inspect',{'depth':0,'childLimit':8},port)
             event('execution',f'start; actions={len(actions)}')
+            # Validate every proposal before the first mutation, including target existence.
+            for a in actions:
+                if a['method']=='engine.execute' and a['params']['command'] in ('object.move','object.rotate','object.scale'):
+                    params=a['params']['params']
+                    validate_transform(a['params']['command'],params)
+                    target=control('engine.execute',{'command':'document.node','params':{'id':params['id'],'summary':True}},port)
+                    if not isinstance(target,dict) or target.get('id')!=params['id']:
+                        raise ValueError('Zielobjekt nicht mehr im aktuellen Dokument')
             for i,a in enumerate(actions,1):
                 if a['method']=='engine.execute' and self.command_ids and a['params']['command'] not in self.command_ids:
                     raise ValueError('Befehl nicht im zuletzt geprüften Katalog: '+a['params']['command'])

@@ -165,7 +165,7 @@ class NativeStartupTests(unittest.TestCase):
                         if payload.get('plugins') != [{'id':'web','enabled':False}]:
                             self.send_error(400,'Web plugin must be disabled');return
                         requests.append(('POST',self.path,payload,self.headers.get('Authorization')))
-                        self.reply({'choices':[{'message':{'content':answer}}],'usage':{'cost':0.0002,'total_tokens':40}})
+                        self.reply({'choices':[{'finish_reason':'stop','message':{'content':answer}}],'usage':{'cost':0.0002,'total_tokens':40}})
                 server=http.server.ThreadingHTTPServer(('127.0.0.1',0),Provider)
                 server.daemon_threads=True
                 thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
@@ -181,14 +181,37 @@ class NativeStartupTests(unittest.TestCase):
                         self.assertEqual(app.load_secret(),'dummy-native-key')
                         gui.refresh_models();wait(lambda:not gui.busy and gui.q.empty())
                         self.assertEqual(gui.models,[model]);gui.model.set(model)
+                        # Provider-generated construction must traverse the same send worker as edits.
+                        move_answer=answer
+                        answer='<vc_actions>'+json.dumps({'actions':[{'method':'mcp.draw_path','params':{
+                            'points':[[250,50],[310,50],[330,90],[280,125],[230,90]],
+                            'closed':True,'fill':'#3388cc','stroke':'#112233','strokeWidth':2}}]})+'</vc_actions>'
+                        old_ids=object_ids(app.control('document.inspect',{'depth':64},port))
+                        gui.entry.insert('1.0','Zeichne ein blaues Fünfeck');gui.send()
+                        wait(lambda:not gui.busy and gui.q.empty())
+                        self.assertEqual(len(gui.pending),1,gui.last_error)
+                        gui.execute();wait(lambda:not gui.busy and gui.q.empty())
+                        new_ids=object_ids(app.control('document.inspect',{'depth':64},port))-old_ids
+                        self.assertEqual(len(new_ids),1,gui.last_error)
+                        generated=new_ids.pop();generated_before=inspect_node(generated)
+                        self.assertEqual(generated_before['anchors'],5)
+                        answer='<vc_actions>'+json.dumps({'actions':[{'method':'engine.execute','params':{
+                            'command':'object.rotate','params':{'id':generated,'angle':30}}}]})+'</vc_actions>'
+                        gui.entry.insert('1.0',f'Drehe Objekt {generated} um 30 Grad');gui.send()
+                        wait(lambda:not gui.busy and gui.q.empty())
+                        self.assertEqual(len(gui.pending),1,gui.last_error)
+                        gui.execute();wait(lambda:not gui.busy and gui.q.empty())
+                        self.assertAlmostEqual(inspect_node(generated)['rotation']-generated_before['rotation'],30)
+                        self.assertEqual(inspect_node(target),actual)
+                        answer=move_answer
                         gui.entry.insert('1.0','Verschiebe das Objekt etwas nach rechts');gui.send()
                         wait(lambda:not gui.busy and gui.q.empty())
                         self.assertEqual(len(gui.pending),1)
                         post=[r for r in requests if r[0]=='POST']
-                        self.assertEqual(len(post),1)
+                        self.assertEqual(len(post),3)
                         self.assertEqual(post[0][1],'/api/v1/chat/completions')
                         self.assertEqual(post[0][2]['model'],model)
-                        self.assertEqual(post[0][2]['max_tokens'],2000)
+                        self.assertEqual(post[0][2]['max_tokens'],app.MAX_COMPLETION_TOKENS)
                         self.assertIn(str(target),post[0][2]['messages'][0]['content'])
                         self.assertEqual(post[0][3],'Bearer dummy-native-key')
                         before=actual['bounds']
@@ -199,8 +222,8 @@ class NativeStartupTests(unittest.TestCase):
                         self.assertAlmostEqual(actual['rotation'],30)
                         self.assertAlmostEqual(actual['bounds']['x']-before['x'],17)
                         self.assertAlmostEqual(actual['bounds']['y']-before['y'],-11)
-                        self.assertAlmostEqual(gui.session_spend_usd,0.0002)
-                        self.assertAlmostEqual(app.stored_spend(),0.0002)
+                        self.assertAlmostEqual(gui.session_spend_usd,0.0006)
+                        self.assertAlmostEqual(app.stored_spend(),0.0006)
                         diagnostic=base/'diagnostic.json'
                         with patch.object(app.filedialog,'asksaveasfilename',return_value=str(diagnostic)):
                             gui.export_diagnostic()
@@ -210,7 +233,7 @@ class NativeStartupTests(unittest.TestCase):
                 finally:
                     server.shutdown();server.server_close();thread.join(timeout=5)
                 self.assertIsNone(processes[0].poll(),'Native application must still be running')
-                report={'status':'PASS','platform':sys.platform,'transport':'actual native TCP and CLI MCP --connect','provider':'local HTTP fixture using actual OpenRouter request/response code; no paid live completion','native_launches':len(processes),'port':port,'triangle_id':target,'node':actual,'fixture_accounted_cost_usd':gui.session_spend_usd,'actual_provider_charge_usd':0,'provider_http_requests':len(requests),'text_request_with_nonzero_image_rate':True,'multi_object_paths_and_explicit_target':True,'manual_edit_preserved':True,'unrelated_objects_preserved':True,'os_rejected_invalid_executable':True,'key_store':'isolated actual macOS Keychain' if sys.platform=='darwin' else ('actual Windows DPAPI' if sys.platform=='win32' else 'restricted Linux file'),'secret_roundtrip_and_delete':True}
+                report={'status':'PASS','platform':sys.platform,'transport':'actual native TCP and CLI MCP --connect','provider':'local HTTP fixture using actual OpenRouter request/response code; no paid live completion','native_launches':len(processes),'port':port,'triangle_id':target,'node':actual,'fixture_accounted_cost_usd':gui.session_spend_usd,'actual_provider_charge_usd':0,'provider_http_requests':len(requests),'text_request_with_nonzero_image_rate':True,'provider_construction_and_followup':True,'multi_object_paths_and_explicit_target':True,'manual_edit_preserved':True,'unrelated_objects_preserved':True,'os_rejected_invalid_executable':True,'key_store':'isolated actual macOS Keychain' if sys.platform=='darwin' else ('actual Windows DPAPI' if sys.platform=='win32' else 'restricted Linux file'),'secret_roundtrip_and_delete':True}
                 Path('native-startup-report.json').write_text(json.dumps(report,indent=2))
                 # Take the actual chat window for layout inspection; the X display is test-only.
                 capture_chat(root)

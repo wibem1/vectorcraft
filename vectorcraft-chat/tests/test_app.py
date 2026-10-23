@@ -4,7 +4,7 @@ class Tests(unittest.TestCase):
  def test_chat(self):
   self.assertEqual(parse_actions('Gute Idee.'),('Gute Idee.',[]))
  def test_actions(self):
-  out,a=parse_actions('Text <vc_actions>{"actions":[{"method":"engine.execute","params":{"command":"object.move","params":{"id":2}}}]}</vc_actions>')
+  out,a=parse_actions('Text <vc_actions>{"actions":[{"method":"engine.execute","params":{"command":"object.move","params":{"id":2,"dx":1,"dy":2}}}]}</vc_actions>')
   self.assertEqual((out,a[0]['params']['command']),('Text','object.move'))
  def test_reject(self):
   with self.assertRaises(ValueError):parse_actions('<vc_actions>{"actions":[{"method":"app.quit"}]}</vc_actions>')

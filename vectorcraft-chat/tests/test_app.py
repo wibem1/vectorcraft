@@ -17,6 +17,27 @@ class Tests(unittest.TestCase):
   answer,actions=parse_actions(txt)
   self.assertEqual(answer,'Vorschlag')
   self.assertEqual(actions[0]['params']['command'],'shape.rectangle')
+
+ def test_api_chat_exposes_finish_reason_without_extra_call(self):
+  from unittest.mock import patch
+  import io
+  import vectorcraft_chat as vc
+  response={'choices':[{'finish_reason':'length','message':{'content':'<vc_actions>{"actions":['}}],'usage':{'cost':0.001,'total_tokens':4005}}
+  with patch.object(vc.urllib.request,'urlopen',return_value=io.BytesIO(json.dumps(response).encode())) as call:
+   content,usage=vc.api_chat('test-key','test-model',[{'role':'user','content':'test'}],max_tokens=4000)
+  self.assertEqual(usage['_finish_reason'],'length')
+  self.assertEqual(usage['cost'],0.001)
+  self.assertEqual(call.call_count,1)
+  with self.assertRaisesRegex(ValueError,'Unvollständiger Aktionsblock'):
+   parse_actions(content)
+ def test_api_chat_normal_completion(self):
+  from unittest.mock import patch
+  import io
+  import vectorcraft_chat as vc
+  response={'choices':[{'finish_reason':'stop','message':{'content':'Fertig'}}],'usage':{'cost':0.002}}
+  with patch.object(vc.urllib.request,'urlopen',return_value=io.BytesIO(json.dumps(response).encode())):
+   content,usage=vc.api_chat('test-key','test-model',[{'role':'user','content':'test'}])
+  self.assertEqual((content,usage['_finish_reason']),('Fertig','stop'))
  def test_ids(self):
   self.assertEqual(App.extract_ids({'commands':[{'id':'a'},{'id':'b'}]}),{'a','b'})
  def test_protocol(self):

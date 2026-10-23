@@ -1,5 +1,10 @@
 # VectorCraft Chat – TODO
 
+## VCCHAT.55 – Actions erneut freigegeben
+
+TODO vor Änderung geprüft. Nutzer meldet Actions wieder freigegeben; die öffentliche Actions-Seite zeigt den zuvor sichtbaren Deaktivierungshinweis nicht mehr. Aktueller Anwendungsstand unverändert. Core-, Headless-, native Windows-/Mac- und Paketprüfung werden mit diesem Commit erneut angefordert. Ergebnisse erst nach bestätigten aktuellen Läufen; keine Veröffentlichung vor bestandenen Tests.
+
+
 ## Abschlussprüfung 23.10.2026 – Veröffentlichung weiter gesperrt
 
 TODO erneut geprüft. Korrekturcommit 67f07e79 und Live-Testcommit 7fc7e57c auf main gespeichert und über Git bestätigt. Lokal 87 Tests entdeckt, 82 bestanden, 5 separat erforderliche Tests übersprungen; fehlender Testschlüssel zusätzlich als kontrollierter Negativfall ohne Anfrage geprüft. Für beide neuen Quellstände liefern die Actions-Abfragen keine Läufe. Der tatsächlich angenommene Wiederholungsauftrag für Lauf 39726464472 bleibt queued, ohne Job; er testet ohnehin einen historischen Stand. Es gibt somit keinen aktuellen nativen Windows-/Mac-Erfolg, keine neuen geprüften Pakete und keinen positiven Live-Nachweis. Der verfügbare GitHub-Zugang bietet keinen Workflow-Dispatch; direkter Git-Push scheitert an fehlender Authentifizierung. Kein Erfolgsstatus erfunden, keine Veröffentlichung. Der aktuelle CI-Schlüsselstatus ist durch den noch nicht gestarteten Job nicht neu geprüft.

@@ -1,3 +1,4 @@
+# VCCHAT.55: revalidate corrected completion pipeline after Actions re-enabled, 2026-10-23.
 name: VectorCraft Chat regression and provider checks
 on:
   push:

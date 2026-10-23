@@ -145,10 +145,15 @@ def api_chat(api_key, model, messages, max_tokens=1400):
     if 'error' in data:raise RuntimeError('OpenRouter: '+safe_error(data['error']))
     choices=data.get('choices')
     if not isinstance(choices,list) or not choices:raise ValueError('OpenRouter lieferte keine Antwortauswahl')
+    finish_reason=choices[0].get('finish_reason')
     choice=choices[0].get('message',{}).get('content')
     if isinstance(choice,list): choice='\n'.join(str(p.get('text','')) for p in choice if isinstance(p,dict))
-    event('api_response',f'content_chars={len(choice or chr(0))- (0 if choice else 1)}; tokens={data.get("usage",{}).get("total_tokens","?")}')
-    return choice or '',data.get('usage',{})
+    event('api_response',f'content_chars={len(choice or "")}; tokens={data.get("usage",{}).get("total_tokens","?")}; finish_reason={finish_reason}')
+    usage=data.get('usage',{}) or {}
+    if not isinstance(usage,dict): usage={}
+    usage=dict(usage)
+    usage['_finish_reason']=finish_reason
+    return choice or '',usage
 
 def mcp_executable():
     """Path to bundled or installed VectorCraft CLI, never download executables."""
@@ -570,13 +575,14 @@ class App:
             model=chosen_model
             catalog=model_catalog(key)
             if model not in catalog:raise ValueError('Modell nicht im aktuellen OpenRouter-Katalog')
-            reserve=admit(catalog[model],msgs,2000,self.session_spend_usd,budget,exchange_rate)
+            output_limit=4000
+            reserve=admit(catalog[model],msgs,output_limit,self.session_spend_usd,budget,exchange_rate)
             self.session_spend_usd+=reserve
             save_json(COSTS,{'spent_usd':self.session_spend_usd,'pending_reservation_usd':reserve})
             event('cost_admission',f'model={model}; reserve_usd={reserve:.6f}')
             # On timeout/transport error keep the reservation: the provider may have billed.
-            event('api_request',f'model={model}; max_tokens=2000')
-            content,usage=api_chat(key,model,msgs,max_tokens=2000)
+            event('api_request',f'model={model}; max_tokens={output_limit}')
+            content,usage=api_chat(key,model,msgs,max_tokens=output_limit)
             if usage.get('cost') is not None:
                 charged=float(money(usage['cost']))
                 self.session_spend_usd=max(0,self.session_spend_usd-reserve)+charged
@@ -584,6 +590,9 @@ class App:
                 event('cost_settled',f'charged_usd={charged:.6f}')
             else:
                 event('cost_unknown','Provider cost missing; reservation retained')
+            if usage.get('_finish_reason') in ('length','max_tokens'):
+                event('action_truncated',f'finish_reason={usage.get("_finish_reason")}; content_chars={len(content)}')
+                raise ValueError('Die KI-Antwort wurde am Tokenlimit abgeschnitten. Keine Aktion ausgeführt und keine automatische kostenpflichtige Wiederholung. Bitte kürzeren Auftrag oder anderes Modell verwenden.')
             answer,actions=parse_actions(content)
             if not actions and any(w in prompt.casefold() for w in ('konstruiere','zeichne','erstelle','erzeuge')):
                 event('no_actions','Auftrag ohne ausführbare Aktion; model='+chosen_model)

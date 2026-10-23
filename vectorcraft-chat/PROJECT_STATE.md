@@ -55,3 +55,11 @@ Eine kleine, kostengünstige KI-Chatsteuerung für die bereits installierte Vect
 - Den letzten bestätigten Stand nicht überschreiben; bei Fehlschlag sauber zurückkehren.
 - `PROJECT_STATE.md` nur bei einer relevanten neuen Erkenntnis oder am Ende eines abgeschlossenen Entwicklungsschritts aktualisieren.
 - Kein automatischer Workflow-/Build-Retry. Kostenpflichtige KI-Calls nur mit ausdrücklichem Anlass und konservativer Kostenprüfung.
+
+## Entwicklungsschritt 24.10.2026 — minimale Direktsteuerung
+- Verbindliche Standards, AGENTS und TODO vor Änderungen gelesen. Der Altprojekt-Reparaturpfad bleibt gestoppt.
+- Originalarchiv `VectorCraft-Mandala-Zentriert-v2(3).zip` aus der Übergabe lokal auf SHA-256 `09ab09949b987a71d7735dd456bca5795eddb60d98bf9cedf1661232ee23f6ae` geprüft: vier historische Dateien, Original nicht verändert. Das ZIP selbst liegt weiterhin nicht nachweislich in GitHub.
+- Neuer isolierter Quellordner `vectorcraft-minimal-control/`: `vectorcraft_control.py` (Standard nur lesender TCP/JSON-Verbindungstest, `--execute` legt ausdrücklich neues Dokument an, zeichnet Dreieck, ermittelt ID, dreht dieselbe ID 30 Grad, prüft `document.node`) und `test_vectorcraft_control.py` (kostenlose Protokoll-Fixture). Keine OpenRouter-Integration, keine GUI und keine Release-Freigabe.
+- Der zuvor lokal vorhandene ZIP-Vorläufer des Minimalcodes bestand drei Fixture-Tests am 24.10.; die neu in GitHub geschriebene Fassung ist noch **nicht als eigenständiger Testlauf geprüft**. Keine aktuelle Ausführung mit echter VectorCraft-Engine. Ein Mock-/Fixture-Erfolg ist kein nativer Funktionsnachweis.
+- Quellcommits: `41a86b8`, `c15046f`. Kein Build, keine kostenpflichtige Anfrage.
+- **Nächster einzelner Schritt:** neuen GitHub-Quellstand durch isolierten kostenlosen Test prüfen; anschließend nur den echten TCP/JSON-Dreiecktest mit nativer Engine in einer geeigneten Ausführungsumgebung durchführen. Ohne echten Nachweis keine KI-Anbindung freigeben.

@@ -92,7 +92,7 @@ class LiveNativeTests(unittest.TestCase):
                 self.assertEqual(gui.pending[0]['params']['params']['id'],target)
                 gui.execute();wait(lambda:not gui.busy and gui.q.empty())
                 edited=node();self.assertEqual(edited['id'],created['id'])
-                self.assertAlmostEqual((edited['rotation']-created['rotation'])%360,30)
+                self.assertAlmostEqual((edited['rotation']-created.get('rotation',0))%360,30)
                 self.assertEqual(object_ids(app.control('document.inspect',{'depth':64},port)),before|{target})
                 app.control('ui.screenshot',{'path':str(Path('live-native-followup.png').resolve())},port)
                 self.assertEqual(report['requests'],2);self.assertEqual(gui.session_spend_usd,0)

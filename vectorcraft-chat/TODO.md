@@ -1,5 +1,11 @@
 # VectorCraft Chat – TODO
 
+## VCCHAT.58 – nativen Test an dokumentierte Nullwinkel-Ausgabe anpassen
+
+TODO vor Änderung geprüft. Echter Mac-Paketjob 120473605226 (Lauf 39971064930) scheiterte in test_native_startup.py:204 mit KeyError rotation. Vollständige gefrorene Fehlerberichte aus Artefakt 12508159467 gelesen: Engine startete, Konstruktion und Folgeauftrag erreichten die Prüfung. crates/engine/src/inspect.rs gibt rotation ausdrücklich nur bei nichtnull Winkel aus; deshalb wird nur der Ausgangswinkel als 0 gelesen, wenn das Feld fehlt. Die tatsächliche 30-Grad-Ausgabe bleibt zwingend, kein Test entfernt. Entsprechende Korrektur im echten Live-Test. App und Engine unverändert; erneute Paket-/native Prüfung erforderlich.
+
+Live-Vorprüfung 39971502428 / 120475091800 ist tatsächlich NOT_CONFIGURED fehlgeschlagen: OPENROUTER_API_KEY fehlt, null Completion-Anfragen. Nutzer um sichere Hinterlegung als GitHub-Secret gebeten, kein Schlüssel im Chat. Freigabe bleibt bis echtem Live-Erfolg gesperrt.
+
 ## VCCHAT.57 – Live-Vorprüfung ohne langen Engine-Build
 
 TODO vor Änderung geprüft. Der vorhandene schnelle OpenRouter-Test fordert statt eines nutzlosen „OK“ nun eine echte Dreiecksaktion an, mit regulärem Abbruchgrund, Produktionsparser und Kostenprüfung. Höchstens eine bestätigte Nullpreis-Completion, kein Retry. Prüft den CI-Schlüssel frühzeitig; ersetzt keine native Ausführung. Native Windows-/Mac-Builds und Paketprüfungen laufen unverändert weiter.

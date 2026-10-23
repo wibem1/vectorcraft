@@ -201,7 +201,7 @@ class NativeStartupTests(unittest.TestCase):
                         wait(lambda:not gui.busy and gui.q.empty())
                         self.assertEqual(len(gui.pending),1,gui.last_error)
                         gui.execute();wait(lambda:not gui.busy and gui.q.empty())
-                        self.assertAlmostEqual(inspect_node(generated)['rotation']-generated_before['rotation'],30)
+                        self.assertAlmostEqual(inspect_node(generated)['rotation']-generated_before.get('rotation',0),30)
                         self.assertEqual(inspect_node(target),actual)
                         answer=move_answer
                         gui.entry.insert('1.0','Verschiebe das Objekt etwas nach rechts');gui.send()

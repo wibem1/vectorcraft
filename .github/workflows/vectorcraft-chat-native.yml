@@ -56,6 +56,14 @@ jobs:
           VC_CHAT_NATIVE_APP: target/release/vectorcraft
           RUST_BACKTRACE: '1'
         run: python -m unittest discover -s vectorcraft-chat/tests -p test_native_startup.py -v
+      - name: Actual OpenRouter construction and native followup (mandatory release gate)
+        timeout-minutes: 6
+        env:
+          PYTHONPATH: vectorcraft-chat
+          VC_CHAT_LIVE_NATIVE: '1'
+          VC_CHAT_NATIVE_APP: target/release/vectorcraft${{ runner.os == 'Windows' && '.exe' || '' }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: python -m unittest discover -s vectorcraft-chat/tests -p test_live_native.py -v
       - name: Preserve native platform evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -65,4 +73,6 @@ jobs:
             native-startup-report.json
             native-chat.png
             native-startup.log
+            live-native-report.json
+            live-native-*.png
           if-no-files-found: warn

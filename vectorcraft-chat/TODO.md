@@ -1,5 +1,9 @@
 # VectorCraft Chat – TODO
 
+## VCCHAT.54 – echter Live-Konstruktionsnachweis als nativer Freigabetest
+
+TODO vor Änderung geprüft. Neuer separater nativer Test verwendet App.send mit echtem OpenRouter, echter Engine und sichtbaren Bildschirmaufnahmen: qualifizierter Dreiecksauftrag (kein lokaler Shortcut), neue Objekt-ID, expliziter 30-Grad-Folgeauftrag, gleiche ID und keine zusätzlichen Objekte. Maximal zwei Completion-Anfragen je Plattform, ausschließlich dynamisch bestätigtes Nullpreismodell, Preise vor jeder Anfrage erneut geprüft, keine Wiederholung. Ohne CI-Schlüssel oder Nullpreismodell schlägt der Freigabetest fehl. Der native Windows-/Mac-Workflow führt diesen Test nach der Provider-Fixture-Suite aus und sichert auch Fehlerberichte. Implementiert, noch NICHT live bestanden.
+
 ## VCCHAT.53 – durchgängige Completion-Prüfung (23.10.2026)
 
 TODO vor jeder Änderung geprüft. Diagnose vom 23.10.2026 gelesen: Verbindung 7979 funktionierte; 194 Antwortzeichen, fehlender Abschluss, Abbruchgrund damals nicht erfasst. Tokenlimit als historische Ursache bleibt unbewiesen. Im Korrekturstand 1e1942c wurde ein weiterer reproduzierbarer Blocker gefunden: App fordert 4.000 Tokens, Kostenprüfung akzeptierte maximal 2.000. Gemeinsame Konstante korrigiert beide Wege. Version 0.3.3-dev, keine Veröffentlichung.

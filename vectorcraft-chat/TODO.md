@@ -1,5 +1,9 @@
 # VectorCraft Chat – TODO
 
+## VCCHAT.57 – Live-Vorprüfung ohne langen Engine-Build
+
+TODO vor Änderung geprüft. Der vorhandene schnelle OpenRouter-Test fordert statt eines nutzlosen „OK“ nun eine echte Dreiecksaktion an, mit regulärem Abbruchgrund, Produktionsparser und Kostenprüfung. Höchstens eine bestätigte Nullpreis-Completion, kein Retry. Prüft den CI-Schlüssel frühzeitig; ersetzt keine native Ausführung. Native Windows-/Mac-Builds und Paketprüfungen laufen unverändert weiter.
+
 ## VCCHAT.56 – aktuelle Paketarchive unabhängig prüfen
 
 TODO vor Änderung geprüft. Builds für Quellstand 9659e6ab sind tatsächlich gestartet: Pakete 39971064930, native Plattformen 39971064931, Regressionen 39971064996 und Headless 39971065092. Linux-/Windows-Regressionen bereits erfolgreich; übrige Jobs noch laufend/wartend. Archiv-Audit auf exakt diesen Paketlauf umgestellt, mit zwingendem Warten auf erfolgreichen Abschluss und Quellstandsvergleich. Neue Provider-Konstruktion/Folgeänderung sowie bestehende Mehrfachobjekt-/Zwischenbearbeitungsnachweise verpflichtend. Dies ist keine Veröffentlichung und kein vorweggenommener Testerfolg.

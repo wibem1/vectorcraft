@@ -1,4 +1,17 @@
 # VectorCraft Chat — verbindlicher Projektstand
+
+## Verbindliche Strategieentscheidung — 23.10.2026
+**Beschlossen:** Die bisherige komplexe VectorCraft-Chat-App wird **nicht** als Reparaturprojekt fortgeführt. Stattdessen kontrollierter, kleiner Neustart ausgehend von dem historisch erfolgreich erprobten direkten Python-Steuerprogramm. Dies ist eine Strategieentscheidung, noch **keine** implementierte oder getestete Änderung.
+
+- **Ziel:** Natürlicher KI-Auftrag → gültige VectorCraft-Aktionen → echte lokale Engine (TCP 127.0.0.1:7979) → sichtbare editierbare Konstruktion → gezielte Folgeänderung anhand derselben Objekt-ID.
+- **Referenz:** `VectorCraft-Mandala-Zentriert-v2.zip`, historisch am 14.10. bestätigt. Archiv ist **noch nicht nachweislich im Repository enthalten**; SHA-256 laut Übergabetest: `09ab09949b987a71d7735dd456bca5795eddb60d98bf9cedf1661232ee23f6ae`. Zuerst unveränderte Referenz sichern und Verfügbarkeit prüfen. Historischer Erfolg ist kein heutiger Live-Test.
+- **Schritt 1:** Minimale, isolierte TCP/JSON-Steuerung der echten Engine mit kleinem deterministischem Test belegen (Dreieck, Objekt-ID, 30° Drehung desselben Objekts). Wenn Referenz nicht im Repo liegt, Archiv anfordern statt nachzubauen.
+- **Schritt 2:** Erst dann einen **minimalen KI-Adapter** bauen: natürliche Sprache → kleine, strukturierte, validierte Aktionsliste. Antwort vollständig? Abbruchgrund? unbekannte Befehle? Maximalumfang? Keine fehlerhafte Antwort ausführen. Mit gespeicherten Provider-Antworten kostenlos testen, danach gezielt eine echte Anfrage mit vorab geprüften Kosten.
+- **Schritt 3:** KI-Adapter + echte Engine + überprüfbare Folgeänderung integrieren. Erst nach positivem End-to-End-Nachweis Chatoberfläche, Packaging, Windows/macOS.
+- **Altprojekt:** Alter `vectorcraft-chat/`-Code und `TODO.md` bleiben unverändert als technische Referenz/Fehlergeschichte, sind **kein** Entwicklungsauftrag zur Fortsetzung des bisherigen Reparaturpfads. Einzelkomponenten nur nach isolierter Bewertung übernehmen. Neue Implementierung soll getrennt vom bisherigen App-Code entstehen; den konkreten Pfad erst beim ersten Entwicklungsauftrag wählen.
+- **Arbeitsweise:** Globales Regelwerk `wibem1/AI-Development-Standards`; ein kleiner überprüfbarer Schritt; GitHub aktualisieren; keine unbelegten Releases, keine Build-/Work-/API-Schleifen. Keine parallele Bearbeitung derselben Basis.
+- **Nächster Auftrag für neuen Chat:** Zuerst nur Übernahme und Verifikation der Referenzdateien / des minimalen technischen Startpunkts, dann den **ersten einzelnen Funktionstest** vorschlagen. Keine Wiederaufnahme des alten App-Reparaturplans. Keine Programmänderungen oder kostenpflichtigen Aufrufe, bevor dieser Schritt feststeht.
+
 Stand: 2026-10-23 · Übergabe aus Chat · nur Dokumentation
 
 ## Ziel

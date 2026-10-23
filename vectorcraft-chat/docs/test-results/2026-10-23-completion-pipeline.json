@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-23",
+  "application_commit": "7fc7e57cf67c44182f28223f9d9a28ef47a68b3f",
+  "local_regression": {
+    "discovered": 87,
+    "passed": 82,
+    "skipped": 5
+  },
+  "missing_key_negative_test": "PASS: rejected before any request (test intentionally exits failure)",
+  "cargo_xtask_ci": "NOT_RUN: cargo not installed",
+  "current_commit_actions_runs": 0,
+  "historical_live_rerun": {
+    "run_id": 39726464472,
+    "requested_job_id": 119651382410,
+    "request_accepted": true,
+    "observed_status": "queued",
+    "observed_jobs": 0,
+    "tests_passed": false
+  },
+  "native_windows": "NOT_VERIFIED",
+  "native_macos": "NOT_VERIFIED",
+  "packages": "NOT_BUILT_FOR_CURRENT_SOURCE",
+  "positive_live_construction": "NOT_VERIFIED",
+  "release_published": false,
+  "blocker": "No current-source Actions run appeared after branch updates; no workflow-dispatch tool or authenticated git push available. Historical rerun has no running job. No current CI-key availability inferred from this."
+}

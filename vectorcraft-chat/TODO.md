@@ -1,5 +1,11 @@
 # VectorCraft Chat – TODO
 
+## Abschlussprüfung 23.10.2026 – Veröffentlichung weiter gesperrt
+
+TODO erneut geprüft. Korrekturcommit 67f07e79 und Live-Testcommit 7fc7e57c auf main gespeichert und über Git bestätigt. Lokal 87 Tests entdeckt, 82 bestanden, 5 separat erforderliche Tests übersprungen; fehlender Testschlüssel zusätzlich als kontrollierter Negativfall ohne Anfrage geprüft. Für beide neuen Quellstände liefern die Actions-Abfragen keine Läufe. Der tatsächlich angenommene Wiederholungsauftrag für Lauf 39726464472 bleibt queued, ohne Job; er testet ohnehin einen historischen Stand. Es gibt somit keinen aktuellen nativen Windows-/Mac-Erfolg, keine neuen geprüften Pakete und keinen positiven Live-Nachweis. Der verfügbare GitHub-Zugang bietet keinen Workflow-Dispatch; direkter Git-Push scheitert an fehlender Authentifizierung. Kein Erfolgsstatus erfunden, keine Veröffentlichung. Der aktuelle CI-Schlüsselstatus ist durch den noch nicht gestarteten Job nicht neu geprüft.
+
+Dauerhafter [Prüfbericht](docs/test-results/2026-10-23-completion-pipeline.json). Für die Fortsetzung: aktuelle native, Core-, Headless- und Paketworkflows tatsächlich starten; native Live-Gates benötigen OPENROUTER_API_KEY in GitHub Secrets. Erst nach erfolgreicher Log- und Archivprüfung veröffentlichen. Keine manuellen App-Tests erforderlich.
+
 ## VCCHAT.54 – echter Live-Konstruktionsnachweis als nativer Freigabetest
 
 TODO vor Änderung geprüft. Neuer separater nativer Test verwendet App.send mit echtem OpenRouter, echter Engine und sichtbaren Bildschirmaufnahmen: qualifizierter Dreiecksauftrag (kein lokaler Shortcut), neue Objekt-ID, expliziter 30-Grad-Folgeauftrag, gleiche ID und keine zusätzlichen Objekte. Maximal zwei Completion-Anfragen je Plattform, ausschließlich dynamisch bestätigtes Nullpreismodell, Preise vor jeder Anfrage erneut geprüft, keine Wiederholung. Ohne CI-Schlüssel oder Nullpreismodell schlägt der Freigabetest fehl. Der native Windows-/Mac-Workflow führt diesen Test nach der Provider-Fixture-Suite aus und sichert auch Fehlerberichte. Implementiert, noch NICHT live bestanden.

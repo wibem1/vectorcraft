@@ -1,5 +1,17 @@
 # VectorCraft Chat — verbindlicher Projektstand
 
+## Aktueller Nachweis — VC-RESET-01 abgeschlossen (24.10.2026)
+
+Dieser Abschnitt ersetzt die unten historisch erhaltenen Aussagen, dass das Referenzarchiv nicht im Repository nachgewiesen sei.
+
+- Original bereits durch Commit `f9207b94f5b79197d807b880a7701fe7cf98d4c1` auf Branch `vc-reset-reference-01` unter `vectorcraft-reset/VectorCraft-Mandala-Zentriert-v2.zip` gesichert.
+- In dieser Übernahme erneut aus GitHub ausgecheckt und bytegenau mit dem vorhandenen Originalarchiv `VectorCraft-Mandala-Zentriert-v2(3).zip` verglichen: identisch, 4800 Bytes.
+- SHA-256 beider Archive: `09ab09949b987a71d7735dd456bca5795eddb60d98bf9cedf1661232ee23f6ae`.
+- ZIP-Integritätsprüfung bestanden; genau vier Dateien: `vectorcraft_mandala_zentriert.py`, `01_Pruefen.bat`, `02_Mandala_zentriert_erstellen.bat`, `ANLEITUNG.txt`.
+- Kein Originalcode geändert oder ausgeführt. Keine nativen Builds, Actions, Provider-Anfragen oder Releases. Diese Prüfung belegt Referenzidentität, keine aktuelle Engine-Funktion.
+- Die maßgebliche `CURRENT_TASK.md` auf main beschränkt VC-RESET-01 auf die Referenzsicherung und verlangt danach Abschluss. Auftrag damit erfüllt; der nächste separate Schritt ist der dort beschriebene echte TCP/JSON-Dreiecktest mit Identitätserhalt und 30°-Drehung. Kein KI-Adapter vor diesem Nachweis.
+- Achtung für die nächste Übernahme: Referenz und dieser Nachweis liegen auf `vc-reset-reference-01`; main enthält noch die ältere Statusbeschreibung. Nicht nochmals das Original anfordern oder aus Erinnerungen rekonstruieren.
+
 ## Historischer Nachweis vom 14.10.2026 (am 23.10. anhand Gesprächsexports abgeglichen)
 
 Der konkrete, quellenbasierte Bericht liegt in [docs/REFERENCE-2026-10-14.md](docs/REFERENCE-2026-10-14.md). Wichtigste Klarstellung: **ChatGPT erstellte die Steuerprogramme, ausgeführt wurden sie lokal vom Nutzer; die lokale TCP/JSON-Kommunikation war erfolgreich. Ein eigener direkter ChatGPT-Netzwerkzugang auf Port 7979 ist nicht belegt.** Zeichentest v5 und Agententest v7 verwendeten vorbereitete Befehle; die frei interpretierende KI-Steuerung blieb unbewiesen. Mandala-Live-Repeat-Geometrie funktionierte, interaktive Repeat-Containerbearbeitung war offen. Die Originalreferenz liegt weiterhin nicht im GitHub-Repository. Diese Ergänzung ist Dokumentation, kein neuer Live-Test und keine neue Release-Freigabe.

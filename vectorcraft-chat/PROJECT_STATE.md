@@ -63,3 +63,9 @@ Eine kleine, kostengünstige KI-Chatsteuerung für die bereits installierte Vect
 - Der zuvor lokal vorhandene ZIP-Vorläufer des Minimalcodes bestand drei Fixture-Tests am 24.10.; die neu in GitHub geschriebene Fassung ist noch **nicht als eigenständiger Testlauf geprüft**. Keine aktuelle Ausführung mit echter VectorCraft-Engine. Ein Mock-/Fixture-Erfolg ist kein nativer Funktionsnachweis.
 - Quellcommits: `41a86b8`, `c15046f`. Kein Build, keine kostenpflichtige Anfrage.
 - **Nächster einzelner Schritt:** neuen GitHub-Quellstand durch isolierten kostenlosen Test prüfen; anschließend nur den echten TCP/JSON-Dreiecktest mit nativer Engine in einer geeigneten Ausführungsumgebung durchführen. Ohne echten Nachweis keine KI-Anbindung freigeben.
+
+## VC-RESET-03 — Rückkehr zum Originalstand vom 14.10.2026
+- Entscheidung des Nutzers: bewährten originalen Python-Code wiederverwenden, nicht erneut TCP/JSON neu schreiben. Isolierter Branch `vc-reset-original-03b`, Basis `vc-reset-reference-01` mit byteidentischem ZIP.
+- `vectorcraft-reset-tests/test_original.py` lädt die Klasse `VC` **direkt aus dem unveränderten Original-ZIP** über `zipimport`; kein Nachbau der Übertragungsschicht. Kostenloser lokaler Test mit lokalem TCP-Testserver: 3 Tests bestanden (Befehlserkennung, Objekt-ID, originaler VC.call/VC.exec-Transport), ca. 0,5 s. Der GitHub-Testcode wurde nach lokalem Lauf manuell übertragen; separat auf dem GitHub-Branch nicht ausgeführt.
+- Native Engine in dieser Umgebung nicht erreichbar, deshalb ausdrücklich **kein aktueller Live-Funktionstest**. GitHub Actions bleiben vollständig gesperrt, keine Builds/Providerkosten.
+- Damit ist die wiederverwendbare technische Grundlage bestätigt; nächste isolierte Aufgabe wäre ein nativer Funktionstest mit genau dieser Originalklasse, wenn eine direkte lokale Engine-Verbindung möglich ist. Die alte Chat-App bleibt unberührt.

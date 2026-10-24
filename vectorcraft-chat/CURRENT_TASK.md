@@ -10,7 +10,7 @@ Die minimale, direkte Python-TCP/JSON-Steuerung kostenlos prüfen und soweit not
 ## Grenzen
 - Branch `vc-reset-control-02`; `main` unverändert.
 - Nur `vectorcraft-minimal-control/`, Auftrags- und Projektdokumentation ändern. Keine Reparatur von `vectorcraft-chat/`, kein KI-Adapter, kein Frontend, kein Packaging, kein Release.
-- Keine OpenRouter-/bezahlten Anfragen, keine unbegrenzten Workflow-Retries. GitHub Actions nur gezielt für echten Test, sofern geeigneter Workflow verfügbar.
+- Keine OpenRouter-/bezahlten Anfragen. **GitHub Actions absolut gesperrt**, auch für den nativen Test; keine Workflow-Auslösung, kein Retry. Ist die echte Engine nicht lokal erreichbar, Blocker dokumentieren, nicht in CI ausweichen. Eine Ausnahme erfordert neuen ausdrücklich freigegebenen Einzelauftrag.
 - Bei fehlender echter Engine ausdrücklichen Blocker festhalten und nach den tatsächlich möglichen Prüfungen stoppen.
 - Nie einen Fixture-Test als nativen Nachweis bezeichnen.
 
